@@ -41,7 +41,7 @@ body {
   padding: 0 1.5rem;
   overflow: hidden;
   line-height: 0;
-  height: clamp(140px, 22vw, 200px);
+  height: clamp(80px, 14vw, 120px);
   position: relative;
 }
 
