@@ -36,9 +36,13 @@ body {
 }
 
 .banner-wrap {
-  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
   overflow: hidden;
   line-height: 0;
+  height: clamp(140px, 22vw, 200px);
+  position: relative;
 }
 
 .banner,
@@ -48,9 +52,13 @@ body {
 }
 
 .banner {
-  height: auto;
+  position: absolute;
+  left: 50%;
+  width: 300%;
+  height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center center;
+  transform: translateX(-50%);
 }
 
 .banner-placeholder {
