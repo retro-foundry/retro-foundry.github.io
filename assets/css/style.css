@@ -35,14 +35,17 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
 
+.header-inner {
+  padding-top: 0;
+}
+
 .banner-wrap {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  width: 100%;
   overflow: hidden;
   line-height: 0;
   height: clamp(80px, 14vw, 120px);
   position: relative;
+  margin-bottom: 0;
 }
 
 .banner,
@@ -75,8 +78,8 @@ body {
   text-shadow: 0 0 20px rgba(88, 166, 255, 0.3);
 }
 
-.header-bar {
-  padding: 12px 1.5rem;
+.header-inner .site-nav {
+  padding: 12px 0 0;
 }
 
 .site-nav {
@@ -122,8 +125,16 @@ body {
   fill: currentColor;
 }
 
+.site-nav .icon-gh {
+  color: var(--link);
+}
+
 .site-nav .icon-patreon {
   color: var(--link);
+}
+
+.site-nav-icon:hover .icon-gh {
+  color: var(--link-hover);
 }
 
 .site-nav-icon:hover .icon-patreon {
