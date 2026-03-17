@@ -41,27 +41,12 @@ body {
 
 .banner-wrap {
   width: 100%;
-  overflow: hidden;
-  line-height: 0;
-  height: clamp(80px, 14vw, 120px);
-  position: relative;
-  margin-bottom: 0;
-}
-
-.banner,
-.banner-placeholder {
-  width: 100%;
-  display: block;
-}
-
-.banner {
-  position: absolute;
-  left: 50%;
-  width: 300%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  transform: translateX(-50%);
+  height: clamp(72px, 12vw, 100px);
+  background-image: url("../../banner.png");
+  background-size: 300% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
 }
 
 .banner-placeholder {
