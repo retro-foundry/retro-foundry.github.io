@@ -1,0 +1,224 @@
+---
+# Front matter so Jekyll processes this file
+---
+
+$text-color: #e6edf3;
+$text-muted: #8b949e;
+$link-color: #a0a0a8;
+$link-hover: #fff;
+$patreon-hover: #ff424d;
+$bg-dark: rgba(18, 18, 22, 0.95);
+$bg-page: #0d1117;
+$border-color: rgba(255, 255, 255, 0.08);
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: $text-color;
+  background: $bg-page;
+}
+
+.wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.site-header {
+  background: $bg-dark;
+  border-bottom: 1px solid $border-color;
+  padding: 12px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.site-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $text-color;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $link-hover;
+  }
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 0.5rem;
+
+  a {
+    color: $link-color;
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s, transform 0.15s;
+
+    &:hover {
+      color: $link-hover;
+    }
+  }
+
+  .site-nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-left: 0.25rem;
+    border-radius: 10px;
+    background: transparent;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.08);
+      color: $patreon-hover;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  .icon {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+  }
+  .icon-patreon {
+    color: $link-color;
+  }
+  .site-nav-icon:hover .icon-patreon {
+    color: $patreon-hover;
+  }
+}
+
+.page-content {
+  padding: 2rem 0;
+  min-height: 60vh;
+}
+
+.post-header {
+  margin-bottom: 1.5rem;
+}
+
+.post-title {
+  margin: 0 0 0.25rem;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.post-meta {
+  margin: 0;
+  font-size: 0.9rem;
+  color: $text-muted;
+}
+
+.post-content {
+  margin-bottom: 2rem;
+
+  h1, h2, h3 { margin-top: 1.5em; margin-bottom: 0.5em; }
+  p { margin: 0 0 1rem; }
+  ul, ol { margin: 0 0 1rem; padding-left: 1.5rem; }
+  a { color: #58a6ff; }
+  a:hover { color: #79c0ff; }
+  code { background: rgba(0, 0, 0, 0.35); padding: 0.2em 0.4em; border-radius: 6px; font-size: 0.9em; color: $text-color; }
+  pre { overflow-x: auto; padding: 1rem; background: rgba(0, 0, 0, 0.35); color: #f8f8f2; border-radius: 8px; border: 1px solid $border-color; }
+  pre code { background: none; padding: 0; color: inherit; }
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-list-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid $border-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.post-list-meta {
+  font-size: 0.9rem;
+  color: $text-muted;
+  margin-bottom: 0.25rem;
+}
+
+.post-list-link {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $text-color;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #58a6ff;
+  }
+}
+
+.site-footer {
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid $border-color;
+  font-size: 0.9rem;
+  color: $text-muted;
+
+  > .wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: #58a6ff;
+    text-decoration: none;
+  }
+
+  .credit-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .credit-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: $link-color;
+    border-radius: 10px;
+    transition: color 0.2s, background 0.2s, transform 0.15s;
+  }
+  .credit-link:hover {
+    color: $patreon-hover;
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.08);
+  }
+  .credit-link:active {
+    transform: scale(0.98);
+  }
+  .credit-link .icon {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+  }
+  .credit-link .icon-patreon {
+    color: inherit;
+  }
+}

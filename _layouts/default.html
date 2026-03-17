@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+  {% seo title=false %}
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="alternate" type="application/atom+xml" title="{{ site.title }} feed" href="{{ '/feed.xml' | relative_url }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper">
+      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <nav class="site-nav">
+        <a href="{{ '/' | relative_url }}">Blog</a>
+        <a href="{{ '/about' | relative_url }}">About</a>
+        <a class="site-nav-icon" href="https://www.patreon.com/cw/retrofoundry" target="_blank" rel="noopener noreferrer" title="Patreon – retrofoundry">
+          <svg class="icon icon-patreon" viewBox="0 0 1080 1080" aria-hidden="true"><path fill="currentColor" d="M1033.05,324.45c-0.19-137.9-107.59-250.92-233.6-291.7c-156.48-50.64-362.86-43.3-512.28,27.2C106.07,145.41,49.18,332.61,47.06,519.31c-1.74,153.5,13.58,557.79,241.62,560.67c169.44,2.15,194.67-216.18,273.07-321.33c55.78-74.81,127.6-95.94,216.01-117.82C929.71,603.22,1033.27,483.3,1033.05,324.45z"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="wrapper">
+      {{ content }}
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ site.title }}. Powered by <a href="https://jekyllrb.com/">Jekyll</a> on GitHub Pages.</p>
+      <div class="credit-links">
+        <a class="credit-link" href="https://www.patreon.com/cw/retrofoundry" target="_blank" rel="noopener noreferrer" title="Support on Patreon">
+          <svg class="icon icon-patreon" viewBox="0 0 1080 1080" aria-hidden="true"><path fill="currentColor" d="M1033.05,324.45c-0.19-137.9-107.59-250.92-233.6-291.7c-156.48-50.64-362.86-43.3-512.28,27.2C106.07,145.41,49.18,332.61,47.06,519.31c-1.74,153.5,13.58,557.79,241.62,560.67c169.44,2.15,194.67-216.18,273.07-321.33c55.78-74.81,127.6-95.94,216.01-117.82C929.71,603.22,1033.27,483.3,1033.05,324.45z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
