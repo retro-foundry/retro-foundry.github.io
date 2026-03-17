@@ -1,0 +1,265 @@
+/* Retro Foundry – plain HTML style (same dark theme + projects) */
+:root {
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --link: #a0a0a8;
+  --link-hover: #fff;
+  --patreon: #ff424d;
+  --bg-dark: rgba(18, 18, 22, 0.95);
+  --bg-page: #0d1117;
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #58a6ff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg-page);
+}
+
+.wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Header + banner */
+.site-header {
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.banner-wrap {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.banner {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+.header-bar {
+  padding: 12px 1.5rem;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.site-nav a {
+  color: var(--link);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.site-nav a:hover {
+  color: var(--link-hover);
+}
+
+.site-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: transparent;
+}
+
+.site-nav-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.08);
+  color: var(--patreon);
+}
+
+.site-nav-icon:active {
+  transform: scale(0.98);
+}
+
+.site-nav .icon {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+.site-nav .icon-patreon {
+  color: var(--link);
+}
+
+.site-nav-icon:hover .icon-patreon {
+  color: var(--patreon);
+}
+
+/* Main content */
+.page-content {
+  padding: 2rem 0;
+  min-height: 50vh;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 1.5rem;
+}
+
+/* Project grid */
+.projects {
+  margin-bottom: 2rem;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.project-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+.project-thumb-link {
+  display: block;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.project-thumb {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.25s;
+}
+
+.project-card:hover .project-thumb {
+  transform: scale(1.03);
+}
+
+.project-body {
+  padding: 1rem 1.25rem;
+}
+
+.project-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  line-height: 1.3;
+}
+
+.project-title a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.project-title a:hover {
+  color: var(--accent);
+}
+
+.project-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.project-links {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+}
+
+.project-links a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.project-links a:hover {
+  text-decoration: underline;
+}
+
+.project-links-sep {
+  color: var(--text-muted);
+  margin: 0 0.35rem;
+}
+
+/* Footer */
+.site-footer {
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.site-footer .wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.site-footer p { margin: 0; }
+
+.site-footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.credit-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.credit-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--link);
+  border-radius: 10px;
+  transition: color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.credit-link:hover {
+  color: var(--patreon);
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.08);
+}
+
+.credit-link:active {
+  transform: scale(0.98);
+}
+
+.credit-link .icon {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
