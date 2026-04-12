@@ -5,6 +5,7 @@
   --link: #a0a0a8;
   --link-hover: #fff;
   --patreon: #ff424d;
+  --discord: #5865f2;
   --bg-dark: rgba(18, 18, 22, 0.95);
   --bg-page: #0d1117;
   --border: rgba(255, 255, 255, 0.08);
@@ -124,12 +125,20 @@ body {
   color: var(--link);
 }
 
+.site-nav .icon-discord {
+  color: var(--link);
+}
+
 .site-nav-icon:hover .icon-gh {
   color: var(--link-hover);
 }
 
 .site-nav-icon:hover .icon-patreon {
   color: var(--patreon);
+}
+
+.site-nav-icon:hover .icon-discord {
+  color: var(--discord);
 }
 
 /* Main content */
