@@ -233,16 +233,8 @@
     </div>
     <script type="text/javascript">
         const $game = document.querySelector('.game');
-        function resize() {
-            const canvas = document.getElementById('canvas');
-            if (!canvas || typeof Module === 'undefined' || !Module.canvas) return;
-            const w = Math.max(1, window.innerWidth);
-            const h = Math.max(1, window.innerHeight);
-            if (canvas.width !== w || canvas.height !== h) {
-                canvas.width = w;
-                canvas.height = h;
-            }
-        }
+        /* Canvas pixel size is owned by SDL from ab3d.ini (render_width/render_height); do not force viewport size. */
+        function resize() { }
         var Module = {
             print(text) {
                 console.log(Array.prototype.slice.call(arguments).join(' '));
@@ -253,13 +245,7 @@
             canvas: document.getElementById('canvas') || $game
         };
         /* Pthread + SharedArrayBuffer gate: see src/emscripten_pthread_gate.js (--pre-js) so it runs before wasm/workers. */
-        window.addEventListener('resize', resize, false);
         window.triggerResize = resize;
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() { resize(); });
-        } else {
-            resize();
-        }
         /* Work-around chromium autoplay policy (SDL2 audio) */
         function resumeAudio(e) {
             if (typeof Module === 'undefined'
