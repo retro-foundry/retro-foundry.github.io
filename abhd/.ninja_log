@@ -1,15 +1,15 @@
 # ninja log v7
-17	39	7977747846255440	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs	88c73d042508a291
+18	36	7977752627818367	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs	88c73d042508a291
 44	1501	7977713228277656	em_preload/.stamp	ddc001701bc1f478
 44	1501	7977713228277656	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/em_preload/.stamp	ddc001701bc1f478
 52	644	7977715707953049	CMakeFiles/ab3d1.dir/src/game_data.c.o	30c95dd4e11aabf2
 58	681	7977715708003068	CMakeFiles/ab3d1.dir/src/math_tables.c.o	39c0f4cd2ecde183
 64	764	7977715708063081	CMakeFiles/ab3d1.dir/src/ai.c.o	937e0de47c622c51
 228	1041	7977715709705829	CMakeFiles/ab3d1.dir/src/sb_decompress.c.o	391eb67a26fe710a
-31	1966	7977752547735172	build.ninja	f2fc70fcb24c50ff
-31	1966	7977752547705166	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/cmake_install.cmake	f2fc70fcb24c50ff
+31	1966	7977755894611299	build.ninja	f2fc70fcb24c50ff
+31	1966	7977755894561251	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/cmake_install.cmake	f2fc70fcb24c50ff
 45	655	7977715707883048	CMakeFiles/ab3d1.dir/src/game_state.c.o	d2b2059e73a90ba8
-42	286	7977747846505437	CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o	1697d36be04a40c5
+38	270	7977752628018373	CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o	1697d36be04a40c5
 93	835	7977715708356170	CMakeFiles/ab3d1.dir/src/visibility.c.o	2e826541cb808e0d
 71	986	7977715708137971	CMakeFiles/ab3d1.dir/src/movement.c.o	8a063ba6b8734962
 64	586	7977738472680685	CMakeFiles/ab3d1.dir/src/player.c.o	17eac2ff03a77473
@@ -27,7 +27,7 @@
 137	1006	7977715708794979	CMakeFiles/ab3d1.dir/src/renderer_3dobj.c.o	c01bb483eb1e6c66
 45	1355	7977735051800183	CMakeFiles/ab3d1.dir/src/renderer.c.o	138702eafb9b54df
 55	1437	7977740335667547	CMakeFiles/ab3d1.dir/src/display.c.o	850e391c86215ad2
-287	8893	7977747848954538	ab3d1.html	a0d9a4f6200e77f4
-18	36	7977752627818367	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs	88c73d042508a291
-38	270	7977752628018373	CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o	1697d36be04a40c5
 271	8402	7977752630342350	ab3d1.html	5c2c275454691d93
+21	39	7977755930739311	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs	88c73d042508a291
+42	258	7977755930944291	CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o	1697d36be04a40c5
+258	8118	7977755933112200	index.html	401d05d5d5d4955

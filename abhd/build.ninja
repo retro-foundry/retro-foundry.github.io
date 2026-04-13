@@ -262,17 +262,17 @@ build CMakeFiles/ab3d1.dir/src/emscripten_loop.c.o: C_COMPILER__ab3d1_unscanned_
 
 
 #############################################
-# Link the executable ab3d1.html
+# Link the executable index.html
 
-build ab3d1.html: C_EXECUTABLE_LINKER__ab3d1_Release CMakeFiles/ab3d1.dir/src/main.c.o CMakeFiles/ab3d1.dir/src/game_state.c.o CMakeFiles/ab3d1.dir/src/game_data.c.o CMakeFiles/ab3d1.dir/src/math_tables.c.o CMakeFiles/ab3d1.dir/src/ai.c.o CMakeFiles/ab3d1.dir/src/movement.c.o CMakeFiles/ab3d1.dir/src/level.c.o CMakeFiles/ab3d1.dir/src/objects.c.o CMakeFiles/ab3d1.dir/src/visibility.c.o CMakeFiles/ab3d1.dir/src/control_loop.c.o CMakeFiles/ab3d1.dir/src/game_loop.c.o CMakeFiles/ab3d1.dir/src/player.c.o CMakeFiles/ab3d1.dir/src/renderer.c.o CMakeFiles/ab3d1.dir/src/renderer_3dobj.c.o CMakeFiles/ab3d1.dir/src/display.c.o CMakeFiles/ab3d1.dir/src/input.c.o CMakeFiles/ab3d1.dir/src/audio.c.o CMakeFiles/ab3d1.dir/src/io.c.o CMakeFiles/ab3d1.dir/src/settings.c.o CMakeFiles/ab3d1.dir/src/logging.c.o CMakeFiles/ab3d1.dir/src/sb_decompress.c.o CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o CMakeFiles/ab3d1.dir/src/emscripten_loop.c.o || ab3d_em_preload_data
+build index.html: C_EXECUTABLE_LINKER__ab3d1_Release CMakeFiles/ab3d1.dir/src/main.c.o CMakeFiles/ab3d1.dir/src/game_state.c.o CMakeFiles/ab3d1.dir/src/game_data.c.o CMakeFiles/ab3d1.dir/src/math_tables.c.o CMakeFiles/ab3d1.dir/src/ai.c.o CMakeFiles/ab3d1.dir/src/movement.c.o CMakeFiles/ab3d1.dir/src/level.c.o CMakeFiles/ab3d1.dir/src/objects.c.o CMakeFiles/ab3d1.dir/src/visibility.c.o CMakeFiles/ab3d1.dir/src/control_loop.c.o CMakeFiles/ab3d1.dir/src/game_loop.c.o CMakeFiles/ab3d1.dir/src/player.c.o CMakeFiles/ab3d1.dir/src/renderer.c.o CMakeFiles/ab3d1.dir/src/renderer_3dobj.c.o CMakeFiles/ab3d1.dir/src/display.c.o CMakeFiles/ab3d1.dir/src/input.c.o CMakeFiles/ab3d1.dir/src/audio.c.o CMakeFiles/ab3d1.dir/src/io.c.o CMakeFiles/ab3d1.dir/src/settings.c.o CMakeFiles/ab3d1.dir/src/logging.c.o CMakeFiles/ab3d1.dir/src/sb_decompress.c.o CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o CMakeFiles/ab3d1.dir/src/emscripten_loop.c.o || ab3d_em_preload_data
   CONFIG = Release
   FLAGS = -O3 -DNDEBUG
   LINK_FLAGS = --shell-file=C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/emscripten_shell.html -sUSE_SDL=2 -sFULL_ES3=1 -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=134217728 --preload-file=C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/em_preload@/ -pthread -sUSE_PTHREADS=1 -sPTHREAD_POOL_SIZE=16 --pre-js=C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/emscripten_pthread_gate.js
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   POST_BUILD = CMakeFiles\ab3d1.dir\post-build.bat 98df0ee65afd36ad
   PRE_LINK = cd .
-  TARGET_FILE = ab3d1.html
-  TARGET_PDB = ab3d1.html.dbg
+  TARGET_FILE = index.html
+  TARGET_PDB = index.html.dbg
 
 
 #############################################
@@ -322,7 +322,7 @@ build em_preload/.stamp | ${cmake_ninja_workdir}em_preload/.stamp: CUSTOM_COMMAN
 # =============================================================================
 # Target aliases.
 
-build ab3d1: phony ab3d1.html
+build ab3d1: phony index.html
 
 # =============================================================================
 # Folder targets.
@@ -332,7 +332,7 @@ build ab3d1: phony ab3d1.html
 #############################################
 # Folder: C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web
 
-build all: phony ab3d1.html
+build all: phony index.html
 
 # =============================================================================
 # Built-in targets
