@@ -53,7 +53,7 @@ build CMakeFiles/ab3d1.dir/src/main.c.o: C_COMPILER__ab3d1_unscanned_Release C$:
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\main.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -62,7 +62,7 @@ build CMakeFiles/ab3d1.dir/src/game_state.c.o: C_COMPILER__ab3d1_unscanned_Relea
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\game_state.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -71,7 +71,7 @@ build CMakeFiles/ab3d1.dir/src/game_data.c.o: C_COMPILER__ab3d1_unscanned_Releas
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\game_data.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -80,7 +80,7 @@ build CMakeFiles/ab3d1.dir/src/math_tables.c.o: C_COMPILER__ab3d1_unscanned_Rele
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\math_tables.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -89,7 +89,7 @@ build CMakeFiles/ab3d1.dir/src/ai.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/U
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\ai.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -98,7 +98,7 @@ build CMakeFiles/ab3d1.dir/src/movement.c.o: C_COMPILER__ab3d1_unscanned_Release
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\movement.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -107,7 +107,7 @@ build CMakeFiles/ab3d1.dir/src/level.c.o: C_COMPILER__ab3d1_unscanned_Release C$
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\level.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -116,7 +116,7 @@ build CMakeFiles/ab3d1.dir/src/objects.c.o: C_COMPILER__ab3d1_unscanned_Release 
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\objects.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -125,7 +125,7 @@ build CMakeFiles/ab3d1.dir/src/visibility.c.o: C_COMPILER__ab3d1_unscanned_Relea
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\visibility.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -134,7 +134,7 @@ build CMakeFiles/ab3d1.dir/src/control_loop.c.o: C_COMPILER__ab3d1_unscanned_Rel
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\control_loop.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -143,7 +143,7 @@ build CMakeFiles/ab3d1.dir/src/game_loop.c.o: C_COMPILER__ab3d1_unscanned_Releas
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\game_loop.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -152,7 +152,7 @@ build CMakeFiles/ab3d1.dir/src/player.c.o: C_COMPILER__ab3d1_unscanned_Release C
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\player.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -161,7 +161,7 @@ build CMakeFiles/ab3d1.dir/src/renderer.c.o: C_COMPILER__ab3d1_unscanned_Release
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\renderer.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -170,7 +170,7 @@ build CMakeFiles/ab3d1.dir/src/renderer_3dobj.c.o: C_COMPILER__ab3d1_unscanned_R
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\renderer_3dobj.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -179,7 +179,7 @@ build CMakeFiles/ab3d1.dir/src/display.c.o: C_COMPILER__ab3d1_unscanned_Release 
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\display.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -188,7 +188,7 @@ build CMakeFiles/ab3d1.dir/src/input.c.o: C_COMPILER__ab3d1_unscanned_Release C$
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\input.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -197,7 +197,7 @@ build CMakeFiles/ab3d1.dir/src/audio.c.o: C_COMPILER__ab3d1_unscanned_Release C$
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\audio.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -206,7 +206,7 @@ build CMakeFiles/ab3d1.dir/src/io.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/U
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\io.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -215,7 +215,7 @@ build CMakeFiles/ab3d1.dir/src/settings.c.o: C_COMPILER__ab3d1_unscanned_Release
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\settings.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -224,7 +224,7 @@ build CMakeFiles/ab3d1.dir/src/logging.c.o: C_COMPILER__ab3d1_unscanned_Release 
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\logging.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -233,7 +233,7 @@ build CMakeFiles/ab3d1.dir/src/sb_decompress.c.o: C_COMPILER__ab3d1_unscanned_Re
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\sb_decompress.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -242,7 +242,7 @@ build CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o: C_COMPILER__ab3d1_unscanned_
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\sprite_palettes.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -251,7 +251,7 @@ build CMakeFiles/ab3d1.dir/src/emscripten_loop.c.o: C_COMPILER__ab3d1_unscanned_
   CONFIG = Release
   DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\emscripten_loop.c.o.d
-  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -Wall -Wextra -Wno-unused-parameter
+  FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   OBJECT_FILE_DIR = CMakeFiles\ab3d1.dir\src
@@ -267,7 +267,7 @@ build CMakeFiles/ab3d1.dir/src/emscripten_loop.c.o: C_COMPILER__ab3d1_unscanned_
 build index.html: C_EXECUTABLE_LINKER__ab3d1_Release CMakeFiles/ab3d1.dir/src/main.c.o CMakeFiles/ab3d1.dir/src/game_state.c.o CMakeFiles/ab3d1.dir/src/game_data.c.o CMakeFiles/ab3d1.dir/src/math_tables.c.o CMakeFiles/ab3d1.dir/src/ai.c.o CMakeFiles/ab3d1.dir/src/movement.c.o CMakeFiles/ab3d1.dir/src/level.c.o CMakeFiles/ab3d1.dir/src/objects.c.o CMakeFiles/ab3d1.dir/src/visibility.c.o CMakeFiles/ab3d1.dir/src/control_loop.c.o CMakeFiles/ab3d1.dir/src/game_loop.c.o CMakeFiles/ab3d1.dir/src/player.c.o CMakeFiles/ab3d1.dir/src/renderer.c.o CMakeFiles/ab3d1.dir/src/renderer_3dobj.c.o CMakeFiles/ab3d1.dir/src/display.c.o CMakeFiles/ab3d1.dir/src/input.c.o CMakeFiles/ab3d1.dir/src/audio.c.o CMakeFiles/ab3d1.dir/src/io.c.o CMakeFiles/ab3d1.dir/src/settings.c.o CMakeFiles/ab3d1.dir/src/logging.c.o CMakeFiles/ab3d1.dir/src/sb_decompress.c.o CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o CMakeFiles/ab3d1.dir/src/emscripten_loop.c.o || ab3d_em_preload_data
   CONFIG = Release
   FLAGS = -O3 -DNDEBUG
-  LINK_FLAGS = --shell-file=C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/emscripten_shell.html -sUSE_SDL=2 -sFULL_ES3=1 -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=134217728 --preload-file=C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/em_preload@/
+  LINK_FLAGS = --shell-file=C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/emscripten_shell.html -sUSE_SDL=2 -sFULL_ES3=1 -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=134217728 --preload-file=C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/em_preload@/ -sSHARED_MEMORY=0
   OBJECT_DIR = CMakeFiles\ab3d1.dir
   POST_BUILD = CMakeFiles\ab3d1.dir\post-build.bat 98df0ee65afd36ad
   PRE_LINK = cd .
@@ -355,14 +355,14 @@ build C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/c
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/cmake_install.cmake: RERUN_CMAKE C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs | C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/VerifyGlobs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCCompiler.cmake.in C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCCompiler.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCompiler.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeDetermineSystem.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeFindBinUtils.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeNinjaFindMake.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystem.cmake.in C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang-C.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang-FindBinUtils.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPackageHandleStandardArgs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPackageMessage.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPython3.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPython/Support.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/CMakeLists.txt C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/shell.html.in C$:/Users/paula/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake CMakeCache.txt CMakeFiles/4.0.0-rc4/CMakeCCompiler.cmake CMakeFiles/4.0.0-rc4/CMakeSystem.cmake
+build build.ninja C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/cmake_install.cmake: RERUN_CMAKE C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs | C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/VerifyGlobs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang-C.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPackageHandleStandardArgs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPackageMessage.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPython3.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPython/Support.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/CMakeLists.txt C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/shell.html.in C$:/Users/paula/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake CMakeCache.txt CMakeFiles/4.0.0-rc4/CMakeCCompiler.cmake CMakeFiles/4.0.0-rc4/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/VerifyGlobs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCCompiler.cmake.in C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCCompiler.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeDetermineCompiler.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeDetermineSystem.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeFindBinUtils.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeNinjaFindMake.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystem.cmake.in C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang-C.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang-FindBinUtils.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPackageHandleStandardArgs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPackageMessage.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPython3.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPython/Support.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/CMakeLists.txt C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/shell.html.in C$:/Users/paula/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake CMakeCache.txt CMakeFiles/4.0.0-rc4/CMakeCCompiler.cmake CMakeFiles/4.0.0-rc4/CMakeSystem.cmake: phony
+build C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/VerifyGlobs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang-C.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/Clang.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Compiler/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPackageHandleStandardArgs.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPackageMessage.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPython3.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/FindPython/Support.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/CMakeLists.txt C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/shell.html.in C$:/Users/paula/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake CMakeCache.txt CMakeFiles/4.0.0-rc4/CMakeCCompiler.cmake CMakeFiles/4.0.0-rc4/CMakeSystem.cmake: phony
 
 
 #############################################
