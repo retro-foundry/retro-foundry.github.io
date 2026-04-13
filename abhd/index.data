@@ -36,8 +36,8 @@ GAME / UI
   - Otherwise, exits the game
 
 MOUSE CAPTURE
-- Fullscreen starts with mouse capture enabled.
-- In windowed mode, double-click inside the game window to capture the mouse.
+- The mouse pointer is visible until you left-click inside the game window to capture it (windowed or fullscreen).
+- Press Esc while captured to release capture and show the pointer again.
 # Alien Breed 3D I — PC port settings
 #
 # Source at repository root (ab3d.ini.template). Incremental builds keep ab3d.ini
@@ -105,6 +105,7 @@ supersampling=1
 
 # 1 = split each zone across column slices (one SDL thread per slice, up to SDL_GetCPUCount).
 # 0 = single-threaded raster (also used if the build has threads disabled: AB3D_NO_THREADS).
+# WebAssembly: default build is single-threaded wasm; threaded build needs pthread + COOP/COEP (see tools/serve_emscripten.py, README Web).
 render_threads=1
 
 # Worker strip cap for threaded renderer:
