@@ -160,6 +160,14 @@
         margin: 0 0 18px;
         padding-left: 1.25em;
       }
+      .ab3d-cant-play__card ul.ab3d-cant-play__how {
+        margin: 0 0 18px;
+        padding-left: 1.25em;
+        list-style: disc;
+      }
+      .ab3d-cant-play__card ul.ab3d-cant-play__how li {
+        margin: 8px 0;
+      }
       .ab3d-cant-play__card code {
         font-size: 0.88em;
         padding: 0.1em 0.35em;
@@ -243,30 +251,7 @@
             },
             canvas: document.getElementById('canvas') || $game
         };
-        Module.preRun = Module.preRun || [];
-        Module.preRun.unshift(function () {
-            if (!true) return;
-            var sabMissing = (typeof SharedArrayBuffer === 'undefined');
-            var atomicsMissing = (typeof Atomics === 'undefined');
-            var notIsolated = (typeof crossOriginIsolated !== 'undefined' && crossOriginIsolated === false);
-            if (!sabMissing && !atomicsMissing && !notIsolated) return;
-
-            document.body.innerHTML =
-                '<div class="ab3d-cant-play">' +
-                '<div class="ab3d-cant-play__card" role="alert">' +
-                '<h1>Can\'t start the game</h1>' +
-                '<p>This version only runs when the page is opened in a normal way from a website (the address in your bar should start with <strong>https://</strong> or <strong>http://</strong>). It will not run if you double-clicked a file on your computer, or if the page was copied without the rest of the site.</p>' +
-                '<p><strong>What to do</strong></p>' +
-                '<ol class="ab3d-cant-play__steps">' +
-                '<li><strong>Go to the game\'s page online.</strong> Use the link or button on the site where the game is published (for example the project or demo page). Don\'t open <code>ab3d1.html</code> from your Downloads folder.</li>' +
-                '<li><strong>Check the address bar.</strong> If it starts with <code>file://</code>, close that tab and open the game using the real web link instead.</li>' +
-                '<li><strong>Refresh</strong> the page or try again in <strong>Chrome</strong>, <strong>Firefox</strong>, or <strong>Edge</strong>.</li>' +
-                '<li>If a <strong>Windows or desktop</strong> download is offered, use that; it does not need this check.</li>' +
-                '</ol>' +
-                '<p class="ab3d-cant-play__sub">Alien Breed 3D I — web</p>' +
-                '</div></div>';
-            throw new Error('aborted');
-        });
+        /* Pthread + SharedArrayBuffer gate: see src/emscripten_pthread_gate.js (--pre-js) so it runs before wasm/workers. */
         window.addEventListener('resize', resize, false);
         window.triggerResize = resize;
         if (document.readyState === 'loading') {
