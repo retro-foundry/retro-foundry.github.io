@@ -233,7 +233,7 @@
     </div>
     <script type="text/javascript">
         const $game = document.querySelector('.game');
-        /* Canvas pixel size is owned by SDL from ab3d.ini (render_width/render_height); do not force viewport size. */
+        /* Canvas pixel size is owned by SDL (ab3d.ini, then Web aspect preset unless AB3D_WEB_USE_INI_RES=1); do not force viewport size. */
         function resize() { }
         var Module = {
             print(text) {
