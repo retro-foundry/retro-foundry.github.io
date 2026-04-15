@@ -51,7 +51,7 @@ build cmake_object_order_depends_target_ab3d1: phony || ab3d_em_preload_data
 
 build CMakeFiles/ab3d1.dir/src/main.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/main.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\main.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -60,7 +60,7 @@ build CMakeFiles/ab3d1.dir/src/main.c.o: C_COMPILER__ab3d1_unscanned_Release C$:
 
 build CMakeFiles/ab3d1.dir/src/game_state.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/game_state.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\game_state.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -69,7 +69,7 @@ build CMakeFiles/ab3d1.dir/src/game_state.c.o: C_COMPILER__ab3d1_unscanned_Relea
 
 build CMakeFiles/ab3d1.dir/src/game_data.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/game_data.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\game_data.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -78,7 +78,7 @@ build CMakeFiles/ab3d1.dir/src/game_data.c.o: C_COMPILER__ab3d1_unscanned_Releas
 
 build CMakeFiles/ab3d1.dir/src/math_tables.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/math_tables.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\math_tables.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -87,7 +87,7 @@ build CMakeFiles/ab3d1.dir/src/math_tables.c.o: C_COMPILER__ab3d1_unscanned_Rele
 
 build CMakeFiles/ab3d1.dir/src/ai.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/ai.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\ai.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -96,7 +96,7 @@ build CMakeFiles/ab3d1.dir/src/ai.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/U
 
 build CMakeFiles/ab3d1.dir/src/movement.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/movement.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\movement.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -105,7 +105,7 @@ build CMakeFiles/ab3d1.dir/src/movement.c.o: C_COMPILER__ab3d1_unscanned_Release
 
 build CMakeFiles/ab3d1.dir/src/level.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/level.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\level.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -114,7 +114,7 @@ build CMakeFiles/ab3d1.dir/src/level.c.o: C_COMPILER__ab3d1_unscanned_Release C$
 
 build CMakeFiles/ab3d1.dir/src/objects.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/objects.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\objects.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -123,7 +123,7 @@ build CMakeFiles/ab3d1.dir/src/objects.c.o: C_COMPILER__ab3d1_unscanned_Release 
 
 build CMakeFiles/ab3d1.dir/src/visibility.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/visibility.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\visibility.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -132,7 +132,7 @@ build CMakeFiles/ab3d1.dir/src/visibility.c.o: C_COMPILER__ab3d1_unscanned_Relea
 
 build CMakeFiles/ab3d1.dir/src/control_loop.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/control_loop.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\control_loop.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -141,7 +141,7 @@ build CMakeFiles/ab3d1.dir/src/control_loop.c.o: C_COMPILER__ab3d1_unscanned_Rel
 
 build CMakeFiles/ab3d1.dir/src/game_loop.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/game_loop.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\game_loop.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -150,7 +150,7 @@ build CMakeFiles/ab3d1.dir/src/game_loop.c.o: C_COMPILER__ab3d1_unscanned_Releas
 
 build CMakeFiles/ab3d1.dir/src/player.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/player.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\player.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -159,7 +159,7 @@ build CMakeFiles/ab3d1.dir/src/player.c.o: C_COMPILER__ab3d1_unscanned_Release C
 
 build CMakeFiles/ab3d1.dir/src/renderer.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/renderer.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\renderer.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -168,7 +168,7 @@ build CMakeFiles/ab3d1.dir/src/renderer.c.o: C_COMPILER__ab3d1_unscanned_Release
 
 build CMakeFiles/ab3d1.dir/src/renderer_3dobj.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/renderer_3dobj.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\renderer_3dobj.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -177,7 +177,7 @@ build CMakeFiles/ab3d1.dir/src/renderer_3dobj.c.o: C_COMPILER__ab3d1_unscanned_R
 
 build CMakeFiles/ab3d1.dir/src/display.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/display.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\display.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -186,7 +186,7 @@ build CMakeFiles/ab3d1.dir/src/display.c.o: C_COMPILER__ab3d1_unscanned_Release 
 
 build CMakeFiles/ab3d1.dir/src/input.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/input.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\input.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -195,7 +195,7 @@ build CMakeFiles/ab3d1.dir/src/input.c.o: C_COMPILER__ab3d1_unscanned_Release C$
 
 build CMakeFiles/ab3d1.dir/src/audio.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/audio.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\audio.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -204,7 +204,7 @@ build CMakeFiles/ab3d1.dir/src/audio.c.o: C_COMPILER__ab3d1_unscanned_Release C$
 
 build CMakeFiles/ab3d1.dir/src/io.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/io.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\io.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -213,7 +213,7 @@ build CMakeFiles/ab3d1.dir/src/io.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/U
 
 build CMakeFiles/ab3d1.dir/src/settings.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/settings.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\settings.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -222,7 +222,7 @@ build CMakeFiles/ab3d1.dir/src/settings.c.o: C_COMPILER__ab3d1_unscanned_Release
 
 build CMakeFiles/ab3d1.dir/src/logging.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/logging.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\logging.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -231,7 +231,7 @@ build CMakeFiles/ab3d1.dir/src/logging.c.o: C_COMPILER__ab3d1_unscanned_Release 
 
 build CMakeFiles/ab3d1.dir/src/sb_decompress.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/sb_decompress.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\sb_decompress.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -240,7 +240,7 @@ build CMakeFiles/ab3d1.dir/src/sb_decompress.c.o: C_COMPILER__ab3d1_unscanned_Re
 
 build CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/sprite_palettes.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\sprite_palettes.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -249,7 +249,7 @@ build CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o: C_COMPILER__ab3d1_unscanned_
 
 build CMakeFiles/ab3d1.dir/src/emscripten_loop.c.o: C_COMPILER__ab3d1_unscanned_Release C$:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src/emscripten_loop.c || cmake_object_order_depends_target_ab3d1
   CONFIG = Release
-  DEFINES = -DAB3D_NO_THREADS -DAB3D_RELEASE
+  DEFINES = -DAB3D_ENABLE_FLOOR_COL_FAST=1 -DAB3D_NO_THREADS -DAB3D_RELEASE
   DEP_FILE = CMakeFiles\ab3d1.dir\src\emscripten_loop.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu11 -sUSE_SDL=2 -sSHARED_MEMORY=0 -Wall -Wextra -Wno-unused-parameter
   INCLUDES = -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/src -IC:/Users/paula/Documents/Projects/Alien-Breed-3D-I/third_party
@@ -269,7 +269,7 @@ build index.html: C_EXECUTABLE_LINKER__ab3d1_Release CMakeFiles/ab3d1.dir/src/ma
   FLAGS = -O3 -DNDEBUG
   LINK_FLAGS = --shell-file=C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/emscripten_shell.html -sUSE_SDL=2 -sFULL_ES3=1 -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=134217728 --preload-file=C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/em_preload@/ -sSHARED_MEMORY=0
   OBJECT_DIR = CMakeFiles\ab3d1.dir
-  POST_BUILD = CMakeFiles\ab3d1.dir\post-build.bat 98df0ee65afd36ad
+  POST_BUILD = CMakeFiles\ab3d1.dir\post-build.bat 341bb98155409c59
   PRE_LINK = cd .
   TARGET_FILE = index.html
   TARGET_PDB = index.html.dbg

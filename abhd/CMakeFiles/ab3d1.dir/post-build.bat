@@ -20,7 +20,7 @@ cd /D C:\Users\paula\Documents\Projects\Alien-Breed-3D-I\build-web || (set FAIL_
 "C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/data/sounds || (set FAIL_LINE=20& goto :ABORT)
 "C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/data/sounds C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/data/sounds || (set FAIL_LINE=21& goto :ABORT)
 cd /D C:\Users\paula\Documents\Projects\Alien-Breed-3D-I || (set FAIL_LINE=22& goto :ABORT)
-"C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\python3.13.exe" C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/tools/raw_to_wav.py --sounds-dir C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/data/sounds --wav-only || (set FAIL_LINE=23& goto :ABORT)
+"C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3568.0_x64__qbz5n2kfra8p0\python3.13.exe" C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/tools/raw_to_wav.py --sounds-dir C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/data/sounds --wav-only || (set FAIL_LINE=23& goto :ABORT)
 cd /D C:\Users\paula\Documents\Projects\Alien-Breed-3D-I\build-web || (set FAIL_LINE=24& goto :ABORT)
 "C:\Program Files\CMake\bin\cmake.exe" -E remove_directory C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/data/includes || (set FAIL_LINE=25& goto :ABORT)
 "C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/data/includes || (set FAIL_LINE=26& goto :ABORT)
