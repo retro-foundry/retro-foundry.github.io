@@ -1,5 +1,5 @@
 # ninja log v7
-12	29	7979492773913622	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs	88c73d042508a291
+12	32	7980519986693222	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs	88c73d042508a291
 35	2688	7979331742561045	em_preload/.stamp	ddc001701bc1f478
 35	2688	7979331742561045	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/em_preload/.stamp	ddc001701bc1f478
 2712	3442	7979331742841073	CMakeFiles/ab3d1.dir/src/game_data.c.o	1eb3c576a3d88808
@@ -7,12 +7,12 @@
 2706	3515	7979331742791072	CMakeFiles/ab3d1.dir/src/game_state.c.o	2541a6a7796e7547
 2722	3537	7979331742951097	CMakeFiles/ab3d1.dir/src/ai.c.o	3942991f1f70ae1d
 2745	3558	7979331743176521	CMakeFiles/ab3d1.dir/src/visibility.c.o	e950c34eb2296b99
-36	308	7979492774163619	CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o	5b82156c5a3c24ed
+43	327	7980519987001707	CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o	5b82156c5a3c24ed
 2728	3659	7979331743001101	CMakeFiles/ab3d1.dir/src/movement.c.o	621505d0b1ab8758
 2822	3597	7979331743941704	CMakeFiles/ab3d1.dir/src/sb_decompress.c.o	59a3563a858e48ff
 2763	3693	7979331743357138	CMakeFiles/ab3d1.dir/src/player.c.o	3c70a0051d9cb4cf
 2734	3687	7979331743061792	CMakeFiles/ab3d1.dir/src/level.c.o	576b490e34d80e7e
-29	684	7979339199586544	CMakeFiles/ab3d1.dir/src/objects.c.o	f551a63385b63bd5
+36	1077	7980517346500555	CMakeFiles/ab3d1.dir/src/objects.c.o	f551a63385b63bd5
 2815	4102	7979331743871731	CMakeFiles/ab3d1.dir/src/logging.c.o	ff17ed97a5a478a3
 2688	4108	7979331742611073	CMakeFiles/ab3d1.dir/src/main.c.o	fe7f59abdb4e9820
 2757	4158	7979331743296529	CMakeFiles/ab3d1.dir/src/game_loop.c.o	5fa8d8cc93ebb706
@@ -23,9 +23,12 @@
 2790	4217	7979331743627166	CMakeFiles/ab3d1.dir/src/input.c.o	f2779981918f8b62
 2777	4224	7979331743487145	CMakeFiles/ab3d1.dir/src/renderer_3dobj.c.o	f33951f2f8ec0fe
 2803	4232	7979331743751709	CMakeFiles/ab3d1.dir/src/io.c.o	7dca1cdf47fa76cd
-31	1611	7979492774113621	CMakeFiles/ab3d1.dir/src/renderer.c.o	429feea3176b96ae
+35	1587	7980519986919033	CMakeFiles/ab3d1.dir/src/renderer.c.o	429feea3176b96ae
 2783	5369	7979331743557149	CMakeFiles/ab3d1.dir/src/display.c.o	d619d0f368186fee
-1612	9844	7979492789909083	index.html	9392505404741e55
-10	27	7979494313338320	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs	88c73d042508a291
-30	282	7979494313538348	CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o	5b82156c5a3c24ed
-282	8094	7979494316065290	index.html	9392505404741e55
+1587	13706	7980520002436519	index.html	9392505404741e55
+37	1949	7980521524522912	build.ninja	f2fc70fcb24c50ff
+37	1949	7980521524482916	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/cmake_install.cmake	f2fc70fcb24c50ff
+14	30	7980521546347116	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build-web/CMakeFiles/cmake.verify_globs	88c73d042508a291
+37	302	7980521546579687	CMakeFiles/ab3d1.dir/src/sprite_palettes.c.o	5b82156c5a3c24ed
+32	379	7980521546526220	CMakeFiles/ab3d1.dir/src/control_loop.c.o	69f4f96debe0b50d
+380	7825	7980521550006609	index.html	9392505404741e55
