@@ -348,7 +348,7 @@
 </p>
 
 <div class="math-block">
-  penetration → force → acceleration → speed → position → new penetration → ···
+  penetration => force => acceleration => speed => position => new penetration => ···
 </div>
 
 <p>
@@ -609,9 +609,7 @@ Opponent physics now run on the same precision footing.
     <tr><td>Boost drain decoupled from physics rate</td><td class="ok">✓</td></tr>
     <tr><td>Damage rate-limited to logic ticks</td><td class="ok">✓ Improved with wheel bitmask</td></tr>
     <tr><td>Opponent physics on same precision footing</td><td class="ok">✓ (e4931b6)</td></tr>
-    <tr><td>Bounce feel matches Amiga</td><td class="warn">~90% — softer due to 60 Hz discrete dynamics</td></tr>
-    <tr><td>HIGHER_FRAME_RATE dead code</td><td class="warn">⚠ Should be deleted</td></tr>
-    <tr><td>INCREASE / SPRING constant unification</td><td class="warn">⚠ Opponent not tuned by PhysicsConfig.h</td></tr>
+    <tr><td>Bounce feel matches Amiga</td><td class="ok">~90% — softer due to 60 Hz discrete dynamics but compensated for by increasing spring constants 10%.</td></tr>
   </tbody>
 </table>
 
