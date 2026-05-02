@@ -218,15 +218,17 @@
       }
       .webrtc-overlay__volume-slider::-moz-range-thumb:hover { background: #fff; }
       body.webrtc-join-mode .webrtc-overlay .webrtc-overlay__link-row { display: none !important; }
-      /* Remote multiplayer tip: centered at start, dismiss on any input */
+      /* Remote multiplayer tip: below-center at start, dismiss on any input */
       .remote-multiplayer-tip {
         position: fixed;
         left: 50%;
-        top: 50%;
+        top: 75%;
         transform: translate(-50%, -50%);
         z-index: 10000;
         min-width: 280px;
-        max-width: min(420px, calc(100vw - 48px));
+        max-width: min(560px, calc(100vw - 48px));
+        max-height: min(42vh, 360px);
+        overflow: auto;
         padding: 20px 24px;
         background: rgba(18, 18, 22, 0.92);
         border-radius: 12px;
@@ -352,7 +354,14 @@
                 console.error(Array.prototype.slice.call(arguments).join(' '));
             },
             canvas: document.getElementById('canvas') || $game,
-            noStdioInit: true
+            noStdioInit: true,
+            gloomRuntimeReady: false,
+            onRuntimeInitialized() {
+                Module.gloomRuntimeReady = true;
+                if (typeof window.gloomSyncWebRTCStateToWasm === 'function') {
+                    window.gloomSyncWebRTCStateToWasm();
+                }
+            }
         };
         if (window.WEBRTC_JOIN_MODE) Module.noInitialRun = true;
         if (!window.WEBRTC_JOIN_MODE) Module['arguments'] = ['--two-player'];
@@ -601,13 +610,19 @@
             }
             function syncWebRTCStateToWasm() {
                 if (state.role !== 'host' || typeof Module === 'undefined') return;
-                if (Module._SetWebRTCGuestConnected) {
-                    Module._SetWebRTCGuestConnected(state.guestConnected ? 1 : 0);
-                }
-                if (Module._SetWebRTCGuestPlayer2Input) {
-                    Module._SetWebRTCGuestPlayer2Input(state.guestConnected ? guestInputToPlayer2Dword() : 0);
+                if (!Module.gloomRuntimeReady) return;
+                try {
+                    if (typeof Module._SetWebRTCGuestConnected === 'function') {
+                        Module._SetWebRTCGuestConnected(state.guestConnected ? 1 : 0);
+                    }
+                    if (typeof Module._SetWebRTCGuestPlayer2Input === 'function') {
+                        Module._SetWebRTCGuestPlayer2Input(state.guestConnected ? guestInputToPlayer2Dword() : 0);
+                    }
+                } catch (err) {
+                    console.error('WebRTC WASM input sync failed', err);
                 }
             }
+            window.gloomSyncWebRTCStateToWasm = syncWebRTCStateToWasm;
             setInterval(syncWebRTCStateToWasm, 250);
 
             async function createSession(room, peer) {
