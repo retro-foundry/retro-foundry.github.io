@@ -1,0 +1,3 @@
+C:/Users/paula/Documents/Projects/GloomAmiga/build-web/CMakeFiles/gloom_pc.dir
+C:/Users/paula/Documents/Projects/GloomAmiga/build-web/CMakeFiles/edit_cache.dir
+C:/Users/paula/Documents/Projects/GloomAmiga/build-web/CMakeFiles/rebuild_cache.dir
