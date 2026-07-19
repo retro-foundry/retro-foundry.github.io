@@ -55,3 +55,14 @@
 1896	5742	8061752543069100	CMakeFiles/ab3d1.dir/src/display.c.o	d619d0f368186fee
 1877	5880	8061752542889170	CMakeFiles/ab3d1.dir/src/renderer.c.o	429feea3176b96ae
 5880	21332	8061752582906083	index.html	5c1f44841ac99bce
+2	22	8061756703443514	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build/emscripten-release/CMakeFiles/cmake.verify_globs	8aaad081aa695674
+25	495	8061756703664961	CMakeFiles/ab3d1.dir/src/player.c.o	3c70a0051d9cb4cf
+495	8706	8061756708366537	index.html	5c1f44841ac99bce
+20	38	8061759612402430	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build/emscripten-release/CMakeFiles/cmake.verify_globs	8aaad081aa695674
+41	522	8061759612595574	CMakeFiles/ab3d1.dir/src/player.c.o	3c70a0051d9cb4cf
+47	1689	8061759612665585	CMakeFiles/ab3d1.dir/src/renderer.c.o	429feea3176b96ae
+1689	9699	8061759629082359	index.html	5c1f44841ac99bce
+18	38	8061760104880413	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build/emscripten-release/CMakeFiles/cmake.verify_globs	8aaad081aa695674
+41	1878	8061760105100400	CMakeFiles/ab3d1.dir/src/renderer.c.o	429feea3176b96ae
+1879	11432	8061760123479933	index.html	5c1f44841ac99bce
+22	38	8061761690674465	C:/Users/paula/Documents/Projects/Alien-Breed-3D-I/build/emscripten-release/CMakeFiles/cmake.verify_globs	8aaad081aa695674
