@@ -259,7 +259,7 @@
       })();
     </script>
     <div class="emscripten">
-      <canvas id="canvas" class="game" oncontextmenu="event.preventDefault()"></canvas>
+      <canvas id="canvas" class="game" tabindex="0" oncontextmenu="event.preventDefault()"></canvas>
       <div class="loading">Loading...</div>
     </div>
     <video id="webrtcRemoteVideo" autoplay playsinline style="display:none;pointer-events:none;"></video>
@@ -312,7 +312,61 @@
       </a>
     </div>
     <script type="text/javascript">
+        (function() {
+            if (!screen || !screen.orientation || typeof screen.orientation.lock !== 'function') return;
+            var orientationLock = screen.orientation.lock.bind(screen.orientation);
+            screen.orientation.lock = function() {
+                try {
+                    var result = orientationLock.apply(null, arguments);
+                    if (result && typeof result.catch === 'function') {
+                        return result.catch(function() {});
+                    }
+                    return result;
+                } catch (e) {
+                    return Promise.resolve();
+                }
+            };
+        })();
+
+        function sanitizeWebArguments(args) {
+            var allowedFlags = {
+                '-f': 1,
+                '--fullscreen': 1,
+                '-d': 1,
+                '--desktop': 1,
+                '-n': 1,
+                '--nomsaa': 1,
+                '-w': 1,
+                '--width': 1,
+                '-h': 1,
+                '--height': 1,
+                '-s': 1,
+                '--scale': 1
+            };
+            var valueFlags = { '-w': 1, '--width': 1, '-h': 1, '--height': 1, '-s': 1, '--scale': 1 };
+            var clean = [];
+            args = args || [];
+            for (var i = 0; i < args.length; i++) {
+                var arg = String(args[i] || '');
+                if (!allowedFlags[arg]) continue;
+                clean.push(arg);
+                if (valueFlags[arg] && i + 1 < args.length) clean.push(String(args[++i]));
+            }
+            return clean;
+        }
+
         const $game = document.querySelector('.game');
+        function focusGameCanvas() {
+            const canvas = document.getElementById('canvas');
+            if (!canvas || window.WEBRTC_JOIN_MODE) return;
+            var active = document.activeElement;
+            if (active && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/i.test(active.tagName || '')) return;
+            try {
+                canvas.focus({ preventScroll: true });
+            } catch (e) {
+                try { canvas.focus(); } catch (ignored) {}
+            }
+        }
         function resize() {
             if (window.WEBRTC_JOIN_MODE) return;
             const canvas = document.getElementById('canvas');
@@ -324,6 +378,58 @@
                 canvas.height = h;
             }
         }
+        function isKeyboardControlTarget(target) {
+            var el = target || document.activeElement;
+            return !!(el && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/i.test(el.tagName || ''));
+        }
+        // SDL2 keycode values for the native control keys handled by SetWebKeyboardKey().
+        var SDL_WEB_KEYS = {
+            ArrowLeft: 1073741904,
+            ArrowRight: 1073741903,
+            ArrowUp: 1073741906,
+            ArrowDown: 1073741905,
+            Space: 32,
+            ShiftLeft: 1073742049,
+            ShiftRight: 1073742053
+        };
+        function sdlKeyFromWebEvent(e) {
+            if (e.key === 'ArrowLeft') return SDL_WEB_KEYS.ArrowLeft;
+            if (e.key === 'ArrowRight') return SDL_WEB_KEYS.ArrowRight;
+            if (e.key === 'ArrowUp') return SDL_WEB_KEYS.ArrowUp;
+            if (e.key === 'ArrowDown') return SDL_WEB_KEYS.ArrowDown;
+            if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar') return SDL_WEB_KEYS.Space;
+            if (e.code === 'ShiftLeft') return SDL_WEB_KEYS.ShiftLeft;
+            if (e.code === 'ShiftRight') return SDL_WEB_KEYS.ShiftRight;
+            if (e.key === 'Shift') return e.location === KeyboardEvent.DOM_KEY_LOCATION_RIGHT ? SDL_WEB_KEYS.ShiftRight : SDL_WEB_KEYS.ShiftLeft;
+            switch (e.keyCode || e.which || 0) {
+            case 37:
+            case 63234:
+                return SDL_WEB_KEYS.ArrowLeft;
+            case 39:
+            case 63235:
+                return SDL_WEB_KEYS.ArrowRight;
+            case 38:
+            case 63232:
+                return SDL_WEB_KEYS.ArrowUp;
+            case 40:
+            case 63233:
+                return SDL_WEB_KEYS.ArrowDown;
+            case 32:
+                return SDL_WEB_KEYS.Space;
+            case 16:
+                return e.location === KeyboardEvent.DOM_KEY_LOCATION_RIGHT ? SDL_WEB_KEYS.ShiftRight : SDL_WEB_KEYS.ShiftLeft;
+            }
+            return 0;
+        }
+        function bridgeWebKeyboardEvent(e, pressed) {
+            if (window.WEBRTC_JOIN_MODE || isKeyboardControlTarget(e.target)) return false;
+            var sdlKey = sdlKeyFromWebEvent(e);
+            if (!sdlKey) return false;
+            focusGameCanvas();
+            if (typeof Module !== 'undefined' && Module.calledRun && Module._SetWebKeyboardKey) Module._SetWebKeyboardKey(sdlKey, pressed ? 1 : 0);
+            e.preventDefault();
+            return true;
+        }
         var Module = {
             print(text) {
                 console.log(Array.prototype.slice.call(arguments).join(' '));
@@ -332,25 +438,41 @@
                 console.error(Array.prototype.slice.call(arguments).join(' '));
             },
             canvas: document.getElementById('canvas') || $game,
-            noStdioInit: true
+            noStdioInit: true,
+            arguments: sanitizeWebArguments([])
         };
         if (window.WEBRTC_JOIN_MODE) Module.noInitialRun = true;
-        // Strip WebRTC query params from argv so the game does not see host=1, room=, join= as CLI args
+        // Keep itch.io and WebRTC query params out of argv; the native parser only accepts game flags.
         (Module.preRun = Module.preRun || []).push(function() {
-            if (Module['arguments']) {
-                var webRtcKeys = { host: 1, room: 1, join: 1 };
-                Module['arguments'] = Module['arguments'].filter(function(a) {
-                    var key = (String(a).split('=')[0] || '').toLowerCase();
-                    return !webRtcKeys[key];
-                });
-            }
+            Module['arguments'] = sanitizeWebArguments(Module['arguments']);
         });
         window.addEventListener('resize', resize, false);
         window.triggerResize = resize;
+        ['pointerdown', 'mousedown', 'touchstart'].forEach(function(type) {
+            document.addEventListener(type, function() { setTimeout(focusGameCanvas, 0); }, true);
+        });
+        ['focus', 'pageshow', 'fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function(type) {
+            window.addEventListener(type, function() {
+                setTimeout(focusGameCanvas, 0);
+                setTimeout(focusGameCanvas, 250);
+            }, true);
+            document.addEventListener(type, function() {
+                setTimeout(focusGameCanvas, 0);
+                setTimeout(focusGameCanvas, 250);
+            }, true);
+        });
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) return;
+            setTimeout(focusGameCanvas, 0);
+            setTimeout(focusGameCanvas, 250);
+        }, true);
+        document.addEventListener('keydown', function(e) { bridgeWebKeyboardEvent(e, true); }, { passive: false, capture: true });
+        document.addEventListener('keyup', function(e) { bridgeWebKeyboardEvent(e, false); }, { passive: false, capture: true });
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() { resize(); });
+            document.addEventListener('DOMContentLoaded', function() { resize(); focusGameCanvas(); });
         } else {
             resize();
+            focusGameCanvas();
         }
         // Work-around chromium autoplay policy
         // https://github.com/emscripten-core/emscripten/issues/6511
