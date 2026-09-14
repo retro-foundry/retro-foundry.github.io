@@ -48,9 +48,9 @@ body {
 
 .banner-wrap {
   width: 100%;
-  aspect-ratio: 2 / 1;
-  background-size: 100% auto;
-  background-position: center center;
+  aspect-ratio: 2.63 / 1;
+  background-size: 164% auto;
+  background-position: 54.5% 37.2%;
   background-repeat: no-repeat;
   flex-shrink: 0;
 }
