@@ -48,7 +48,7 @@ body {
 
 .banner-wrap {
   width: 100%;
-  height: clamp(72px, 12vw, 100px);
+  aspect-ratio: 2 / 1;
   background-size: 100% auto;
   background-position: center center;
   background-repeat: no-repeat;
@@ -332,10 +332,6 @@ body {
 
   .project-body {
     padding: 1rem;
-  }
-
-  .banner-wrap {
-    height: clamp(56px, 14vw, 72px);
   }
 }
 
