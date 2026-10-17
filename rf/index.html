@@ -4,34 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Retro Foundry – For Rights Holders</title>
-  <meta name="description" content="Retro Foundry reverse engineers classic games and rebuilds them as modern native code, so rights holders can release remasters on Xbox and PlayStation with no emulator and no ROM.">
-  <link rel="icon" href="rf-mark.png">
-  <meta name="theme-color" content="#0c0c0c">
+  <meta name="description" content="Retro Foundry reverse engineers classic games and rebuilds them as modern native code, so rights holders can release remasters on any platform with no emulator and no ROM.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Logo palette */
-      --rf-black: #0c0c0c;
-      --rf-cream: #d6c3aa;
-      --rf-red: #b2413c;
-      --rf-amber: #d79e3e;
-      --rf-green: #7e9441;
-      --rf-blue: #476f9f;
-      --stripes: linear-gradient(90deg, var(--rf-red) 0 25%, var(--rf-amber) 25% 50%, var(--rf-green) 50% 75%, var(--rf-blue) 75% 100%);
-
-      --bg: var(--rf-black);
-      --bg-raised: #151412;
-      --bg-card: #1a1816;
-      --text: #efe6da;
-      --text-muted: #a89f92;
-      --border: rgba(214, 195, 170, 0.1);
-      --molten: var(--rf-amber);
-      --molten-soft: rgba(215, 158, 62, 0.12);
-      --steel: #8eaad0;
-      --good: #9ab352;
-      --bad: var(--rf-red);
+      --bg: #0b0d12;
+      --bg-raised: #12161e;
+      --bg-card: #161b25;
+      --text: #e8ecf3;
+      --text-muted: #94a0b4;
+      --border: rgba(255, 255, 255, 0.08);
+      --molten: #ff7a1a;
+      --molten-soft: rgba(255, 122, 26, 0.14);
+      --steel: #7cb4ff;
+      --good: #4fd18b;
+      --bad: #ef6d78;
       --radius: 14px;
       --mono: "JetBrains Mono", ui-monospace, monospace;
       --display: "Space Grotesk", -apple-system, "Segoe UI", sans-serif;
@@ -68,7 +57,6 @@
     }
 
     h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0; }
-    h1, h2 { color: #f2e8db; }
     h2 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 18px; max-width: 22ch; }
     h3 { font-size: 1.2rem; }
     p { margin: 0 0 16px; }
@@ -77,14 +65,13 @@
     /* Top bar */
     .topbar {
       position: sticky; top: 0; z-index: 10;
-      background: rgba(12, 12, 12, 0.9);
+      background: rgba(11, 13, 18, 0.88);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
     }
     .topbar .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
-    .topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--stripes); opacity: 0.85; }
-    .brand { display: flex; align-items: center; }
-    .brand img { height: 26px; width: auto; display: block; }
+    .brand { font-family: var(--display); font-weight: 700; color: var(--text); letter-spacing: 0.02em; }
+    .brand span { color: var(--molten); }
     .topnav { display: flex; gap: 20px; font-size: 0.92rem; }
     .topnav a { color: var(--text-muted); }
     .topnav a:hover { color: var(--text); text-decoration: none; }
@@ -94,7 +81,7 @@
     .hero { padding: 88px 0 72px; border-top: 0; position: relative; overflow: hidden; }
     .hero::before {
       content: ""; position: absolute; inset: -40% -20% auto auto; width: 70vw; height: 70vw;
-      background: radial-gradient(circle at 40% 40%, rgba(215, 158, 62, 0.16), transparent 55%), radial-gradient(circle at 70% 60%, rgba(178, 65, 60, 0.14), transparent 55%);
+      background: radial-gradient(circle, rgba(255, 122, 26, 0.18), transparent 60%);
       pointer-events: none;
     }
     .hero h1 { font-size: clamp(2.3rem, 6.4vw, 4.2rem); max-width: 17ch; letter-spacing: -0.015em; }
@@ -114,11 +101,11 @@
     .chip {
       position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 8px;
       font-family: var(--mono); font-size: 0.74rem; padding: 7px 11px; border-radius: 8px;
-      background: rgba(12, 12, 12, 0.92); border: 1px solid var(--border); color: var(--text); white-space: nowrap;
+      background: rgba(11, 13, 18, 0.92); border: 1px solid var(--border); color: var(--text); white-space: nowrap;
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
     }
     .chip.a { top: 40%; right: 2%; }
-    .chip.b { bottom: 0; right: 10%; color: var(--molten); border-color: rgba(215, 158, 62, 0.4); }
+    .chip.b { bottom: 0; right: 10%; color: var(--molten); border-color: rgba(255, 122, 26, 0.4); }
     .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); box-shadow: 0 0 8px var(--good); }
     .hero h1 em { font-style: normal; color: var(--molten); }
     .hero .lede { margin-top: 22px; }
@@ -129,8 +116,8 @@
       border: 1px solid var(--border); color: var(--text); background: var(--bg-card);
     }
     .btn:hover { text-decoration: none; border-color: rgba(255, 255, 255, 0.25); }
-    .btn.primary { background: var(--rf-amber); border-color: var(--rf-amber); color: #1a1206; }
-    .btn.primary:hover { background: #e4b05a; border-color: #e4b05a; }
+    .btn.primary { background: var(--molten); border-color: var(--molten); color: #140a02; }
+    .btn.primary:hover { background: #ff8c3a; }
 
     .stats { display: grid; gap: 14px; margin-top: 56px; }
     @media (min-width: 640px) { .stats { grid-template-columns: repeat(3, 1fr); } }
@@ -155,15 +142,12 @@
     }
     .video button::before {
       content: ""; position: absolute; left: 50%; top: 50%; width: 68px; height: 48px; transform: translate(-50%, -50%);
-      border-radius: 12px; background: rgba(215, 158, 62, 0.95)
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231a1206' d='M8 5v14l11-7z'/%3E%3C/svg%3E") center / 28px no-repeat;
+      border-radius: 12px; background: rgba(255, 122, 26, 0.92)
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23140a02' d='M8 5v14l11-7z'/%3E%3C/svg%3E") center / 28px no-repeat;
       transition: transform 0.15s;
     }
     .video:hover button::before { transform: translate(-50%, -50%) scale(1.08); }
     .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    .video.in-card { border-radius: 0; border: 0; border-bottom: 1px solid var(--border); }
-    .video.in-card button { font-size: 0.82rem; padding: 12px 14px; }
-    .video.in-card button::before { width: 56px; height: 40px; background-size: 24px; }
     .caption { font-size: 0.88rem; color: var(--text-muted); margin-top: 10px; }
 
     /* Problem / shift list */
@@ -211,7 +195,7 @@
     .card-body p { color: var(--text-muted); font-size: 0.95rem; }
     .card h3 { margin-bottom: 8px; }
     .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; padding: 0; list-style: none; }
-    .tags li { font-family: var(--mono); font-size: 0.72rem; padding: 3px 8px; border-radius: 6px; background: rgba(71, 111, 159, 0.2); color: var(--steel); }
+    .tags li { font-family: var(--mono); font-size: 0.72rem; padding: 3px 8px; border-radius: 6px; background: rgba(124, 180, 255, 0.1); color: var(--steel); }
     .links { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: auto; font-size: 0.92rem; font-weight: 600; }
     .card-body p.eyebrow { color: var(--molten); font-size: 0.74rem; }
     .grid:not(.three) .thumb { aspect-ratio: 21 / 9; }
@@ -221,7 +205,7 @@
     .grid { display: grid; gap: 18px; margin-top: 24px; }
     @media (min-width: 680px) { .grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 900px) { .grid.three { grid-template-columns: repeat(3, 1fr); } }
-    .thumb { aspect-ratio: 16 / 9; background: #080808 center / cover no-repeat; border-bottom: 1px solid var(--border); position: relative; }
+    .thumb { aspect-ratio: 16 / 9; background: #05070a center / cover no-repeat; border-bottom: 1px solid var(--border); position: relative; }
     .thumb::after {
       content: ""; position: absolute; inset: 0; pointer-events: none;
       background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 3px);
@@ -232,8 +216,10 @@
       display: flex; align-items: center; justify-content: center;
       font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.04em; text-align: center; padding: 16px;
     }
-    .thumb.revs { background: linear-gradient(160deg, #141a0b, #4c5c26 60%, #0f1308); color: var(--rf-cream); }
-    .thumb.gloom { background: radial-gradient(circle at 50% 60%, #2b4566, #0a0d12 70%); color: var(--rf-cream); }
+    .thumb.ab3d { background: radial-gradient(circle at 30% 40%, #3f6b2a, #0b130a 70%); color: #c8f59a; }
+    .thumb.tkg { background: radial-gradient(circle at 60% 35%, #ffb16b 0%, #7a2d0f 30%, #120806 75%); color: #ffe6cc; text-shadow: 0 0 24px rgba(255, 150, 60, 0.8); }
+    .thumb.revs { background: linear-gradient(160deg, #0f2a14, #2f6a33 60%, #0b1a0d); color: #e8ffe8; }
+    .thumb.gloom { background: radial-gradient(circle at 50% 60%, #4b1d6b, #0c0614 70%); color: #e6ccff; }
 
     .mini { padding: 16px 18px; }
     .mini h3 { font-size: 1.02rem; margin-bottom: 4px; }
@@ -249,43 +235,36 @@
     }
     .stage::before {
       content: ""; position: absolute; left: 20px; right: 20px; top: 0; height: 2px; border-radius: 2px;
-      background: var(--stage-color);
+      background: linear-gradient(90deg, var(--molten), transparent);
     }
-    .stage:nth-child(1) { --stage-color: var(--rf-red); }
-    .stage:nth-child(2) { --stage-color: var(--rf-amber); }
-    .stage:nth-child(3) { --stage-color: var(--rf-green); }
-    .stage:nth-child(4) { --stage-color: #6b93c4; }
     @media (min-width: 1000px) {
       .stage:not(:last-child)::after {
         content: ""; position: absolute; right: -11px; top: 32px; z-index: 1; width: 8px; height: 8px;
-        border-top: 2px solid var(--text-muted); border-right: 2px solid var(--text-muted); transform: rotate(45deg);
+        border-top: 2px solid var(--molten); border-right: 2px solid var(--molten); transform: rotate(45deg);
       }
     }
-    .stage-n { font-family: var(--mono); color: var(--stage-color); font-size: 0.85rem; margin-bottom: 10px; }
+    .stage-n { font-family: var(--mono); color: var(--molten); font-size: 0.85rem; margin-bottom: 10px; }
     .stage h3 { margin-bottom: 8px; }
     .stage p { color: var(--text-muted); font-size: 0.94rem; }
     .stage ul { list-style: none; padding: 14px 0 0; margin: auto 0 0; border-top: 1px solid var(--border); display: grid; gap: 6px; }
     .stage ul li { font-family: var(--mono); font-size: 0.76rem; color: var(--text); padding-left: 16px; position: relative; }
-    .stage ul li::before { content: "\203A"; position: absolute; left: 0; color: var(--stage-color); }
+    .stage ul li::before { content: "\203A"; position: absolute; left: 0; color: var(--molten); }
     .callout {
-      margin-top: 24px; padding: 18px 22px; border-radius: var(--radius); border-left: 3px solid var(--rf-red);
+      margin-top: 24px; padding: 18px 22px; border-radius: var(--radius); border-left: 3px solid var(--molten);
       background: var(--molten-soft); color: var(--text-muted);
     }
     .callout b { color: var(--text); }
 
     @media (min-width: 860px) { .flagship.flip > :first-child { order: 2; } }
-
-    /* Consoles */
-    .console-grid { display: grid; gap: 14px; margin-top: 28px; }
-    @media (min-width: 820px) { .console-grid { grid-template-columns: repeat(3, 1fr); } }
-    .console-tile { background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; position: relative; overflow: hidden; }
-    .console-tile::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--tile-color, var(--rf-amber)); }
-    .console-tile:nth-child(1) { --tile-color: var(--rf-green); }
-    .console-tile:nth-child(2) { --tile-color: var(--rf-blue); }
-    .console-tile:nth-child(3) { --tile-color: var(--rf-red); }
-    .console-tag { display: block; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
-    .console-tile h3 { margin-bottom: 8px; }
-    .console-tile p { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
+    .thumb.pd-hero {
+      aspect-ratio: 16 / 9; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden;
+      background:
+        radial-gradient(ellipse at 70% 30%, rgba(255, 70, 70, 0.55), transparent 55%),
+        linear-gradient(135deg, #1a0606 0%, #6e1010 45%, #120404 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 20px;
+    }
+    .thumb.pd-hero strong { font-family: var(--display); font-size: clamp(1.8rem, 5vw, 3rem); letter-spacing: 0.08em; color: #ffe1e1; text-shadow: 0 0 30px rgba(255, 60, 60, 0.6); position: relative; z-index: 1; }
+    .thumb.pd-hero span { font-family: var(--mono); font-size: 0.78rem; color: #ffb3b3; letter-spacing: 0.12em; text-transform: uppercase; position: relative; z-index: 1; }
 
     /* Model */
     .model { display: grid; gap: 14px; margin-top: 28px; }
@@ -294,23 +273,14 @@
     .model .card-body h3 small { font-family: var(--mono); font-size: 0.72rem; color: var(--molten); font-weight: 400; letter-spacing: 0.06em; }
 
     /* Ask */
-    .ask { background: linear-gradient(135deg, rgba(178, 65, 60, 0.16), rgba(215, 158, 62, 0.08) 50%, rgba(71, 111, 159, 0.1)); border: 1px solid rgba(214, 195, 170, 0.18); position: relative; overflow: hidden; border-radius: 20px; padding: 36px 28px; }
+    .ask { background: linear-gradient(135deg, rgba(255, 122, 26, 0.16), rgba(124, 180, 255, 0.06)); border: 1px solid rgba(255, 122, 26, 0.35); border-radius: 20px; padding: 36px 28px; }
     @media (min-width: 760px) { .ask { padding: 48px; } }
-    .ask::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--stripes); }
     .uses { display: grid; gap: 12px; margin: 24px 0 28px; }
     @media (min-width: 760px) { .uses { grid-template-columns: repeat(2, 1fr); } }
-    .use { background: rgba(12, 12, 12, 0.55); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+    .use { background: rgba(11, 13, 18, 0.55); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
     .use b { display: block; font-family: var(--display); margin-bottom: 4px; }
     .use span { color: var(--text-muted); font-size: 0.92rem; }
 
-    .credential {
-      display: inline-flex; align-items: center; gap: 10px; margin: 0 0 22px; padding: 6px 12px 6px 6px;
-      border: 1px solid var(--border); border-radius: 999px; background: rgba(214, 195, 170, 0.05);
-      font-size: 0.86rem; color: var(--text-muted);
-    }
-    .credential strong { color: var(--text); font-weight: 600; }
-    .credential i { display: block; width: 26px; height: 14px; border-radius: 999px; background: var(--stripes); flex: none; }
-    .footer-logo { width: 180px; height: auto; display: block; margin-bottom: 16px; }
     footer { padding: 36px 0 48px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.86rem; }
     footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
   </style>
@@ -319,7 +289,7 @@
 
   <header class="topbar">
     <div class="wrap">
-      <a class="brand" href="../"><img src="rf-mark.png" alt="Retro Foundry" width="70" height="26"></a>
+      <a class="brand" href="../">RETRO <span>FOUNDRY</span></a>
       <nav class="topnav" aria-label="Sections">
         <a href="#problem">Opportunity</a>
         <a href="#craft">What we do</a>
@@ -337,12 +307,11 @@
       <div class="wrap">
         <div class="hero-grid">
         <div>
-        <p class="credential"><i></i><span>From the developer of the <strong>Antstream Arcade Xbox client</strong></span></p>
         <p class="eyebrow">For rights holders · 2026</p>
-        <h1>Your classic games, <em>back on Xbox and PlayStation</em>.</h1>
+        <h1>Your classic games, <em>back on sale</em> and better than ever.</h1>
         <p class="lede">
           You own games people still love, but most of them earn little or nothing today. Retro Foundry reverse engineers
-          those games and rebuilds them as modern native code, so you can release a remaster on Xbox and PlayStation, as well as PC, mobile and the web.
+          those games and rebuilds them as modern native code, so you can release a remaster on console, PC, mobile and the web.
           The release needs no emulator, no ROM and no streaming service, and you keep the IP.
         </p>
         <div class="cta-row">
@@ -355,14 +324,14 @@
           <div class="screen one" style="background-image:url('https://i.ytimg.com/vi/glJcRETmbDM/hqdefault.jpg')"></div>
           <div class="screen two" style="background-image:url('../assets/images/stuntcar-thumb.png')"></div>
           <span class="chip a"><span class="dot"></span>fa18.wasm · 2.8 MB · runs locally</span>
-          <span class="chip b">Built for Xbox &amp; PlayStation</span>
+          <span class="chip b">0 ms of network lag</span>
         </div>
         </div>
 
         <div class="stats">
           <div class="stat"><b>6</b><span>classic games already rebuilt and running natively</span></div>
           <div class="stat"><b>0</b><span>emulators or ROMs needed in a licensed release</span></div>
-          <div class="stat"><b>1</b><span>commercial retro platform client already shipped by our developer: Antstream Arcade on Xbox</span></div>
+          <div class="stat"><b>1</b><span>codebase per game, for console, PC, mobile and the web</span></div>
         </div>
       </div>
     </section>
@@ -374,8 +343,8 @@
           <p class="eyebrow">The opportunity</p>
           <h2>Emulation and streaming leave value on the table.</h2>
           <p class="lede">
-            Retro Foundry's developer wrote the Xbox client for <strong>Antstream Arcade</strong>, which licenses 1,300+ classic
-            games and streams them as emulated ROMs. Building it showed how little a typical re-release does for the games themselves.
+            Retro services such as <strong>Antstream Arcade</strong> license hundreds of classic games and stream them as
+            emulated ROMs. It's a working model, but it does very little for the games themselves.
           </p>
           <ul class="points">
             <li><strong>The game ships exactly as it was.</strong> An emulated ROM keeps the original 4:3 picture, resolution and frame rate. That's hard to sell at a premium.</li>
@@ -386,9 +355,9 @@
         </div>
         <div>
           <div class="video" data-yt="vgFjERQ2V3I" style="background-image:url('https://i.ytimg.com/vi/vgFjERQ2V3I/hqdefault.jpg')">
-            <button type="button" aria-label="Play video: Antstream Arcade on Xbox Series X">Antstream Arcade on Xbox: the client our developer wrote</button>
+            <button type="button" aria-label="Play video: Antstream Arcade on Xbox Series X">Antstream Arcade on Xbox Series X</button>
           </div>
-          <p class="caption">Third-party review of Antstream Arcade on Xbox Series X, running the client written by Retro Foundry's developer.</p>
+          <p class="caption">Third-party review of Antstream Arcade, a retro streaming service, on Xbox Series X.</p>
         </div>
       </div>
     </section>
@@ -412,41 +381,11 @@
               <tr><td>What ships</td><td>A copy of the original ROM inside an emulator</td><td>New native code plus your licensed assets</td></tr>
               <tr><td>Picture</td><td>Original resolution, 4:3, locked frame rate</td><td>Any resolution, widescreen, high frame rate</td></tr>
               <tr><td>Features</td><td>Whatever the original had</td><td>Online multiplayer, HD textures, modern lighting</td></tr>
-              <tr><td>Platforms</td><td>One emulator per platform</td><td>Native on Xbox and PlayStation, plus PC, mobile and web, from one codebase</td></tr>
+              <tr><td>Platforms</td><td>One emulator per platform</td><td>One codebase: console, PC, mobile, web</td></tr>
               <tr><td>Running cost</td><td>A server per session if streamed</td><td>None: a normal download, or a browser tab</td></tr>
               <tr><td>Positioning</td><td>Budget catalogue filler</td><td>A premium remaster you can market</td></tr>
             </tbody>
           </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- Consoles -->
-    <section id="consoles">
-      <div class="wrap">
-        <p class="eyebrow">Console first</p>
-        <h2>Made for Xbox and PlayStation.</h2>
-        <p class="lede">
-          Consoles are where classic games sell. Every rebuild targets Xbox and PlayStation as a native release, not an emulated
-          wrapper, with the presentation console players expect. Our developer has already shipped a retro games platform on Xbox,
-          so console delivery is familiar ground.
-        </p>
-        <div class="console-grid">
-          <div class="console-tile">
-            <span class="console-tag">Native builds</span>
-            <h3>Runs like a current-gen game</h3>
-            <p>4K output, 60 fps and beyond, widescreen, fast loading and full controller support on Xbox Series X|S and PlayStation 5.</p>
-          </div>
-          <div class="console-tile">
-            <span class="console-tag">Platform features</span>
-            <h3>Achievements and trophies</h3>
-            <p>Achievements, trophies, cloud saves and online multiplayer, built in from the start so the release feels at home on each console.</p>
-          </div>
-          <div class="console-tile">
-            <span class="console-tag">Proven on Xbox</span>
-            <h3>Console experience</h3>
-            <p>Our developer wrote the Antstream Arcade client that ships on Xbox, so platform requirements and certification are well-known territory.</p>
-          </div>
         </div>
       </div>
     </section>
@@ -479,7 +418,7 @@
             <ul>
               <li>No emulator in the loop</li>
               <li>Original behaviour preserved</li>
-              <li>Xbox, PlayStation, PC, web</li>
+              <li>One codebase, every platform</li>
             </ul>
           </li>
           <li class="stage">
@@ -518,8 +457,9 @@
         <p class="eyebrow">Proof: running today</p>
         <h2>Rebuilt without the source code, and better than the originals.</h2>
         <p class="lede">
-          Every title below is a working native rebuild made without access to the original source. With the rights holder's
-          licence, each one ships as a complete game: no disk, no ROM and nothing for the player to supply. Just buy and play.
+          Every title below is a working native rebuild made without access to the original source. They are non-commercial
+          technology demonstrations: because we don't hold the rights, players load their own original disk or ROM. With a licence,
+          the same build ships as a complete, standalone product.
         </p>
 
         <!-- Flagship: F/A-18 -->
@@ -534,7 +474,8 @@
               <ul class="tags"><li>Native rebuild</li><li>Widescreen</li><li>Unlocked FPS</li><li>WebAssembly</li></ul>
               <p>
                 Electronic Arts' classic Amiga flight sim, reimplemented natively. It runs at modern frame rates and fills any
-                aspect ratio up to ultrawide, with saves kept in the browser.
+                aspect ratio up to ultrawide, with saves kept in the browser. In the demo the player loads their own disk;
+                a licensed release would ship complete.
               </p>
               <div class="links">
                 <a class="live" href="https://retro-foundry.github.io/fa18/" target="_blank" rel="noopener noreferrer">Play live</a>
@@ -546,9 +487,10 @@
         </div>
 
         <div class="flagship flip">
-          <div class="video" data-yt="g9e2DShmQ3s" style="background-image:url('https://i.ytimg.com/vi/g9e2DShmQ3s/hqdefault.jpg')">
-              <button type="button" aria-label="Play video: Perfect Dark Plus HD Texture Pack: teaser trailer">Perfect Dark Plus HD Texture Pack: teaser trailer</button>
-            </div>
+          <div class="thumb pd-hero">
+            <strong>PERFECT DARK</strong>
+            <span>N64 &rarr; native &middot; HD textures &middot; high frame rate</span>
+          </div>
           <div class="card">
             <div class="card-body">
               <p class="eyebrow" style="margin-bottom:8px">Flagship &middot; Nintendo 64, 2000</p>
@@ -558,12 +500,12 @@
                 Rare's landmark N64 shooter running natively in a browser tab with no N64 emulator. It builds on the community's full
                 decompilation and Dab's Mod, and Retro Foundry added a WebAssembly build with frame interpolation for high-refresh displays,
                 tuned frame pacing, mouse look and streamed HD textures. We also published a matching HD texture pack.
+                In the demo the player loads their own ROM; a licensed release would ship standalone.
               </p>
               <div class="links">
                 <a class="live" href="https://retro-foundry.github.io/pd/" target="_blank" rel="noopener noreferrer">Play live</a>
                 <a href="https://www.patreon.com/retrofoundry/posts/out-now-perfect-168988103" target="_blank" rel="noopener noreferrer">Release post</a>
                 <a href="https://github.com/retro-foundry/Perfect-Dark-Plus-HD-Textures" target="_blank" rel="noopener noreferrer">HD texture pack</a>
-                <a href="https://www.youtube.com/watch?v=g9e2DShmQ3s" target="_blank" rel="noopener noreferrer">Trailer</a>
                 <a href="https://github.com/DabDavis/perfect-dark-dabs-mod" target="_blank" rel="noopener noreferrer">Dab's Mod</a>
               </div>
             </div>
@@ -572,9 +514,7 @@
 
         <div class="grid three">
           <article class="card">
-            <div class="video in-card" data-yt="1TCfGfZL_Lg" style="background-image:url('https://i.ytimg.com/vi/1TCfGfZL_Lg/hqdefault.jpg')">
-              <button type="button" aria-label="Play video: AB3D II: TKG path tracing test">AB3D II: TKG path tracing test</button>
-            </div>
+            <div class="thumb art tkg">TKG<br>PATH TRACED</div>
             <div class="card-body">
               <h3>The Killing Grounds, path traced</h3>
               <ul class="tags"><li>Path tracing</li><li>Modern GPU</li><li>Engine rebuild</li></ul>
@@ -584,7 +524,6 @@
               </p>
               <div class="links">
                 <a href="https://www.patreon.com/retrofoundry/posts/path-tracing-and-170724548" target="_blank" rel="noopener noreferrer">Dev log</a>
-                <a href="https://www.youtube.com/watch?v=1TCfGfZL_Lg" target="_blank" rel="noopener noreferrer">Video</a>
               </div>
             </div>
           </article>
@@ -607,20 +546,17 @@
           </article>
 
           <article class="card">
-            <div class="video in-card" data-yt="9jp2jFL7aR8" style="background-image:url('https://i.ytimg.com/vi/9jp2jFL7aR8/hqdefault.jpg')">
-              <button type="button" aria-label="Play video: Alien Breed 3D HD: 4K/60, first four levels">Alien Breed 3D HD: 4K/60, first four levels</button>
-            </div>
+            <div class="thumb art ab3d">ALIEN BREED 3D</div>
             <div class="card-body">
               <h3>Alien Breed 3D</h3>
-              <ul class="tags"><li>Native rebuild</li><li>4K / 60 fps</li><li>Mouse look</li><li>Gamepad</li></ul>
+              <ul class="tags"><li>Native rebuild</li><li>Mouse look</li><li>Gamepad</li><li>WebAssembly</li></ul>
               <p>
-                Team17's Amiga FPS, rebuilt to run at 4K and 60 fps with modern controls: mouse look, full gamepad mapping,
-                an automap and autosaves. The first eight levels are playable on the web today.
+                Team17's Amiga FPS, rebuilt with modern controls: mouse look, full gamepad mapping, an automap, and autosaves
+                kept in the browser. The first eight levels are playable on the web today.
               </p>
               <div class="links">
                 <a class="live" href="https://retro-foundry.github.io/abhd/" target="_blank" rel="noopener noreferrer">Play live</a>
                 <a href="https://www.patreon.com/retrofoundry/posts/alien-breed-3d-154831110" target="_blank" rel="noopener noreferrer">Dev log</a>
-                <a href="https://www.youtube.com/watch?v=9jp2jFL7aR8" target="_blank" rel="noopener noreferrer">Video</a>
               </div>
             </div>
           </article>
@@ -640,7 +576,7 @@
             <div class="thumb art gloom">GLOOM<br>WITH FRIENDS</div>
             <div class="mini">
               <h3>Gloom With Friends</h3>
-              <p>The Amiga shooter Gloom, rebuilt with online co-op. Send a link and a friend joins as player two, peer to peer, straight from the browser.</p>
+              <p>The Amiga shooter Gloom, rebuilt so friends can play it together online.</p>
               <div class="links"><a class="live" href="https://retro-foundry.github.io/gloomwithfriends/" target="_blank" rel="noopener noreferrer">Play live</a></div>
             </div>
           </article>
@@ -660,7 +596,7 @@
         <div class="model">
           <div class="card"><div class="card-body">
             <h3>Remaster for release <small>Fee + revenue share</small></h3>
-            <p>We rebuild and remaster the game, then ship it on Xbox and PlayStation, plus Steam, mobile and the web. You publish it, or license it for release.</p>
+            <p>We rebuild and remaster the game, then ship it on Steam, console stores, mobile and the web. You publish it, or license it for release.</p>
           </div></div>
           <div class="card"><div class="card-body">
             <h3>Revive an idle title <small>Revenue share</small></h3>
@@ -689,7 +625,7 @@
             <div class="use"><b>1. Pick a title</b><span>We go through your catalogue and choose a game with a loyal audience and room to grow.</span></div>
             <div class="use"><b>2. Playable prototype</b><span>We build a native version of your game running in widescreen at high frame rates, so you can evaluate it hands-on.</span></div>
             <div class="use"><b>3. Agree terms</b><span>We agree the licence, revenue share, platforms and remaster features that suit the title.</span></div>
-            <div class="use"><b>4. Remaster and release</b><span>We deliver in milestones with your approval at each one, through to launch on Xbox and PlayStation, and anywhere else you choose.</span></div>
+            <div class="use"><b>4. Remaster and release</b><span>We deliver in milestones with your approval at each one, through to launch on the stores you choose.</span></div>
           </div>
           <div class="cta-row">
             <a class="btn primary" href="https://discord.gg/QjARJ67V9U" target="_blank" rel="noopener noreferrer">Talk to us on Discord</a>
@@ -703,10 +639,7 @@
 
   <footer>
     <div class="wrap">
-      <div>
-        <img class="footer-logo" src="logo.png" alt="Retro Foundry" width="526" height="355">
-        <span>&copy; <span id="year">2026</span> Retro Foundry. Game titles and trademarks belong to their respective owners. Demos on this site are non-commercial technology demonstrations.</span>
-      </div>
+      <span>&copy; <span id="year">2026</span> Retro Foundry. Game titles and trademarks belong to their respective owners. Demos on this site are non-commercial technology demonstrations.</span>
       <a href="../">retro-foundry.github.io</a>
     </div>
   </footer>
