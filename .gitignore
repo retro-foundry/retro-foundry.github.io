@@ -2,3 +2,12 @@ _site/
 .sass-cache/
 .jekyll-cache/
 .bundle/
+
+# Build artifacts and local logs
+*.log
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+build.ninja
+.ninja_*
+Testing/
