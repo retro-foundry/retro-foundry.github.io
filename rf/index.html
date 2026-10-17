@@ -148,6 +148,9 @@
     }
     .video:hover button::before { transform: translate(-50%, -50%) scale(1.08); }
     .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video.in-card { border-radius: 0; border: 0; border-bottom: 1px solid var(--border); }
+    .video.in-card button { font-size: 0.82rem; padding: 12px 14px; }
+    .video.in-card button::before { width: 56px; height: 40px; background-size: 24px; }
     .caption { font-size: 0.88rem; color: var(--text-muted); margin-top: 10px; }
 
     /* Problem / shift list */
@@ -216,8 +219,6 @@
       display: flex; align-items: center; justify-content: center;
       font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.04em; text-align: center; padding: 16px;
     }
-    .thumb.ab3d { background: radial-gradient(circle at 30% 40%, #3f6b2a, #0b130a 70%); color: #c8f59a; }
-    .thumb.tkg { background: radial-gradient(circle at 60% 35%, #ffb16b 0%, #7a2d0f 30%, #120806 75%); color: #ffe6cc; text-shadow: 0 0 24px rgba(255, 150, 60, 0.8); }
     .thumb.revs { background: linear-gradient(160deg, #0f2a14, #2f6a33 60%, #0b1a0d); color: #e8ffe8; }
     .thumb.gloom { background: radial-gradient(circle at 50% 60%, #4b1d6b, #0c0614 70%); color: #e6ccff; }
 
@@ -256,15 +257,6 @@
     .callout b { color: var(--text); }
 
     @media (min-width: 860px) { .flagship.flip > :first-child { order: 2; } }
-    .thumb.pd-hero {
-      aspect-ratio: 16 / 9; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden;
-      background:
-        radial-gradient(ellipse at 70% 30%, rgba(255, 70, 70, 0.55), transparent 55%),
-        linear-gradient(135deg, #1a0606 0%, #6e1010 45%, #120404 100%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 20px;
-    }
-    .thumb.pd-hero strong { font-family: var(--display); font-size: clamp(1.8rem, 5vw, 3rem); letter-spacing: 0.08em; color: #ffe1e1; text-shadow: 0 0 30px rgba(255, 60, 60, 0.6); position: relative; z-index: 1; }
-    .thumb.pd-hero span { font-family: var(--mono); font-size: 0.78rem; color: #ffb3b3; letter-spacing: 0.12em; text-transform: uppercase; position: relative; z-index: 1; }
 
     /* Model */
     .model { display: grid; gap: 14px; margin-top: 28px; }
@@ -485,10 +477,9 @@
         </div>
 
         <div class="flagship flip">
-          <div class="thumb pd-hero">
-            <strong>PERFECT DARK</strong>
-            <span>N64 &rarr; native &middot; HD textures &middot; high frame rate</span>
-          </div>
+          <div class="video" data-yt="g9e2DShmQ3s" style="background-image:url('https://i.ytimg.com/vi/g9e2DShmQ3s/hqdefault.jpg')">
+              <button type="button" aria-label="Play video: Perfect Dark Plus HD Texture Pack: teaser trailer">Perfect Dark Plus HD Texture Pack: teaser trailer</button>
+            </div>
           <div class="card">
             <div class="card-body">
               <p class="eyebrow" style="margin-bottom:8px">Flagship &middot; Nintendo 64, 2000</p>
@@ -503,6 +494,7 @@
                 <a class="live" href="https://retro-foundry.github.io/pd/" target="_blank" rel="noopener noreferrer">Play live</a>
                 <a href="https://www.patreon.com/retrofoundry/posts/out-now-perfect-168988103" target="_blank" rel="noopener noreferrer">Release post</a>
                 <a href="https://github.com/retro-foundry/Perfect-Dark-Plus-HD-Textures" target="_blank" rel="noopener noreferrer">HD texture pack</a>
+                <a href="https://www.youtube.com/watch?v=g9e2DShmQ3s" target="_blank" rel="noopener noreferrer">Trailer</a>
                 <a href="https://github.com/DabDavis/perfect-dark-dabs-mod" target="_blank" rel="noopener noreferrer">Dab's Mod</a>
               </div>
             </div>
@@ -511,7 +503,9 @@
 
         <div class="grid three">
           <article class="card">
-            <div class="thumb art tkg">TKG<br>PATH TRACED</div>
+            <div class="video in-card" data-yt="1TCfGfZL_Lg" style="background-image:url('https://i.ytimg.com/vi/1TCfGfZL_Lg/hqdefault.jpg')">
+              <button type="button" aria-label="Play video: AB3D II: TKG path tracing test">AB3D II: TKG path tracing test</button>
+            </div>
             <div class="card-body">
               <h3>The Killing Grounds, path traced</h3>
               <ul class="tags"><li>Path tracing</li><li>Modern GPU</li><li>Engine rebuild</li></ul>
@@ -521,6 +515,7 @@
               </p>
               <div class="links">
                 <a href="https://www.patreon.com/retrofoundry/posts/path-tracing-and-170724548" target="_blank" rel="noopener noreferrer">Dev log</a>
+                <a href="https://www.youtube.com/watch?v=1TCfGfZL_Lg" target="_blank" rel="noopener noreferrer">Video</a>
               </div>
             </div>
           </article>
@@ -543,17 +538,20 @@
           </article>
 
           <article class="card">
-            <div class="thumb art ab3d">ALIEN BREED 3D</div>
+            <div class="video in-card" data-yt="9jp2jFL7aR8" style="background-image:url('https://i.ytimg.com/vi/9jp2jFL7aR8/hqdefault.jpg')">
+              <button type="button" aria-label="Play video: Alien Breed 3D HD: 4K/60, first four levels">Alien Breed 3D HD: 4K/60, first four levels</button>
+            </div>
             <div class="card-body">
               <h3>Alien Breed 3D</h3>
-              <ul class="tags"><li>Native rebuild</li><li>Mouse look</li><li>Gamepad</li><li>WebAssembly</li></ul>
+              <ul class="tags"><li>Native rebuild</li><li>4K / 60 fps</li><li>Mouse look</li><li>Gamepad</li></ul>
               <p>
-                Team17's Amiga FPS, rebuilt with modern controls: mouse look, full gamepad mapping, an automap, and autosaves
-                kept in the browser. The first eight levels are playable on the web today.
+                Team17's Amiga FPS, rebuilt to run at 4K and 60 fps with modern controls: mouse look, full gamepad mapping,
+                an automap and autosaves. The first eight levels are playable on the web today.
               </p>
               <div class="links">
                 <a class="live" href="https://retro-foundry.github.io/abhd/" target="_blank" rel="noopener noreferrer">Play live</a>
                 <a href="https://www.patreon.com/retrofoundry/posts/alien-breed-3d-154831110" target="_blank" rel="noopener noreferrer">Dev log</a>
+                <a href="https://www.youtube.com/watch?v=9jp2jFL7aR8" target="_blank" rel="noopener noreferrer">Video</a>
               </div>
             </div>
           </article>
@@ -573,7 +571,7 @@
             <div class="thumb art gloom">GLOOM<br>WITH FRIENDS</div>
             <div class="mini">
               <h3>Gloom With Friends</h3>
-              <p>The Amiga shooter Gloom, rebuilt so friends can play it together online.</p>
+              <p>The Amiga shooter Gloom, rebuilt with online co-op. Send a link and a friend joins as player two, peer to peer, straight from the browser.</p>
               <div class="links"><a class="live" href="https://retro-foundry.github.io/gloomwithfriends/" target="_blank" rel="noopener noreferrer">Play live</a></div>
             </div>
           </article>
