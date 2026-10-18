@@ -47,6 +47,7 @@ GAME / UI
 - Tab: Toggle automap
 - Page Up / Page Down: Automap zoom in/out
 - Esc: Open the in-game menu; also releases mouse capture when captured
+- Options: Invert Mouse toggles vertical mouse-look inversion and saves the setting.
 - Autosaves: Load from the Autosaves menu
 - F5/F9: Quick save/load only when quicksave_load=1 is enabled in ab3d.ini
 - F6: Toggle Gouraud visualize mode
@@ -108,7 +109,7 @@ marine_hitscan_projectiles=1
 # 0 = original fixed vertical view.
 mouse_look=1
 
-# 1 = invert mouse-look Y when mouse_look=1.
+# Options menu: Invert Mouse. 1 = invert mouse-look Y when mouse_look=1.
 mouse_look_invert_y=0
 
 # Options menu: Gamepad Turn.

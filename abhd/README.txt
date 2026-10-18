@@ -46,6 +46,7 @@ GAME / UI
 - Tab: Toggle automap
 - Page Up / Page Down: Automap zoom in/out
 - Esc: Open the in-game menu; also releases mouse capture when captured
+- Options: Invert Mouse toggles vertical mouse-look inversion and saves the setting.
 - Autosaves: Load from the Autosaves menu
 - F5/F9: Quick save/load only when quicksave_load=1 is enabled in ab3d.ini
 - F6: Toggle Gouraud visualize mode
