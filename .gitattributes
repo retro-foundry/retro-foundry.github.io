@@ -1,2 +1,4 @@
 abhd/*.data binary
 abhd/*.wasm binary
+tkg/*.data binary
+tkg/*.wasm binary
