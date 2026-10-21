@@ -27,7 +27,7 @@
 <rect x="830" y="994" width="710" height="46" rx="7" fill="#131f2e" stroke="#2b4055"/><text x="852" y="1026" class="key">12</text><text x="922" y="1026" class="t">Brake / airbrake</text>
 <rect x="830" y="1046" width="710" height="46" rx="7" fill="#131f2e" stroke="#2b4055"/><text x="852" y="1078" class="key">13</text><text x="922" y="1078" class="t">Chaff</text>
 <rect x="830" y="1098" width="710" height="46" rx="7" fill="#131f2e" stroke="#2b4055"/><text x="852" y="1130" class="key">14</text><text x="922" y="1130" class="t">ECM</text>
-<text x="60" y="1203" class="key">HOLD BUTTON 7 +</text><text x="1540" y="1203" class="s" text-anchor="end">Press the modifier first &#183; a combination will not open the map</text>
+<text x="60" y="1203" class="key">BUTTON 7 + SHORTCUTS</text><text x="1540" y="1203" class="s" text-anchor="end">Or assign each action directly to a spare button / hat in setup</text>
 <rect x="60" y="1220" width="470" height="50" rx="8" fill="#131f2e" stroke="#2b4055"/><text x="78" y="1253" class="key">1</text><text x="187" y="1253" class="t">External view</text>
 <rect x="565" y="1220" width="470" height="50" rx="8" fill="#131f2e" stroke="#2b4055"/><text x="583" y="1253" class="key">3</text><text x="692" y="1253" class="t">HUD toggle</text>
 <rect x="1070" y="1220" width="470" height="50" rx="8" fill="#131f2e" stroke="#2b4055"/><text x="1088" y="1253" class="key">4</text><text x="1197" y="1253" class="t">Max normal thrust</text>
@@ -36,4 +36,4 @@
 <rect x="1070" y="1279" width="470" height="50" rx="8" fill="#131f2e" stroke="#2b4055"/><text x="1088" y="1312" class="key">11 / 12</text><text x="1197" y="1312" class="t">Zoom in / out</text>
 <rect x="60" y="1338" width="470" height="50" rx="8" fill="#131f2e" stroke="#2b4055"/><text x="78" y="1371" class="key">2</text><text x="187" y="1371" class="t">Rescue pod</text>
 <rect x="565" y="1338" width="470" height="50" rx="8" fill="#131f2e" stroke="#2b4055"/><text x="583" y="1371" class="key">10</text><text x="692" y="1371" class="t">Eject</text>
-<text x="60" y="1425" class="s">Only present buttons are assigned. Custom assignments are shown in setup. Afterburner is a separate command.</text><text x="1540" y="1425" class="s" text-anchor="end">RETRO FOUNDRY</text></svg>
+<text x="60" y="1425" class="s">Direct actions: learn any action above on its own button / hat. No modifier required. Assignments are saved.</text><text x="1540" y="1425" class="s" text-anchor="end">RETRO FOUNDRY</text></svg>

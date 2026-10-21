@@ -22,6 +22,10 @@
   const buttons = ['Fire (hold)', 'Flare', 'Next target', 'Next weapon',
     'Throttle down', 'Throttle up', 'Map / hold modifier', 'Pause / resume',
     'Gear', 'Arrestor hook', 'Radar range', 'Brake / airbrake', 'Chaff', 'ECM'];
+  // Order is NativeDirectButton in input/gamepad.h. These never synthesize
+  // a View chord, so independent HOTAS controls can be used together.
+  const direct = ['External view', 'HUD toggle', 'Max normal thrust', 'Afterburner',
+    'Idle thrust', 'Zoom in', 'Zoom out', 'Rescue pod', 'Eject'];
   const axes = {
     roll: ['Roll', 'Centre the stick, click Learn, then move fully RIGHT and fully LEFT.'],
     pitch: ['Pitch', 'Centre the stick, click Learn, then pull fully BACK and push fully FORWARD.'],
@@ -40,6 +44,10 @@
     const matches = pads.filter(p => p.id === device.id);
     return matches.length === 1 ? matches[0] : null;
   }
+  function sameDevice(a, b, pads = allPads()) {
+    const resolved = findPad(a, pads);
+    return !!resolved && resolved === findPad(b, pads);
+  }
   function validBinding(b, axis = false) {
     if (!b || typeof b.device?.id !== 'string' || !Number.isInteger(b.device.index) ||
         b.device.index < 0 || !Number.isInteger(b.index) || b.index < 0 || b.index > 127) return false;
@@ -51,6 +59,9 @@
   function validate(s) {
     if (s?.version !== 1 || !families.some(f => f[0] === s.family) || !s.axes || !s.buttons || !s.hat)
       throw new Error('Saved flight controls are invalid. Use Reset flight setup.');
+    if (s.direct === undefined) s.direct = {};
+    if (!s.direct || typeof s.direct !== 'object' || Array.isArray(s.direct))
+      throw new Error('Invalid saved direct flight controls.');
     for (const [role, b] of Object.entries(s.axes))
       if (!axes[role] || !validBinding(b, true)) throw new Error('Invalid saved flight axis: ' + role);
     for (const [slot, b] of Object.entries(s.buttons))
@@ -58,6 +69,9 @@
         throw new Error('Invalid saved flight button: ' + slot);
     for (const [direction, b] of Object.entries(s.hat))
       if (!hats.includes(direction) || !validBinding(b)) throw new Error('Invalid saved look control: ' + direction);
+    for (const [slot, b] of Object.entries(s.direct))
+      if (!/^\d+$/.test(slot) || +slot >= direct.length || !validBinding(b))
+        throw new Error('Invalid saved direct flight action: ' + slot);
     return s;
   }
   function axisValue(b, pads, throttle = false) {
@@ -80,17 +94,19 @@
   function sample(s, pads = allPads()) {
     const roll = axisValue(s.axes.roll, pads), pitch = axisValue(s.axes.pitch, pads);
     const name = findPad(s.axes.roll?.device, pads)?.id || 'Flight stick disconnected';
-    if (roll === null || pitch === null) return {name, values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]};
+    if (roll === null || pitch === null) return {name, direct: 0, values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]};
     const rudder = axisValue(s.axes.rudder, pads) ?? 0;
     const throttle = axisValue(s.axes.throttle, pads, true);
     let bits = 0;
     for (const [slot, binding] of Object.entries(s.buttons)) if (pressed(binding, pads)) bits |= 1 << +slot;
+    let directBits = 0;
+    for (const [slot, binding] of Object.entries(s.direct || {})) if (pressed(binding, pads)) directBits |= 1 << +slot;
     const x = +pressed(s.hat.right, pads) - +pressed(s.hat.left, pads);
     const y = +pressed(s.hat.down, pads) - +pressed(s.hat.up, pads);
-    return {name, values: [1, roll, pitch, x, y, Math.max(0, -rudder), Math.max(0, rudder),
+    return {name, direct: directBits, values: [1, roll, pitch, x, y, Math.max(0, -rudder), Math.max(0, rudder),
       throttle ?? 0, +(throttle !== null), bits]};
   }
-  const empty = () => ({version: 1, family: 'gamepad', axes: {}, buttons: {}, hat: {}});
+  const empty = () => ({version: 1, family: 'gamepad', axes: {}, buttons: {}, hat: {}, direct: {}});
   class FlightControls {
     constructor(root) {
       this.root = root; this.state = empty(); this.presets = {}; this.learning = null;
@@ -148,12 +164,10 @@
       numbered.addEventListener('click', () => {
         const pad = this.selected(this.source); if (!pad) return this.message('Connect a controller and press a button first.');
         this.cancelLearning(); this.state.buttons = {};
-        for (let i = 0; i < Math.min(buttons.length, pad.buttons.length); ++i)
-          this.state.buttons[i] = {device: deviceKey(pad), kind: 'button', index: i};
-        // A button already learned for a hat direction must not fire twice.
-        for (const [direction, b] of Object.entries(this.state.hat))
-          if (b.kind === 'button' && b.device.id === pad.id && b.device.index === pad.index && b.index < buttons.length)
-            delete this.state.hat[direction];
+        for (let i = 0; i < Math.min(buttons.length, pad.buttons.length); ++i) {
+          const binding = {device: deviceKey(pad), kind: 'button', index: i};
+          this.unique(binding, 'buttons', i); this.state.buttons[i] = binding;
+        }
         this.updateBindings(); this.save(); this.message('Numbered preset applied. Learn individual buttons to change it.');
       });
       this.numbered = numbered; this.panel.append(numbered);
@@ -163,10 +177,18 @@
       numbered.disabled = this.state.family === 'velocity'; note.hidden = !numbered.disabled;
       const optional = document.createElement('details'), summary = document.createElement('summary');
       summary.textContent = 'Buttons and cockpit-look hat'; optional.append(summary); this.panel.append(optional);
-      this.buttonPanel = optional;
+      this.buttonPanel = optional; optional.id = 'flight-buttons';
       buttons.forEach((name, i) => this.row('buttons', i, name, 'Release the buttons, click Learn, then press the button you want.', optional));
       hats.forEach(direction => this.row('hat', direction, 'Look ' + direction,
         'Centre the hat, click Learn, then press hat ' + direction.toUpperCase() + '.', optional));
+      const shortcuts = document.createElement('details'), shortcutSummary = document.createElement('summary');
+      shortcuts.id = 'flight-direct'; shortcutSummary.textContent = 'Direct actions — no modifier';
+      shortcuts.append(shortcutSummary); this.panel.append(shortcuts);
+      const directNote = document.createElement('p');
+      directNote.textContent = 'Optional: assign spare buttons or hat directions on either device. Each action works with one press, without holding button 7. Existing combinations also remain available.';
+      shortcuts.append(directNote);
+      direct.forEach((name, i) => this.row('direct', i, name,
+        'Release the control, click Learn, then press the button or hat direction you want.', shortcuts));
       const reset = document.createElement('button'); reset.type = 'button'; reset.textContent = 'Reset flight setup';
       reset.addEventListener('click', () => {
         this.cancelLearning(); this.state = empty(); this.presets = {}; family.value = 'gamepad'; this.panel.hidden = true;
@@ -231,9 +253,9 @@
       this.finish.hidden = group !== 'axes';
     }
     unique(binding, group, role) {
-      for (const category of ['buttons', 'hat']) for (const [other, b] of Object.entries(this.state[category])) {
+      for (const category of ['buttons', 'hat', 'direct']) for (const [other, b] of Object.entries(this.state[category])) {
         if (category === group && String(role) === other) continue;
-        if (b.device.id === binding.device.id && b.device.index === binding.device.index && b.index === binding.index &&
+        if (sameDevice(b.device, binding.device) && b.index === binding.index &&
             b.kind === binding.kind && (b.kind !== 'hat' || b.value === binding.value)) delete this.state[category][other];
       }
     }
@@ -251,7 +273,7 @@
         centre: clamp(l.baseline[index], l.min[index], l.max[index]),
         invert: !firstPositive};
       for (const [role, other] of Object.entries(this.state.axes))
-        if (role !== l.role && other.device.id === b.device.id && other.device.index === b.device.index && other.index === b.index)
+        if (role !== l.role && sameDevice(other.device, b.device) && other.index === b.index)
           delete this.state.axes[role];
       this.state.axes[l.role] = b; this.cancelLearning(); this.updateBindings(); this.save();
       this.message('Axis saved. Learn the remaining controls, or start the game when ready.');
@@ -275,7 +297,7 @@
           } else {
             const index = pad.buttons.findIndex((button, i) => button.pressed && !l.buttons[i]);
             let binding = index >= 0 ? {device: l.device, kind: 'button', index} : null;
-            if (!binding && l.group === 'hat') {
+            if (!binding && (l.group === 'hat' || l.group === 'direct')) {
               const axis = pad.axes.findIndex((v, i) => finite(v) && finite(l.baseline[i]) && Math.abs(v - l.baseline[i]) > 0.2);
               if (axis >= 0) binding = {device: l.device, kind: 'hat', index: axis, value: pad.axes[axis]};
             }
