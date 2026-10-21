@@ -121,13 +121,14 @@
         }
       } catch (e) { this.state = empty(); this.presets = {}; error = 'Cannot restore flight controls: ' + e.message; }
       this.build(); this.updateBindings(); this.message(error || 'Choose your hardware, then learn its axes.');
-      if (error) { this.panel.hidden = false; document.getElementById('flight-setup').open = true; }
+      this.restoreError = error;
+      if (error) this.panel.hidden = false;
       this.poll = this.poll.bind(this); requestAnimationFrame(this.poll);
     }
     message(text) { this.status.textContent = text; }
-    save() {
+    save(required = false) {
       try { localStorage.setItem(key, JSON.stringify({...this.state, presets: this.presets})); }
-      catch (e) { this.message('Cannot save flight controls: ' + e.message); }
+      catch (e) { this.message('Cannot save flight controls: ' + e.message); if (required) throw e; }
     }
     select(label, options) {
       const wrap = document.createElement('label'); wrap.textContent = label;
@@ -276,11 +277,11 @@
         if (role !== l.role && sameDevice(other.device, b.device) && other.index === b.index)
           delete this.state.axes[role];
       this.state.axes[l.role] = b; this.cancelLearning(); this.updateBindings(); this.save();
-      this.message('Axis saved. Learn the remaining controls, or start the game when ready.');
+      this.message('Axis assigned. Learn the remaining controls, then choose Apply.');
     }
     poll() {
       const pads = allPads();
-      if (!document.getElementById('launcher')?.hidden) {
+      if (this.root.closest('dialog')?.open) {
         this.refreshDevices(pads);
         const l = this.learning, pad = l && findPad(l.device, pads);
         if (l && !pad) { this.cancelLearning(); this.message('Controller disconnected. Reconnect it and learn that control again.'); }
@@ -303,7 +304,7 @@
             }
             if (binding) {
               this.unique(binding, l.group, l.role); this.state[l.group][l.role] = binding;
-              this.cancelLearning(); this.updateBindings(); this.save(); this.message('Control saved. Release it before learning the next control.');
+              this.cancelLearning(); this.updateBindings(); this.save(); this.message('Control assigned. Release it before learning the next control, then choose Apply.');
             }
           }
         }
@@ -311,12 +312,26 @@
       requestAnimationFrame(this.poll);
     }
     begin() {
+      if (this.learning) throw new Error('Finish the current axis sweep or cancel learning before applying controls.');
       if (this.state.family === 'gamepad') return null;
       validate(this.state);
       for (const role of ['roll', 'pitch', 'throttle'])
         if (!this.state.axes[role]) throw new Error('Learn the flight stick ' + role + ' control before starting, or select Gamepad / keyboard.');
       const state = JSON.parse(JSON.stringify(this.state)); this.cancelLearning();
       return {sample: () => sample(state)};
+    }
+    checkpoint() {
+      return {state: JSON.parse(JSON.stringify(this.state)), presets: JSON.parse(JSON.stringify(this.presets)),
+        stored: localStorage.getItem(key)};
+    }
+    restore(checkpoint) {
+      this.cancelLearning(); this.state = checkpoint.state; this.presets = checkpoint.presets;
+      this.family.value = this.state.family; this.panel.hidden = this.state.family === 'gamepad';
+      this.numbered.disabled = this.state.family === 'velocity'; this.velocityNote.hidden = !this.numbered.disabled;
+      this.deviceSignature = ''; this.updateBindings();
+      if (checkpoint.stored === null) localStorage.removeItem(key);
+      else localStorage.setItem(key, checkpoint.stored);
+      this.message('Choose your hardware, then learn its controls.');
     }
   }
   window.Fa18FlightControls = {FlightControls, sample, validate, families};
