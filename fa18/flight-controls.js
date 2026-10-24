@@ -123,6 +123,10 @@
       this.build(); this.updateBindings(); this.message(error || 'Choose your hardware, then learn its axes.');
       this.restoreError = error;
       if (error) this.panel.hidden = false;
+      this.detect = this.detect.bind(this);
+      for (const type of ['gamepadconnected', 'gamepaddisconnected', 'focus'])
+        window.addEventListener(type, this.detect);
+      this.detect();
       this.poll = this.poll.bind(this); requestAnimationFrame(this.poll);
     }
     message(text) { this.status.textContent = text; }
@@ -137,6 +141,12 @@
       return [wrap, select];
     }
     build() {
+      this.devices = document.createElement('p'); this.devices.id = 'controller-devices';
+      this.devices.setAttribute('role', 'status'); this.devices.setAttribute('aria-live', 'polite');
+      this.root.append(this.devices);
+      const detect = document.createElement('button'); detect.type = 'button'; detect.id = 'controller-detect';
+      detect.textContent = 'Detect controllers'; detect.addEventListener('click', () => this.detect());
+      this.root.append(detect);
       const [familyWrap, family] = this.select('Controller layout', families.map(f => [f[0], f[1]]));
       this.root.append(familyWrap); this.family = family; family.id = 'flight-family'; family.value = this.state.family;
       this.panel = document.createElement('div'); this.panel.hidden = this.state.family === 'gamepad';
@@ -155,15 +165,22 @@
       this.status = document.createElement('p'); this.status.id = 'flight-status';
       this.status.setAttribute('role', 'status'); this.status.setAttribute('aria-live', 'polite');
       this.panel.append(this.status);
-      this.rows = {};
+      this.rows = {}; this.learnButtons = {};
       for (const [role, [label, instructions]] of Object.entries(axes)) this.row('axes', role, label, instructions);
       const finish = document.createElement('button'); finish.type = 'button'; finish.id = 'flight-finish';
       finish.textContent = 'Finish axis sweep'; finish.hidden = true;
       finish.addEventListener('click', () => this.finishAxis()); this.finish = finish; this.panel.append(finish);
+      const cancel = document.createElement('button'); cancel.type = 'button'; cancel.id = 'flight-cancel-learning';
+      cancel.textContent = 'Cancel learning'; cancel.hidden = true;
+      cancel.addEventListener('click', () => { this.cancelLearning(); this.message('Learning cancelled. Existing assignments are unchanged.'); });
+      this.cancel = cancel; this.panel.append(cancel);
       const numbered = document.createElement('button'); numbered.type = 'button'; numbered.id = 'flight-numbered';
       numbered.textContent = 'Use numbered button preset';
       numbered.addEventListener('click', () => {
-        const pad = this.selected(this.source); if (!pad) return this.message('Connect a controller and press a button first.');
+        let pad;
+        try { pad = this.selected(this.source); }
+        catch (error) { return this.message('Controller access failed: ' + error.message); }
+        if (!pad) return this.message('Connect a controller and press a button first.');
         this.cancelLearning(); this.state.buttons = {};
         for (let i = 0; i < Math.min(buttons.length, pad.buttons.length); ++i) {
           const binding = {device: deviceKey(pad), kind: 'button', index: i};
@@ -208,7 +225,9 @@
       const label = document.createElement('span'); label.textContent = title;
       const value = document.createElement('small'); value.id = 'flight-value-' + group + '-' + role;
       const learn = document.createElement('button'); learn.type = 'button'; learn.textContent = 'Learn';
+      learn.className = 'flight-learn'; learn.setAttribute('aria-pressed', 'false');
       learn.id = 'flight-learn-' + group + '-' + role;
+      this.learnButtons[group + '-' + role] = learn;
       learn.addEventListener('click', () => this.learn(group, role, instructions));
       const clear = document.createElement('button'); clear.type = 'button'; clear.textContent = 'Clear';
       clear.setAttribute('aria-label', 'Clear ' + title);
@@ -219,6 +238,18 @@
       this.rows[group + '-' + role] = value;
     }
     selected(select) { return allPads().find(p => String(p.index) === select.value); }
+    detect() {
+      try { this.showDevices(allPads()); }
+      catch (error) { this.devices.textContent = 'Controller access failed: ' + error.message; }
+    }
+    showDevices(pads) {
+      const text = typeof navigator.getGamepads !== 'function'
+        ? 'Controller access is unavailable in this browser. Keyboard controls remain available.'
+        : pads.length ? 'Detected: ' + pads.map(p => p.id).join(' · ')
+        : 'No controller detected. Keep this tab focused and press a controller button or move a stick fully, then release it.';
+      if (this.devices.textContent !== text) this.devices.textContent = text;
+      this.refreshDevices(pads);
+    }
     refreshDevices(pads) {
       const signature = pads.map(p => p.id + ':' + p.index).join('|') + this.state.family;
       if (signature === this.deviceSignature) return;
@@ -242,16 +273,29 @@
           b.kind === 'hat' ? 'Hat direction' : 'Axis ' + (b.index + 1) + (b.invert ? ' · reversed' : '')) + ' · ' + b.device.id;
       }
     }
-    cancelLearning() { this.learning = null; if (this.finish) this.finish.hidden = true; }
+    cancelLearning() {
+      if (this.learning) {
+        const button = this.learnButtons[this.learning.group + '-' + this.learning.role];
+        button.setAttribute('aria-pressed', 'false'); button.textContent = 'Learn';
+      }
+      this.learning = null;
+      if (this.finish) this.finish.hidden = true;
+      if (this.cancel) this.cancel.hidden = true;
+    }
     learn(group, role, instructions) {
       this.cancelLearning();
       const select = group !== 'axes' ? this.source : role === 'throttle' && this.throttle.value !== 'same' ? this.throttle : this.stick;
-      const pad = this.selected(select);
+      let pad;
+      try { pad = this.selected(select); }
+      catch (error) { return this.message('Controller access failed: ' + error.message); }
       if (!pad) return this.message('Connect the selected controller and press a button to let the browser detect it.');
       this.learning = {group, role, device: deviceKey(pad), baseline: [...pad.axes],
         buttons: pad.buttons.map(b => b.pressed), min: [...pad.axes], max: [...pad.axes], candidate: null};
+      const button = this.learnButtons[group + '-' + role];
+      button.setAttribute('aria-pressed', 'true'); button.textContent = 'Listening…';
       this.message(instructions);
       this.finish.hidden = group !== 'axes';
+      this.cancel.hidden = false;
     }
     unique(binding, group, role) {
       for (const category of ['buttons', 'hat', 'direct']) for (const [other, b] of Object.entries(this.state[category])) {
@@ -280,9 +324,14 @@
       this.message('Axis assigned. Learn the remaining controls, then choose Apply.');
     }
     poll() {
-      const pads = allPads();
+      let pads;
+      try { pads = allPads(); }
+      catch (error) {
+        this.cancelLearning(); this.devices.textContent = 'Controller access failed: ' + error.message;
+        requestAnimationFrame(this.poll); return;
+      }
       if (this.root.closest('dialog')?.open) {
-        this.refreshDevices(pads);
+        this.showDevices(pads);
         const l = this.learning, pad = l && findPad(l.device, pads);
         if (l && !pad) { this.cancelLearning(); this.message('Controller disconnected. Reconnect it and learn that control again.'); }
         else if (l) {
@@ -305,14 +354,16 @@
             if (binding) {
               this.unique(binding, l.group, l.role); this.state[l.group][l.role] = binding;
               this.cancelLearning(); this.updateBindings(); this.save(); this.message('Control assigned. Release it before learning the next control, then choose Apply.');
-            }
+            } else l.buttons = pad.buttons.map(button => button.pressed);
           }
         }
       }
       requestAnimationFrame(this.poll);
     }
     begin() {
-      if (this.learning) throw new Error('Finish the current axis sweep or cancel learning before applying controls.');
+      if (this.learning) throw new Error(this.learning.group === 'axes'
+        ? 'Finish the current axis sweep or choose Cancel learning before applying controls.'
+        : 'Press and release the control you want to assign, or choose Cancel learning before applying controls.');
       if (this.state.family === 'gamepad') return null;
       validate(this.state);
       for (const role of ['roll', 'pitch', 'throttle'])
