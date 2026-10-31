@@ -1,0 +1,82 @@
+[
+  {
+    "level": 1,
+    "name": "Level 1",
+    "folder": "level_a"
+  },
+  {
+    "level": 2,
+    "name": "Level 2",
+    "folder": "level_b"
+  },
+  {
+    "level": 3,
+    "name": "Level 3",
+    "folder": "level_c"
+  },
+  {
+    "level": 4,
+    "name": "Level 4",
+    "folder": "level_d"
+  },
+  {
+    "level": 5,
+    "name": "Level 5",
+    "folder": "level_e"
+  },
+  {
+    "level": 6,
+    "name": "Level 6",
+    "folder": "level_f"
+  },
+  {
+    "level": 7,
+    "name": "Level 7",
+    "folder": "level_g"
+  },
+  {
+    "level": 8,
+    "name": "Level 8",
+    "folder": "level_h"
+  },
+  {
+    "level": 9,
+    "name": "Level 9",
+    "folder": "level_i"
+  },
+  {
+    "level": 10,
+    "name": "Level 10",
+    "folder": "level_j"
+  },
+  {
+    "level": 11,
+    "name": "Level 11",
+    "folder": "level_k"
+  },
+  {
+    "level": 12,
+    "name": "Level 12",
+    "folder": "level_l"
+  },
+  {
+    "level": 13,
+    "name": "Level 13",
+    "folder": "level_m"
+  },
+  {
+    "level": 14,
+    "name": "Level 14",
+    "folder": "level_n"
+  },
+  {
+    "level": 15,
+    "name": "Level 15",
+    "folder": "level_o"
+  },
+  {
+    "level": 16,
+    "name": "Level 16",
+    "folder": "level_p"
+  }
+]
