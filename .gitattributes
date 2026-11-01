@@ -2,3 +2,6 @@ abhd/*.data binary
 abhd/*.wasm binary
 tkg/*.data binary
 tkg/*.wasm binary
+
+# Preserve the exact bytes recorded in editor runtime manifests.
+abhd-ed/runtime/r-*/** -text
