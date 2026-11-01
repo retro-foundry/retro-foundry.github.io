@@ -1,0 +1,28 @@
+{
+  "format": "alien-breed-editor-web-build",
+  "version": 1,
+  "runtimeRevision": "ad32e275c8d0e0395931df76153c7a0ed5cf1351a6f8a2ae008cc481341f70c2",
+  "runtimePath": "runtime/r-ad32e275c8d0e039/",
+  "files": [
+    {
+      "name": "engine.js",
+      "sha256": "1ae9ddad5f8277194739c942ba6f26e785dd6a8788f1b400aba6aa7b6f3c8097"
+    },
+    {
+      "name": "engine.wasm",
+      "sha256": "6b80aca23f8cec03d78ee9534e1aef6934532d60b079c0d278d54a55b53f07e3"
+    },
+    {
+      "name": "engine.data",
+      "sha256": "8bb4de1555fd8c22c5be0f8350c25884f2d97a7ce2bf07b7a70993949be770d3"
+    },
+    {
+      "name": "frame.html",
+      "sha256": "3f44326eb73ef051faa6358f09ef645bfa9671241f3809e06fa841375ee1ec53"
+    },
+    {
+      "name": "inspection-shortcuts.mjs",
+      "sha256": "944e7d45dc267da2a589800e2e15351af594772f9392df2d8879a1d427bd0472"
+    }
+  ]
+}
