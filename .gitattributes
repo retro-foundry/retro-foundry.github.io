@@ -5,3 +5,4 @@ tkg/*.wasm binary
 
 # Preserve the exact bytes recorded in editor runtime manifests.
 abhd-ed/runtime/r-*/** -text
+abhd-ed/reference/floors/** -text
