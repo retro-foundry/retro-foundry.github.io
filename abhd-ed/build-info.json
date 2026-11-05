@@ -1,8 +1,8 @@
 {
   "format": "alien-breed-editor-web-build",
   "version": 1,
-  "runtimeRevision": "969287ddd046f5e9a33770befe19211c1a632b20fdc3220f97c293f476e1c264",
-  "runtimePath": "runtime/r-969287ddd046f5e9/",
+  "runtimeRevision": "43f8ae7d896adb6cc2b912eaac7b59eaa45f564d1be57e7058f78bff1eed2220",
+  "runtimePath": "runtime/r-43f8ae7d896adb6c/",
   "files": [
     {
       "name": "engine.js",
@@ -18,7 +18,7 @@
     },
     {
       "name": "frame.html",
-      "sha256": "efa96e5bc186f7c509580f609afff8efdcf7ff3aa2d9d4765e52c5d4b8209330"
+      "sha256": "98dbd239bfddd26a9f23484bfccc3eab9f995055254a89469ae32b2fe7898d23"
     },
     {
       "name": "inspection-shortcuts.mjs",
