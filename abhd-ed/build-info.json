@@ -1,16 +1,16 @@
 {
   "format": "alien-breed-editor-web-build",
   "version": 1,
-  "runtimeRevision": "c8b6aa3eff4f5614f7d56038110bd7b74763b48d2dc918cacba32a3db8d62fea",
-  "runtimePath": "runtime/r-c8b6aa3eff4f5614/",
+  "runtimeRevision": "e08a341fc410c6231f753bfed26af951122b5dbd43a72d538b297338fde0d4d4",
+  "runtimePath": "runtime/r-e08a341fc410c623/",
   "files": [
     {
       "name": "engine.js",
-      "sha256": "61d576f2641876265d7a5910c9d251ab3704699d331001f3a2d5ff09fb448e09"
+      "sha256": "3449e5ebd1ab3f9cefdd098192b76f95d34703fd274f9e512c16afcf6e1b9017"
     },
     {
       "name": "engine.wasm",
-      "sha256": "299b0f16f3430ef7f846c742f7bf2ab7c1b6a61b8a7f89691f2e11650d391ee0"
+      "sha256": "a06ad9298d9f41cb26f1bff6af1d722d37265f5257d4edff9675554a8076fe33"
     },
     {
       "name": "engine.data",
@@ -18,7 +18,7 @@
     },
     {
       "name": "frame.html",
-      "sha256": "08ddf5de5fc838b8ce388a1717c31f7ef45e69187bb4ad2e5a307f498ba52e2a"
+      "sha256": "9da5e40e9b07c7fe646dcaa6f7555d750e65b96e38f374752887a7164c926d6e"
     },
     {
       "name": "inspection-shortcuts.mjs",
