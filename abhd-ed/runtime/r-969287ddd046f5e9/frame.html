@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alien Breed engine preview</title>
+<style>
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090d12;color:#bcc8cf;font:12px system-ui}
+  canvas{display:block;width:100%;height:100%;outline:0;image-rendering:pixelated}
+  #message{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:20px;pointer-events:none}
+  #message:empty{display:none}
+  .screen-reader-help{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+</style>
+<canvas id="canvas" tabindex="0" aria-label="Game engine viewport" aria-describedby="viewport-controls"></canvas>
+<p id="viewport-controls" class="screen-reader-help"></p>
+<div id="message" role="status">Loading game engine…</div>
+<script src="engine.js"></script>
+<script>
+  'use strict';
+  const canvas = document.getElementById('canvas'), message = document.getElementById('message');
+  let engine, inspectionShortcut, loaded = false, playing = false, currentRevision = -1;
+  let originalWalls;
+  const navigationKeys = new Set();
+  let looking = false, lastPointer, lookX = 0, lookY = 0;
+  const cameraState = () => ({ zone:engine._editor_camera_value(0), x:engine._editor_camera_value(1), z:engine._editor_camera_value(2), y:engine._editor_camera_value(3), angle:engine._editor_camera_value(4), look:engine._editor_camera_value(5), upper:!!engine._editor_camera_value(6) });
+  const clearNavigation = () => { navigationKeys.clear(); looking = false; lastPointer = undefined; lookX = lookY = 0; };
+  const cameraChanged = () => send('view-changed', { revision:currentRevision, camera:cameraState() });
+  function applyWallAssets(files) {
+    if (!Array.isArray(files)) throw new Error('Invalid wall asset payload.');
+    if (!originalWalls) {
+      originalWalls = new Map(engine.FS.readdir('/data/includes/walls').filter(name => /\.wad$/i.test(name)).map(name => {
+        const bytes = engine.FS.readFile('/data/includes/walls/' + name);
+        const size = bytes[0] === 61 && bytes[1] === 83 && bytes[2] === 66 && bytes[3] === 61
+          ? new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(4) : bytes.length;
+        return [name.toLowerCase(), { name, bytes: new Uint8Array(bytes), size }];
+      }));
+    }
+    if (files.length > originalWalls.size) throw new Error('Too many wall asset replacements.');
+    const replacements = new Map();
+    for (const file of files) {
+      if (!file || typeof file.name !== 'string') throw new Error('Invalid wall material name.');
+      const key = file.name.toLowerCase(), original = originalWalls.get(key);
+      if (!original || replacements.has(key) || !(file.bytes instanceof Uint8Array) || file.bytes.length !== original.size)
+        throw new Error('A wall material must match an existing native sheet and byte count.');
+      if (file.bytes[0] === 61 && file.bytes[1] === 83 && file.bytes[2] === 66 && file.bytes[3] === 61)
+        throw new Error('Wall replacements must contain decoded native bytes.');
+      replacements.set(key, file.bytes);
+    }
+    let changed = false;
+    for (const [key, original] of originalWalls) {
+      const bytes = replacements.get(key) ?? original.bytes, path = '/data/includes/walls/' + original.name;
+      const current = engine.FS.readFile(path);
+      if (current.length !== bytes.length || current.some((byte, index) => byte !== bytes[index])) {
+        engine.FS.writeFile(path, bytes); changed = true;
+      }
+    }
+    if (changed) engine._editor_reload_wall_assets();
+  }
+  const send = (type, detail = {}) => parent.postMessage({source:'ab3d-engine', type, ...detail}, location.origin);
+  function pickAt(x, y) {
+    const offset = engine._editor_pick_graphic(x, y, 0);
+    const object = engine._editor_pick_object(x, y, 0);
+    return {zone:engine._editor_pick_at(x, y), object:object < 0 ? null : {id:object,cid:engine._editor_pick_object(x, y, 1)}, pixel:engine._editor_pixel_at(x, y), surface:offset < 0 ? null : {
+      offset, upper:!!engine._editor_pick_graphic(x, y, 1), type:engine._editor_pick_graphic(x, y, 2)
+    }, revision:currentRevision, world: (() => { const xWorld = engine._editor_pick_floor(x,y,0), zWorld = engine._editor_pick_floor(x,y,1); return Number.isFinite(xWorld) && Number.isFinite(zWorld) ? { x:xWorld, z:zWorld, upper:!!engine._editor_pick_floor(x,y,2) } : null; })()};
+  }
+  function mechanismState(kind, index) {
+    if (!['door', 'lift'].includes(kind) || !Number.isInteger(index) || index < 0) throw new Error('Invalid mechanism inspection.');
+    const value = field => engine._editor_mechanism_value(kind === 'lift' ? 1 : 0, index, field);
+    if (value(0) < 0) throw new Error('The inspected mechanism does not exist.');
+    return {zone:value(0), current:value(1)/256, top:value(2)/256, bottom:value(3)/256, wallCount:value(4), plane:value(5)/256, unsynchronizedWalls:value(6)};
+  }
+  const fail = (error, revision = currentRevision) => {
+    const reason = error instanceof Error ? error.message : String(error);
+    message.textContent = 'Engine preview: ' + reason; send('error', {message:reason, revision});
+  };
+  Promise.all([import('./inspection-shortcuts.mjs'), createEditorEngine({
+    canvas, locateFile: name => new URL(name, location.href).href,
+    print: () => {}, printErr: text => console.error('[engine]', text),
+    onAbort: reason => fail(reason),
+    editorEvent(kind, zone, value) {
+      if (kind === 1) send('loaded', {revision:currentRevision, zone, zones:value, nonblack:engine._editor_nonblack_pixels(), slot:engine._editor_current_slot(), exitZone:engine._editor_current_exit_zone()});
+      if (kind === 2) { playing = false; document.exitPointerLock?.(); send('stopped', {zone, completed:!!value, revision:currentRevision}); }
+    }
+  })]).then(([shortcuts, module]) => {
+    if (!module._editor_ready()) throw new Error('The 3D renderer could not start. This preview requires WebGL2. Enable browser hardware acceleration, update your graphics driver or try another supported browser, then choose Reload engine. Your map is still editable and can be saved.');
+    engine = module; inspectionShortcut = shortcuts.inspectionShortcut; message.textContent = ''; send('ready');
+  }).catch(fail);
+  window.addEventListener('message', event => {
+    if (event.source !== parent || event.origin !== location.origin || event.data?.source !== 'ab3d-editor' || !engine) return;
+    const request = event.data;
+    try {
+      if (request.type === 'instructions' && typeof request.text === 'string') {
+        document.getElementById('viewport-controls').textContent = request.text;
+        canvas.title = request.text;
+      }
+      if (request.type === 'load') {
+        clearNavigation();
+        if (!Number.isSafeInteger(request.revision) || request.revision < 0) throw new Error('Invalid level revision.');
+        if (request.revision < currentRevision) return;
+        if (!Number.isInteger(request.slot) || request.slot < 0 || request.slot > 15) throw new Error('Invalid level slot.');
+        if (!(request.setup instanceof Uint8Array) || request.setup.length < 8 || request.setup.length > 522) throw new Error('Invalid level setup size.');
+        const setup = new DataView(request.setup.buffer, request.setup.byteOffset, request.setup.byteLength);
+        const version = setup.getUint16(4);
+        if (setup.getUint32(0) !== 0x41424558 || ![1, 2].includes(version)
+          || (version === 1 && request.setup.length !== 8)) throw new Error('Invalid level setup header.');
+        if (version === 2) {
+          if (request.setup.length < 10) throw new Error('Invalid draw-room setup.');
+          const count = setup.getUint16(8);
+          if (count < 1 || count > 256 || request.setup.length !== 10 + count * 2) throw new Error('Invalid draw-room setup.');
+          for (let i = 0; i < count; i++) {
+            const owner = setup.getUint16(10 + i * 2);
+            if (owner >= count || setup.getUint16(10 + owner * 2) !== owner) throw new Error('Invalid draw-room owner.');
+          }
+        }
+        const folder = '/data/levels/level_' + String.fromCharCode(97 + request.slot) + '/';
+        for (const [key, file] of [['data','twolev.bin'],['graphics','twolev.graph.bin'],['clips','twolev.clips']]) {
+          const bytes = request.files?.[key];
+          if (!(bytes instanceof Uint8Array) || bytes.length > 16777216) throw new Error('Invalid ' + key + ' file.');
+          engine.FS.writeFile(folder + file, bytes);
+        }
+        engine.FS.writeFile(folder + 'twolev.cfg', request.setup);
+        applyWallAssets(request.wallAssets ?? []);
+        playing = false; currentRevision = request.revision;
+        message.textContent = '';
+        if (!engine._editor_load_level(request.slot)) throw new Error('The engine could not load this map.');
+        loaded = true;
+      }
+      if (loaded && request.type === 'camera') {
+        let c = request.camera;
+        if (!c || ![c.zone,c.x,c.z,c.upper,c.angle].every(Number.isInteger)) throw new Error('Invalid preview camera.');
+        if (request.views !== undefined) {
+          if (!Array.isArray(request.views) || request.views.length > 256 || request.views.some(view => !view || ![view.zone,view.x,view.z,view.upper,view.angle].every(Number.isInteger))) throw new Error('Invalid adjoining inspection views.');
+          c = [c,...request.views].find(view => engine._editor_zone_value(view.zone,0) >= 0 && engine._editor_zone_value(view.zone,view.upper ? 11 : 9) > engine._editor_zone_value(view.zone,view.upper ? 12 : 10));
+          if (!c) { send('camera-unavailable', {revision:currentRevision}); return; }
+        }
+        if (!engine._editor_camera(c.zone,c.x,c.z,c.upper,c.angle)) throw new Error('Place the preview camera inside the selected zone.');
+        cameraChanged();
+      }
+      if (loaded && request.type === 'restore-camera') {
+        const c = request.camera;
+        if (!c || ![c.zone,c.x,c.z,c.y,c.angle,c.look].every(Number.isFinite)) throw new Error('Invalid editor camera restoration.');
+        if (!engine._editor_restore_camera(c.zone,c.x,c.z,c.y,c.upper ? 1 : 0,c.angle,c.look)) send('camera-invalid', {revision:currentRevision});
+        else cameraChanged();
+      }
+      if (loaded && request.type === 'camera-state') send('camera-state', {id:request.id, camera:cameraState()});
+      if (loaded && request.type === 'turn') {
+        engine._editor_turn(request.delta|0, request.look|0); cameraChanged();
+      }
+      if (loaded && request.type === 'pick-at') {
+        if (!Number.isFinite(request.x) || !Number.isFinite(request.y)) throw new Error('Invalid preview pick coordinates.');
+        send('pick-sample', {id:request.id, ...pickAt(request.x, request.y)});
+      }
+      if (loaded && request.type === 'corner-light-state') {
+        if (!Array.isArray(request.points) || request.points.length > 128 || request.points.some(point => !Number.isInteger(point) || point < 0 || point > 2047)) throw new Error('Invalid point lighting query.');
+        const points = request.points.map(point => {
+          const lower = engine._editor_point_light_value(point, 0);
+          if (lower === -2147483648) throw new Error('Point lighting query refers to a missing native point.');
+          return {point, lower, upper:engine._editor_point_light_value(point, 1), lowerValue:engine._editor_point_light_value(point, 2), upperValue:engine._editor_point_light_value(point, 3)};
+        });
+        send('corner-light-state', {id:request.id, points});
+      }
+      if (loaded && request.type === 'capture') {
+        const c = request.camera;
+        if (!c || ![c.zone,c.x,c.z,c.upper,c.angle].every(Number.isInteger)) throw new Error('Invalid capture camera.');
+        if (c.height !== undefined && (!Number.isInteger(c.height * 256) || c.height * 256 < -2147483648 || c.height * 256 > 2147483647)) throw new Error('Invalid inspection eye height.');
+        const checksum = c.height === undefined ? engine._editor_capture(c.zone,c.x,c.z,c.upper,c.angle)
+          : engine._editor_capture_height(c.zone,c.x,c.z,c.upper,c.angle,c.height * 256);
+        send('captured', {id:request.id, checksum:checksum >>> 0}); cameraChanged();
+      }
+      if (loaded && request.type === 'mechanism-state') {
+        send('mechanism-state', {id:request.id, mechanism:mechanismState(request.kind, request.index)});
+      }
+      if (loaded && request.type === 'mechanism-control-state') {
+        mechanismState(request.kind, request.index);
+        const value = field => engine._editor_mechanism_value(request.kind === 'lift' ? 1 : 0, request.index, field);
+        send('mechanism-control-state', {id:request.id, velocity:value(11), timer:request.kind === 'lift' ? null : value(12)});
+      }
+      if (loaded && request.type === 'mechanism-wall-state') {
+        const state = mechanismState(request.kind, request.index);
+        if (!state.wallCount) throw new Error('The inspected mechanism has no moving wall attachments.');
+        const value = field => engine._editor_mechanism_value(request.kind === 'lift' ? 1 : 0, request.index, field);
+        send('mechanism-wall-state', {id:request.id, wall:{current:state.current, horizontal:value(7), vertical:value(8), base:value(9), brightness:value(10)}});
+      }
+      if (loaded && request.type === 'switch-state') {
+        if (!Number.isInteger(request.index) || request.index < 0 || request.index >= 8) throw new Error('Invalid switch inspection slot.');
+        const value = field => engine._editor_switch_value(request.index, field);
+        const zone = value(0), phase = zone < 0 ? null : value(2);
+        if (phase === -2147483648) throw new Error('The inspected switch has no active graphics attachment.');
+        send('switch-state', {id:request.id, switch:{zone, active:Boolean(value(1)), phase, countdown:value(3)}});
+      }
+      if (loaded && request.type === 'mechanism-trace') {
+        mechanismState(request.kind, request.index);
+        const revision = currentRevision, started = performance.now(), samples = [];
+        let topSeen = false;
+        const sample = () => {
+          if (!playing || revision !== currentRevision) { send('mechanism-trace', {id:request.id, samples, error:'Playtest stopped during mechanism trace.'}); return; }
+          const state = mechanismState(request.kind, request.index);
+          samples.push(state);
+          topSeen ||= state.current === state.top;
+          if (topSeen && (!request.cycle || state.current === state.bottom)) { send('mechanism-trace', {id:request.id, samples}); return; }
+          if (performance.now() - started >= 35000 || samples.length >= 4096) { send('mechanism-trace', {id:request.id, samples, error:'Mechanism did not complete its requested travel.'}); return; }
+          requestAnimationFrame(sample);
+        };
+        requestAnimationFrame(sample);
+      }
+      if (loaded && request.type === 'player-state') {
+        send('player-state', {id:request.id, zone:engine._editor_player_zone(), x:engine._editor_player_x(), z:engine._editor_player_z(), feetFixed:engine._editor_player_feet_fixed(), conditions:engine._editor_conditions(), ammunition:Array.from({length:8}, (_, gun) => engine._editor_ammunition(gun)), weapons:Array.from({length:8}, (_, gun) => Boolean(engine._editor_weapon_owned(gun))), playing});
+      }
+      if (loaded && request.type === 'zone-properties') {
+        const zone = request.zone;
+        if (!Number.isInteger(zone) || zone < 0) throw new Error('Invalid room property inspection index.');
+        const value = field => engine._editor_zone_value(zone, field);
+        if (value(0) < 0) throw new Error('The inspected room does not exist.');
+        send('zone-properties', {id:request.id, properties:{brightness:value(1), upperBrightness:value(2), control:value(3), upperControl:value(4), water:value(5)/256, backdrop:Boolean(value(6)), floorSound:value(7), upperFloorSound:value(8)}});
+      }
+      if (loaded && request.type === 'water-state') {
+        if (!Array.isArray(request.entries) || !request.entries.length || request.entries.length > 256) throw new Error('Invalid water inspection entries.');
+        const entries = request.entries.map(entry => {
+          if (!entry || !Number.isInteger(entry.zone) || !Number.isInteger(entry.graphic) || engine._editor_zone_value(entry.zone, 0) < 0) throw new Error('Invalid water inspection room.');
+          const polygon = engine._editor_water_polygon_height(entry.graphic);
+          if (polygon === -2147483648) throw new Error('Invalid water polygon inspection offset.');
+          return {zone:entry.zone, water:engine._editor_zone_value(entry.zone, 5)/256, polygon:polygon/256};
+        });
+        send('water-state', {id:request.id, entries});
+      }
+      if (loaded && request.type === 'object-state') {
+        const object = request.object;
+        if (!Number.isInteger(object) || object < 0) throw new Error('Invalid object inspection index.');
+        const value = field => engine._editor_object_value(object, field);
+        if (value(0) < 0) throw new Error('The inspected object does not exist.');
+        send('object-state', {id:request.id, object:{id:object, cid:value(0), zone:value(1), type:value(2), x:value(3)/65536, z:value(4)/65536, yFixed:value(5), health:value(6)}});
+      }
+      if (loaded && request.type === 'play') {
+        clearNavigation(); playing = !!request.playing;
+        engine._editor_play(playing ? 1 : 0);
+        if (playing) canvas.focus(); else document.exitPointerLock?.();
+      }
+    } catch(error) { fail(error, request.type === 'load' ? request.revision : currentRevision); }
+  });
+  canvas.addEventListener('click', event => {
+    const rect = canvas.getBoundingClientRect();
+    if (event.button === 0 && loaded && !playing && rect.width > 0 && rect.height > 0) {
+      canvas.focus({preventScroll:true});
+      send('pick', pickAt((event.clientX - rect.left) / rect.width, (event.clientY - rect.top) / rect.height));
+    }
+  });
+  canvas.addEventListener('keydown', event => {
+    if (playing || !loaded) return;
+    const shortcut = inspectionShortcut(event);
+    if (shortcut) { if (event.key === 'Escape') clearNavigation(); event.preventDefault(); send('shortcut', {shortcut, revision:currentRevision}); return; }
+    if (!event.ctrlKey && !event.metaKey && !event.altKey && ['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','ShiftLeft','ShiftRight'].includes(event.code)) { event.preventDefault(); navigationKeys.add(event.code); return; }
+    if (event.key === 'Enter') { event.preventDefault(); send('pick', pickAt(.5, .5)); return; }
+    const controls = {ArrowLeft:[-128,0],ArrowRight:[128,0],ArrowUp:[0,-8],ArrowDown:[0,8]};
+    if (controls[event.key]) { event.preventDefault(); engine._editor_turn(...controls[event.key]); cameraChanged(); }
+  });
+  canvas.addEventListener('keyup', event => navigationKeys.delete(event.code));
+  canvas.addEventListener('contextmenu', event => { if (!playing) event.preventDefault(); });
+  canvas.addEventListener('pointerdown', event => {
+    if (!loaded || playing || event.button !== 2) return;
+    event.preventDefault(); canvas.focus({preventScroll:true}); looking = true; lastPointer = { x:event.clientX, y:event.clientY }; canvas.setPointerCapture(event.pointerId);
+  });
+  canvas.addEventListener('pointermove', event => {
+    if (!looking || !lastPointer || playing) return;
+    lookX += (event.clientX-lastPointer.x)*8; lookY += (event.clientY-lastPointer.y)*.6; lastPointer = { x:event.clientX, y:event.clientY };
+  });
+  const stopLooking = () => { looking = false; lastPointer = undefined; };
+  canvas.addEventListener('pointerup', stopLooking); canvas.addEventListener('pointercancel', stopLooking); canvas.addEventListener('lostpointercapture', stopLooking);
+  canvas.addEventListener('blur', clearNavigation); window.addEventListener('blur', clearNavigation);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) clearNavigation(); });
+  let previousNavigationTime;
+  function navigate(time) {
+    const seconds = previousNavigationTime === undefined ? 0 : Math.min(.05, (time-previousNavigationTime)/1000); previousNavigationTime = time;
+    if (engine && loaded && !playing && document.activeElement === canvas) {
+      const key = name => navigationKeys.has(name) ? 1 : 0;
+      let changed = false;
+      if (seconds > 0 && navigationKeys.size) changed = !!engine._editor_navigate(key('KeyW')-key('KeyS'), key('KeyD')-key('KeyA'), key('KeyQ')-key('KeyE'), seconds, key('ShiftLeft') || key('ShiftRight'));
+      if (lookX || lookY) { engine._editor_turn(Math.round(lookX),Math.round(lookY)); lookX=lookY=0; changed = true; }
+      if (changed) cameraChanged();
+    }
+    requestAnimationFrame(navigate);
+  }
+  requestAnimationFrame(navigate);
+</script>
+</html>
