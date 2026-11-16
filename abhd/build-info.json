@@ -1,0 +1,31 @@
+{
+  "format": "alien-breed-web-deployment",
+  "version": "1.0.5",
+  "sourceRepository": "https://github.com/retro-foundry/Alien-Breed-HD",
+  "sourceCommit": "ccbdca71ef5d9acc342a77e97368d4f16b4171e1",
+  "sourceTag": "v1.0.5",
+  "threaded": false,
+  "cacheVersion": "1.0.5-ccbdca7",
+  "files": {
+    "index.html": {
+      "bytes": 16536,
+      "sha256": "81623700917dc3db14aa8094ff78f15c163d53e466de9f4470e220861928924e"
+    },
+    "index.js": {
+      "bytes": 228816,
+      "sha256": "ecad09a706f1c542877de54f4706015f6b9e27dd874603ad6abfe73569fe7128"
+    },
+    "index.wasm": {
+      "bytes": 1240400,
+      "sha256": "0f1bb37fd9f2da9964ac458638d60df2e021985c2a7feab235af6301f0cd00f1"
+    },
+    "index.data": {
+      "bytes": 36774408,
+      "sha256": "8bb4de1555fd8c22c5be0f8350c25884f2d97a7ce2bf07b7a70993949be770d3"
+    },
+    "README.txt": {
+      "bytes": 3579,
+      "sha256": "32399daaa503811d164d03ffe3cedf882b8fd557ce1626bf19a9a3eb0469d92d"
+    }
+  }
+}
