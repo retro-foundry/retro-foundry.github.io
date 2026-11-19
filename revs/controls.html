@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Revs wheel and controller setup</title>
+<style>
+:root{color-scheme:dark;font:16px/1.5 system-ui,sans-serif;background:#10151e;color:#eaf0f9}*{box-sizing:border-box}body{margin:0;padding:24px;max-width:1000px;margin-inline:auto}h1{margin:0;color:#ffc475}h2{font-size:1.15rem;margin:0 0 12px}p{margin:8px 0 16px;color:#bfcbdc}section{border:1px solid #364459;border-radius:10px;padding:18px;margin:16px 0;background:#192230}label,.row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:10px 0;flex-wrap:wrap}button,select,input{font:inherit;border:1px solid #566b88;border-radius:5px;padding:7px 10px;background:#25344b;color:inherit}button{cursor:pointer}button:hover,button:focus-visible{background:#3b5375}button:disabled{opacity:.5;cursor:default}select{max-width:100%}input[type=number]{width:100px}output{color:#ffc475}.hint{font-size:.9rem}pre{white-space:pre-wrap;overflow-wrap:anywhere;color:#a8c0da;font:12px/1.5 monospace}footer{position:sticky;bottom:0;background:#10151ef5;padding:14px 0;display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid #364459}#error{color:#ffabab;white-space:pre-wrap}#learn-status{padding:12px;border-left:3px solid #ffc475;background:#273144}#apply{background:#245b48}summary{cursor:pointer;color:#ffc475}@media(max-width:520px){body{padding:12px}section{padding:12px}label{align-items:flex-start}select{width:100%}button{min-height:44px}}
+</style>
+<style>
+[hidden]{display:none!important}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+#close{flex-shrink:0;font-size:1.5rem;line-height:1}
+#learning-panel{position:sticky;top:0;z-index:1;padding:12px;background:#273144;border:1px solid #ffc475;border-radius:8px}
+#learn-status{margin:0 0 8px;padding:0;border:0}
+.learn[aria-pressed=true]{background:#f4b942;color:#241900;border-color:#ffc475;font-weight:bold}
+#devices{padding-left:24px;color:#bfcbdc;overflow-wrap:anywhere}
+</style>
+<header><h1>Wheel and controller setup</h1><button id="close" type="button" aria-label="Close without applying" title="Cancel and return">&times;</button></header>
+<p>Set up a gamepad, wheel, separate pedals, or sequential gearstick. Changes take effect only when you choose Apply. The game and audio are held while this page is open.</p>
+<p id="connection" role="status" aria-live="polite">Connecting to Revs…</p>
+<button id="detect" type="button">Detect controllers</button>
+<p class="hint">Keep the game tab focused and press a physical controller button, then release it, if your browser has not exposed the device. Use your wheel's PC/USB mode.</p>
+<ul id="devices" aria-label="Detected controllers"></ul>
+<p id="error" role="alert"></p>
+<div id="learning-panel" hidden>
+  <p id="learn-status" role="status" aria-live="polite"></p>
+  <button id="finish-learn" type="button" hidden>Finish learning</button>
+  <button id="cancel-learn" type="button">Cancel learning</button>
+</div>
+<main id="editor" hidden>
+  <section><h2>Steering / gamepad</h2><p class="hint">Centre the wheel or stick before choosing Learn. Then turn fully right first and fully left.</p><label>Device <select id="steering-device"></select></label><div id="steering-bindings"></div><pre id="steering-live"></pre></section>
+  <section><h2>Pedals</h2><p class="hint">Release the pedal before choosing Learn, then press it fully. Choose either an axis or a button for throttle and brake.</p><label>Device <select id="pedal-device"></select></label><div id="pedal-bindings"></div><pre id="pedal-live"></pre></section>
+  <section><h2>Gearstick / paddles</h2><label>Device <select id="shifter-device"></select></label><p class="hint">Gear up and gear down feed Revs' sequential gearbox. Direct H-pattern gear selection is not supported.</p><div id="shifter-bindings"></div><pre id="shifter-live"></pre></section>
+  <section><h2>Assists</h2><div id="assist-options"></div><p class="hint">Automatic gears is a modern input assist. Auto clutch controls whether device shifts require the clutch. Steering assist selects the original CAS option.</p></section>
+  <section><details><summary>Keyboard bindings</summary><div id="keyboard-bindings"></div></details></section>
+  <section><details><summary>Axis response and endpoints</summary><p class="hint">Use Learn for each axis first. These values describe the device, not the vehicle physics.</p><div id="response-options"></div></details></section>
+</main>
+<footer><button id="apply" disabled>Apply and return</button><button id="cancel">Cancel</button><button id="reset" disabled>Restore standard pad defaults</button></footer>
+<script src="controls.js"></script>
+</html>
