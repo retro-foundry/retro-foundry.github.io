@@ -206,6 +206,10 @@
     .flagship { display: grid; gap: 24px; margin-top: 32px; }
     .flagship + .flagship { margin-top: 24px; }
     @media (min-width: 860px) { .flagship { grid-template-columns: 1.25fr 1fr; align-items: center; } }
+    .gameplay-video {
+      display: block; justify-self: center; width: 100%; max-width: 260px; height: auto;
+      border-radius: var(--radius); border: 1px solid var(--border); background: #000;
+    }
     .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
     .card-body { padding: 20px 22px 22px; display: flex; flex-direction: column; flex: 1; }
     .card-body p { color: var(--text-muted); font-size: 0.95rem; }
@@ -524,23 +528,41 @@
 
         <!-- Gods -->
         <div class="flagship flip">
-          <div class="video" data-yt="yjsveBOsnNY" style="background-image:url('https://i.ytimg.com/vi/yjsveBOsnNY/hqdefault.jpg')">
-            <button type="button" aria-label="Play video: Gods native rebuild">Gods: native rebuild</button>
+          <div class="video" data-yt="yjsveBOsnNY" style="background-image:url('gods-wide.png')">
+            <button type="button" aria-label="Play Gods widescreen and smooth motion demo">Gods in widescreen</button>
           </div>
           <div class="card">
             <div class="card-body">
               <p class="eyebrow" style="margin-bottom:8px">Amiga, 1991</p>
-              <h3>Gods</h3>
-              <ul class="tags"><li>Native rebuild</li><li>WebAssembly</li></ul>
+              <h3>GODS</h3>
+              <ul class="tags"><li>Native rebuild</li><li>Widescreen</li><li>Smooth motion</li><li>WebAssembly</li></ul>
               <p>
-                The Bitmap Brothers' platform adventure, rebuilt as native C from the original assembly. The intro, menu and
-                the first level run, with Paula audio reproduced from the original's sound system. Play live asks for the
-                game's two disk images, which you supply.
+                The Bitmap Brothers' platform adventure, rebuilt as native C from the original assembly with widescreen
+                gameplay and smooth motion. The intro, menu and first level run with Paula audio reproduced from the
+                original's sound system. The browser demo requires the game's two disk images.
               </p>
               <div class="links">
                 <a class="live" href="https://retro-foundry-games.github.io/Gods/" target="_blank" rel="noopener noreferrer">Play live</a>
+                <a href="https://www.youtube.com/watch?v=yjsveBOsnNY" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
                 <a href="https://github.com/retro-foundry-games/Gods" target="_blank" rel="noopener noreferrer">Source</a>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slam Tilt -->
+        <div class="flagship">
+          <video class="gameplay-video" src="slamtilt.mp4" width="260" height="490" controls playsinline preload="metadata"
+                 aria-label="Slam Tilt gameplay on the Ace of Space table"></video>
+          <div class="card">
+            <div class="card-body">
+              <p class="eyebrow" style="margin-bottom:8px">Amiga, 1996</p>
+              <h3>Slam Tilt</h3>
+              <ul class="tags"><li>Fullscreen playfield</li></ul>
+              <p>
+                Liquid Dezign's Amiga pinball game with a fullscreen view for modern displays. Watch the Ace of Space
+                table in portrait with the whole playfield visible.
+              </p>
             </div>
           </div>
         </div>
