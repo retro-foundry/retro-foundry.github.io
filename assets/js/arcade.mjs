@@ -53,7 +53,10 @@ function requirementBadge(game) {
   return `<span class="requirement">${icon(game.requirement.icon)}${game.requirement.label}</span>`;
 }
 
-function playLink(game) {
+function primaryGameLink(game) {
+  if (game.demoDownload) {
+    return `<a class="button button-primary" href="${game.demoDownload}">${icon('download')}Download demo</a>`;
+  }
   return `<a class="button button-primary" href="${game.url}" data-launch="${game.id}">${icon('play')}Play in browser</a>`;
 }
 
@@ -91,7 +94,7 @@ function renderFeatured(index) {
   byId('featured-caption').textContent = game.edition;
   byId('featured-summary').textContent = game.summary;
   const detailsLabel = game.release ? `${icon('download')}Downloads` : `${icon('info')}Details`;
-  byId('featured-actions').innerHTML = `${playLink(game)}
+  byId('featured-actions').innerHTML = `${primaryGameLink(game)}
     <a class="button button-secondary" href="${gameDetails(game)}">${detailsLabel}</a>`;
   byId('featured-requirement').innerHTML = requirementBadge(game);
   for (const button of byId('feature-picks').children) {
@@ -152,15 +155,15 @@ function renderDetails(game) {
         <h1 id="detail-title" tabindex="-1">${game.title}</h1>
         <p class="hero-caption">${game.edition}</p>
         <p class="hero-summary">${game.summary}</p>
-        <div class="actions">${playLink(game)}${bookmarkButton(game, true)}</div>
+        <div class="actions">${primaryGameLink(game)}${bookmarkButton(game, true)}</div>
         <div class="hero-requirement">${requirementBadge(game)}</div>
       </div>
     </div>
     ${releaseSection(game.release)}
-    <section class="detail-info" aria-labelledby="play-info-title">
-      <h2 id="play-info-title">How to Play</h2>
+    <section class="detail-info" aria-labelledby="game-info-title">
+      <h2 id="game-info-title">${game.url ? 'How to Play' : 'Demo Requirements'}</h2>
       ${game.requirement ? `<p>${game.requirement.description}</p>` : ''}
-      <p>Play opens the game in this tab. Use your browser’s Back button to return to the arcade.</p>
+      ${game.url ? '<p>Play opens the game in this tab. Use your browser’s Back button to return to the arcade.</p>' : ''}
       ${links ? `<div class="detail-links">${links}</div>` : ''}
     </section>`;
 }

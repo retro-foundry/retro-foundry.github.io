@@ -123,6 +123,22 @@ export const games = [
       { label: 'Source code', url: 'https://github.com/retro-foundry-games/Gods' },
     ],
   },
+  {
+    id: 'tkg',
+    title: 'Alien Breed 3D II',
+    edition: 'The Killing Grounds · Level A Demo',
+    showEditionOnCard: true,
+    platform: 'Windows x64',
+    genre: 'Shooter',
+    image: artwork('tkg'),
+    demoDownload: 'https://github.com/retro-foundry/alienbreed3d2-releases/releases/download/demo-v0.1.2/alien-breed-3d-ii-level-a-demo-v0.1.2-windows-x64-nvidia-rtx-only.zip',
+    summary: 'Explore a single level with real-time path-traced lighting.',
+    requirement: {
+      icon: 'chip',
+      label: 'NVIDIA RTX required',
+      description: 'Requires Windows x64 and an NVIDIA GeForce RTX GPU with a current driver. Extract the ZIP and run ab3d2.exe.',
+    },
+  },
 ];
 
 export const featured = ['abhd', 'stuntcar', 'slam-tilt'];
