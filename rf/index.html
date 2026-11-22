@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Retro Foundry – For Rights Holders</title>
-  <meta name="description" content="Retro Foundry reverse engineers classic games and rebuilds them as modern native code, so rights holders can release remasters on Xbox and PlayStation with no emulator and no ROM.">
+  <meta name="description" content="Retro Foundry reverse engineers classic games and rebuilds them as modern native code, so rights holders can release remasters on Steam, Xbox and PlayStation with no emulator and no ROM.">
   <link rel="icon" href="rf-mark.png">
   <meta name="theme-color" content="#0c0c0c">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -218,7 +218,6 @@
     .tags li { font-family: var(--mono); font-size: 0.72rem; padding: 3px 8px; border-radius: 6px; background: rgba(71, 111, 159, 0.2); color: var(--steel); }
     .links { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: auto; font-size: 0.92rem; font-weight: 600; }
     .card-body p.eyebrow { color: var(--molten); font-size: 0.74rem; }
-    .grid:not(.three) .thumb { aspect-ratio: 21 / 9; }
     .live { display: inline-flex; align-items: center; gap: 6px; }
     .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--good); box-shadow: 0 0 8px var(--good); }
 
@@ -226,18 +225,13 @@
     @media (min-width: 680px) { .grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 900px) { .grid.three { grid-template-columns: repeat(3, 1fr); } }
     .thumb { aspect-ratio: 16 / 9; background: #080808 center / cover no-repeat; border-bottom: 1px solid var(--border); position: relative; }
+    img.thumb { width: 100%; height: auto; object-fit: contain; }
     .thumb::after {
       content: ""; position: absolute; inset: 0; pointer-events: none;
       background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 3px);
     }
     .card { transition: transform 0.2s, border-color 0.2s; }
     .card:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.18); }
-    .thumb.art {
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.04em; text-align: center; padding: 16px;
-    }
-    .thumb.revs { background: linear-gradient(160deg, #141a0b, #4c5c26 60%, #0f1308); color: var(--rf-cream); }
-    .thumb.gloom { background: radial-gradient(circle at 50% 60%, #2b4566, #0a0d12 70%); color: var(--rf-cream); }
 
     .mini { padding: 16px 18px; }
     .mini h3 { font-size: 1.02rem; margin-bottom: 4px; }
@@ -346,7 +340,7 @@
         <h1>Your classic games, <em>back on Xbox and PlayStation</em>.</h1>
         <p class="lede">
           Your games shaped a generation, and players still love them. Retro Foundry reverse engineers
-          those classics and rebuilds them as modern native code, so you can release a remaster on Xbox and PlayStation, as well as PC, mobile and the web.
+          those classics and rebuilds them as modern native code for PC, including Steam, as well as Xbox, PlayStation, mobile and the web.
           The release needs no emulator, no ROM and no streaming service, and you keep the IP.
         </p>
         <div class="cta-row">
@@ -428,12 +422,11 @@
     <!-- Consoles -->
     <section id="consoles">
       <div class="wrap">
-        <p class="eyebrow">Console first</p>
+        <p class="eyebrow">Console releases</p>
         <h2>Made for Xbox and PlayStation.</h2>
         <p class="lede">
-          Consoles are where classic games sell. Every rebuild targets Xbox and PlayStation as a native release, not an emulated
-          wrapper, with the presentation console players expect. Our developer has already shipped a retro games platform on Xbox,
-          so console delivery is familiar ground.
+          We can bring your rebuild to Xbox and PlayStation as a native release with the presentation console players expect.
+          Our developer has already shipped a retro games platform on Xbox, so console delivery is familiar ground.
         </p>
         <div class="console-grid">
           <div class="console-tile">
@@ -673,7 +666,8 @@
         <h3 style="margin-top:44px">More from the foundry</h3>
         <div class="grid">
           <article class="card">
-            <div class="thumb art revs">REVS AMIGA</div>
+            <img class="thumb" src="revs-gameplay.png" width="3838" height="1801" loading="lazy"
+                 alt="Revs cockpit view with a circuit map and lap timer">
             <div class="mini">
               <h3>Revs</h3>
               <p>Geoff Crammond's Formula 3 simulator, rebuilt for the web with improved rendering precision.</p>
@@ -681,7 +675,8 @@
             </div>
           </article>
           <article class="card">
-            <div class="thumb art gloom">GLOOM<br>WITH FRIENDS</div>
+            <img class="thumb" src="gloom-gameplay.png" width="3229" height="1825" loading="lazy"
+                 alt="Gloom With Friends gameplay in a dark corridor">
             <div class="mini">
               <h3>Gloom With Friends</h3>
               <p>The Amiga shooter Gloom, rebuilt with online co-op. Send a link and a friend joins as player two, peer to peer, straight from the browser.</p>
@@ -704,7 +699,10 @@
         <div class="model">
           <div class="card"><div class="card-body">
             <h3>Remaster for release <small>Fee + revenue share</small></h3>
-            <p>We rebuild and remaster the game, then ship it on Xbox and PlayStation, plus Steam, mobile and the web. You publish it, or license it for release.</p>
+            <p>
+              We rebuild and remaster the game for the platforms you choose. We can launch directly on Steam to gauge
+              demand before a wider release. You can publish it yourself or license it for release.
+            </p>
           </div></div>
           <div class="card"><div class="card-body">
             <h3>Bring back a classic <small>Revenue share</small></h3>
@@ -718,6 +716,9 @@
             <h3>Source recovery <small>Preservation</small></h3>
             <p>If the original source code was lost, a rebuild gives you clean, documented, portable source again, which becomes the basis for every future release.</p>
           </div></div>
+        </div>
+        <div class="callout">
+          We can also produce <b>physical boxed editions</b> under the Mastertronic brand, owned by The Retro Collective.
         </div>
       </div>
     </section>
@@ -733,7 +734,7 @@
             <div class="use"><b>1. Pick a title</b><span>We go through your catalogue and choose a game with a loyal audience and room to grow.</span></div>
             <div class="use"><b>2. Playable prototype</b><span>We build a native version of your game running in widescreen at high frame rates, so you can evaluate it hands-on.</span></div>
             <div class="use"><b>3. Agree terms</b><span>We agree the licence, revenue share, platforms and remaster features that suit the title.</span></div>
-            <div class="use"><b>4. Remaster and release</b><span>We deliver in milestones with your approval at each one, through to launch on Xbox and PlayStation, and anywhere else you choose.</span></div>
+            <div class="use"><b>4. Remaster and release</b><span>We deliver in milestones with your approval at each one, through to launch on the platforms we agree on.</span></div>
           </div>
           <div class="cta-row">
             <a class="btn primary" href="https://discord.gg/QjARJ67V9U" target="_blank" rel="noopener noreferrer">Talk to us on Discord</a>
