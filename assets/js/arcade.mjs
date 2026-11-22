@@ -144,11 +144,26 @@ function releaseSection(release) {
   </section>`;
 }
 
+function videoPanel(game) {
+  if (!game.video) return '';
+  const { id, title } = game.video;
+  return `<figure class="game-video" aria-labelledby="game-video-title">
+    <figcaption id="game-video-title">${title}</figcaption>
+    <div class="video-player">
+      <button type="button" class="video-preview" aria-label="Watch ${title}">
+        <img src="${game.image}" alt="">
+        <span class="video-play">${icon('play')}</span>
+      </button>
+    </div>
+    <a class="text-link video-external" href="https://www.youtube.com/watch?v=${id}">Watch on YouTube</a>
+  </figure>`;
+}
+
 function renderDetails(game) {
   const links = game.links?.map(link => `<a class="text-link" href="${link.url}">${link.label}</a>`).join('') ?? '';
   details.innerHTML = `
     <a class="back-link" href="#games">${icon('chevron-left')}All games</a>
-    <div class="hero detail-hero">
+    <div class="hero detail-hero${game.video ? ' detail-with-video' : ''}">
       <img class="hero-art" src="${game.image}" alt="">
       <div class="hero-content">
         <p class="eyebrow"><span class="brand-stripes" aria-hidden="true"></span>${game.platform} · ${game.genre}</p>
@@ -158,6 +173,7 @@ function renderDetails(game) {
         <div class="actions">${primaryGameLink(game)}${bookmarkButton(game, true)}</div>
         <div class="hero-requirement">${requirementBadge(game)}</div>
       </div>
+      ${videoPanel(game)}
     </div>
     ${releaseSection(game.release)}
     <section class="detail-info" aria-labelledby="game-info-title">
@@ -166,6 +182,20 @@ function renderDetails(game) {
       ${game.url ? '<p>Play opens the game in this tab. Use your browser’s Back button to return to the arcade.</p>' : ''}
       ${links ? `<div class="detail-links">${links}</div>` : ''}
     </section>`;
+
+  if (game.video) {
+    const preview = details.querySelector('.video-preview');
+    preview.addEventListener('click', () => {
+      const player = document.createElement('iframe');
+      player.src = `https://www.youtube-nocookie.com/embed/${game.video.id}?autoplay=1&rel=0`;
+      player.title = game.video.title;
+      player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      player.allowFullscreen = true;
+      player.referrerPolicy = 'strict-origin-when-cross-origin';
+      preview.replaceWith(player);
+      player.focus({ preventScroll: true });
+    });
+  }
 }
 
 function route() {

@@ -22,7 +22,8 @@ export const games = [
         { label: 'DOS', url: `${abhdDownload}/ABHD-DOS.zip` },
       ],
     },
-    links: [{ label: 'Watch gameplay', url: 'https://www.youtube.com/watch?v=9jp2jFL7aR8' }],
+    video: { id: 'cFvim_cU_zE', title: 'Alien Breed 3D HD release trailer' },
+    links: [{ label: 'Watch the first four levels', url: 'https://www.youtube.com/watch?v=9jp2jFL7aR8' }],
   },
   {
     id: 'stuntcar',
@@ -49,7 +50,7 @@ export const games = [
       label: 'ADF required',
       description: 'Choose your F/A-18 Interceptor .adf disk image in the game launcher.',
     },
-    links: [{ label: 'Watch gameplay', url: 'https://www.youtube.com/watch?v=glJcRETmbDM' }],
+    video: { id: 'glJcRETmbDM', title: 'Widescreen and unlocked frame rate' },
   },
   {
     id: 'slam-tilt',
@@ -102,6 +103,7 @@ export const games = [
       label: 'ROM required',
       description: 'Choose your US Rev 1 .z64 ROM or a ZIP containing it. The launcher also accepts optional INI settings and HD textures.',
     },
+    video: { id: 'g9e2DShmQ3s', title: 'Perfect Dark Plus HD texture pack trailer' },
     links: [{ label: 'HD texture pack', url: 'https://github.com/retro-foundry/Perfect-Dark-Plus-HD-Textures' }],
   },
   {
@@ -118,10 +120,8 @@ export const games = [
       label: 'ADF required',
       description: 'Choose both original Gods .adf disk images, disk 1 and disk 2, in the game launcher.',
     },
-    links: [
-      { label: 'Watch gameplay', url: 'https://www.youtube.com/watch?v=yjsveBOsnNY' },
-      { label: 'Source code', url: 'https://github.com/retro-foundry-games/Gods' },
-    ],
+    video: { id: 'yjsveBOsnNY', title: 'Gods: Into The Wonderful' },
+    links: [{ label: 'Source code', url: 'https://github.com/retro-foundry-games/Gods' }],
   },
   {
     id: 'tkg',
@@ -133,6 +133,7 @@ export const games = [
     image: artwork('tkg'),
     demoDownload: 'https://github.com/retro-foundry/alienbreed3d2-releases/releases/download/demo-v0.1.2/alien-breed-3d-ii-level-a-demo-v0.1.2-windows-x64-nvidia-rtx-only.zip',
     summary: 'Explore a single level with real-time path-traced lighting.',
+    video: { id: '1TCfGfZL_Lg', title: 'RTX path tracing gameplay' },
     requirement: {
       icon: 'chip',
       label: 'NVIDIA RTX required',
@@ -141,4 +142,4 @@ export const games = [
   },
 ];
 
-export const featured = ['abhd', 'stuntcar', 'slam-tilt'];
+export const featured = ['abhd', 'stuntcar', 'slam-tilt', 'tkg'];
