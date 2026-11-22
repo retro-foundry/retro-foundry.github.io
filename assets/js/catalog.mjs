@@ -104,6 +104,25 @@ export const games = [
     },
     links: [{ label: 'HD texture pack', url: 'https://github.com/retro-foundry/Perfect-Dark-Plus-HD-Textures' }],
   },
+  {
+    id: 'gods',
+    title: 'Gods',
+    edition: 'Widescreen Browser Demo',
+    platform: 'Amiga',
+    genre: 'Platformer',
+    image: artwork('gods'),
+    url: 'https://retro-foundry-games.github.io/Gods/',
+    summary: 'Play The Bitmap Brothers’ Amiga platform adventure with optional 16:9 widescreen and smoother motion.',
+    requirement: {
+      icon: 'disk',
+      label: 'ADF required',
+      description: 'Choose both original Gods .adf disk images, disk 1 and disk 2, in the game launcher.',
+    },
+    links: [
+      { label: 'Watch gameplay', url: 'https://www.youtube.com/watch?v=yjsveBOsnNY' },
+      { label: 'Source code', url: 'https://github.com/retro-foundry-games/Gods' },
+    ],
+  },
 ];
 
 export const featured = ['abhd', 'stuntcar', 'slam-tilt'];
