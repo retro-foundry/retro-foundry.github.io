@@ -100,32 +100,44 @@ p { line-height: 1.5; }
 .toolbar button { white-space: nowrap; font-size: .85rem; }
 #display { position: relative; min-width: 0; min-height: 0; display: grid; place-items: center; overflow: hidden; touch-action: none; }
 canvas { display: block; width: 100%; height: 100%; outline: 0; touch-action: none; }
-.desktop-overlay {
+.credit-overlay {
   display: none;
-  position: absolute;
+  position: fixed;
+  top: 12px;
   right: 12px;
-  bottom: 12px;
+  z-index: 3;
   align-items: center;
-  gap: 8px;
-  padding: 5px 8px 5px 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: rgba(21, 19, 18, .9);
-  font-size: .85rem;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 12px;
+  background: rgba(18, 18, 22, .85);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .35);
 }
-.desktop-overlay .volume-control { display: flex; align-items: center; gap: 8px; }
-.desktop-overlay input { width: 86px; margin: 0; accent-color: var(--amber); }
-.desktop-overlay a { display: grid; place-items: center; width: 36px; height: 38px; border-radius: 6px; color: var(--muted); }
-.desktop-overlay a:hover, .desktop-overlay a:focus-visible { background: #292420; color: #efe6da; }
-.desktop-overlay svg { width: 22px; height: 22px; fill: currentColor; }
-.desktop-overlay a:is(:hover, :focus-visible) .icon-discord { color: #828bff; }
-.desktop-overlay a:is(:hover, :focus-visible) .icon-patreon { color: #ff655d; }
-.credit-name { display: none; }
-#launcher .desktop-overlay { position: static; padding: 0; justify-content: center; border: 0; background: transparent; }
-#launcher .volume-control { display: none; }
-#launcher .desktop-overlay a { display: flex; width: auto; gap: 8px; padding: 0 12px; }
-#launcher .credit-name { display: inline; }
-@media (min-width: 640px) and (hover: hover) and (pointer: fine) { .desktop-overlay { display: flex; } }
+#display .credit-overlay { position: absolute; }
+.credit-overlay a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  color: #a0a0a8;
+  transition: color .2s, background .2s, transform .15s;
+}
+.credit-overlay a:is(:hover, :focus-visible) {
+  color: #fff;
+  background: rgba(255, 255, 255, .1);
+  outline: none;
+  transform: scale(1.08);
+}
+.credit-overlay a:active { transform: scale(.98); }
+.credit-overlay .icon { width: 28px; height: 28px; fill: currentColor; }
+.credit-overlay a:is(:hover, :focus-visible) .icon-discord { color: #5865f2; }
+.credit-overlay a:is(:hover, :focus-visible) .icon-patreon { color: #ff424d; }
+.volume-control { display: flex; align-items: center; gap: 8px; color: #a0a0a8; }
+.volume-control input { width: 80px; margin: 0; accent-color: #c9d1d9; cursor: pointer; }
+@media (min-width: 640px) and (hover: hover) and (pointer: fine) { .credit-overlay { display: flex; } }
 #score-status {
   position: absolute;
   top: calc(env(safe-area-inset-top) + 8px);

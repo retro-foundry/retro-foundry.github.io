@@ -40,7 +40,9 @@ try {
   console.warn('Could not read the saved game volume:', error);
 }
 
-volume.addEventListener('input', () => Module._slamtilt_web_volume(volume.valueAsNumber));
+volume.addEventListener('input', () => {
+  if (playing) Module._slamtilt_web_volume(volume.valueAsNumber);
+});
 volume.addEventListener('change', () => {
   try {
     localStorage.setItem(volumeKey, volume.value);
@@ -48,7 +50,9 @@ volume.addEventListener('change', () => {
     console.warn('Could not save the game volume:', error);
   }
 });
-volume.addEventListener('pointerup', () => canvas.focus({ preventScroll: true }));
+volume.addEventListener('pointerup', () => {
+  if (playing) canvas.focus({ preventScroll: true });
+});
 
 function message(text, error = false) {
   status.textContent = text;
@@ -127,9 +131,8 @@ function resize() {
 function showLauncher(error) {
   playing = false;
   releaseTouch();
-  document.body.append(portraitPrompt);
+  document.body.append(portraitPrompt, desktopOverlay);
   game.hidden = true;
-  launcher.append(desktopOverlay);
   launcher.hidden = false;
   if (document.fullscreenElement === game) document.exitFullscreen().catch(console.error);
   if (history.state?.slamTiltPlaying) history.back();
