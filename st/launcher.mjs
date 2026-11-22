@@ -18,11 +18,13 @@ const volume = document.getElementById('game-volume');
 const portraitPrompt = document.getElementById('portrait-prompt');
 const landscape = matchMedia('(orientation: landscape)');
 const volumeKey = 'slamtilt:volume';
+const runtimeVersion = new URL(import.meta.url).search;
 
 let imported;
 let pending = false;
 let playing = false;
 let runtimeFailed = false;
+let gameAspect;
 
 // A reload returns to the disk chooser, even if the last page was playing.
 if (history.state?.slamTiltPlaying) history.replaceState({ ...history.state, slamTiltPlaying: false }, '');
@@ -121,8 +123,10 @@ function resize() {
   if (!playing) return;
   const viewport = display.getBoundingClientRect();
   const density = devicePixelRatio * (window.visualViewport?.scale ?? 1);
-  const width = Math.max(1, Math.floor(viewport.width * density));
-  const height = Math.max(1, Math.floor(viewport.height * density));
+  const cssWidth = gameAspect ? Math.min(viewport.width, viewport.height * gameAspect) : viewport.width;
+  const cssHeight = gameAspect ? Math.min(viewport.height, viewport.width / gameAspect) : viewport.height;
+  const width = Math.max(1, Math.floor(cssWidth * density));
+  const height = Math.max(1, Math.floor(cssHeight * density));
   canvas.style.setProperty('width', `${width / density}px`, 'important');
   canvas.style.setProperty('height', `${height / density}px`, 'important');
   Module._slamtilt_web_resize(width, height);
@@ -130,6 +134,7 @@ function resize() {
 
 function showLauncher(error) {
   playing = false;
+  gameAspect = undefined;
   releaseTouch();
   document.body.append(portraitPrompt, desktopOverlay);
   game.hidden = true;
@@ -189,7 +194,11 @@ const runtime = new Promise((resolve, reject) => {
     onSlamTiltEnd: showLauncher,
     readSlamTiltGamepads: readGamepads,
     slamTiltPortraitRequired: portraitRequired,
-    locateFile: (file, prefix) => prefix + (file === 'slamtilt.wasm' ? file + '?v=6' : file),
+    setSlamTiltAspect: (width, height) => {
+      gameAspect = width / height;
+      resize();
+    },
+    locateFile: (file, prefix) => prefix + file + (file === 'slamtilt.wasm' ? runtimeVersion : ''),
     restoreSlamTiltScores: restoreScores,
     saveSlamTiltScores: saveScores,
     slamTiltScoreWarning: scoreWarning,
@@ -200,7 +209,7 @@ const runtime = new Promise((resolve, reject) => {
     },
   };
   const script = document.createElement('script');
-  script.src = 'slamtilt.js?v=6';
+  script.src = `slamtilt.js${runtimeVersion}`;
   script.onerror = () => reject(new Error('Could not load the browser runtime.'));
   document.head.append(script);
 });
