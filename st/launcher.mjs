@@ -129,7 +129,6 @@ function resize() {
   const height = Math.max(1, Math.floor(cssHeight * density));
   canvas.style.setProperty('width', `${width / density}px`, 'important');
   canvas.style.setProperty('height', `${height / density}px`, 'important');
-  Module._slamtilt_web_resize(width, height);
 }
 
 function showLauncher(error) {
