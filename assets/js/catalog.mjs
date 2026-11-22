@@ -103,7 +103,6 @@ export const games = [
   {
     id: 'gods',
     title: 'Gods',
-    edition: 'Browser Demo',
     enhancements: ['16:9 widescreen', 'Smooth motion'],
     platform: 'Amiga',
     genre: 'Platformer',
