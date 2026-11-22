@@ -1,4 +1,7 @@
 const artwork = name => `../assets/images/arcade/${name}.webp`;
+const abhdVersion = 'v1.0.6';
+const abhdReleases = 'https://github.com/retro-foundry/Alien-Breed-HD/releases';
+const abhdDownload = `${abhdReleases}/download/${abhdVersion}`;
 
 export const games = [
   {
@@ -10,6 +13,15 @@ export const games = [
     image: artwork('abhd'),
     url: '../abhd/',
     summary: 'Play all 16 levels of Team17’s Amiga shooter with mouse look, gamepad controls and an automap.',
+    release: {
+      version: abhdVersion,
+      url: `${abhdReleases}/tag/${abhdVersion}`,
+      downloads: [
+        { label: 'Windows x64', url: `${abhdDownload}/alien-breed-3d-i-${abhdVersion}-windows-x64.zip` },
+        { label: 'Linux x64', url: `${abhdDownload}/alien-breed-3d-i-${abhdVersion}-linux-x64.tar.gz` },
+        { label: 'DOS', url: `${abhdDownload}/ABHD-DOS.zip` },
+      ],
+    },
     links: [{ label: 'Watch gameplay', url: 'https://www.youtube.com/watch?v=9jp2jFL7aR8' }],
   },
   {

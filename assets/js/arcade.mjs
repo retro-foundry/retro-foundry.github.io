@@ -90,8 +90,9 @@ function renderFeatured(index) {
   byId('featured-title').textContent = game.title;
   byId('featured-caption').textContent = game.edition;
   byId('featured-summary').textContent = game.summary;
+  const detailsLabel = game.release ? `${icon('download')}Downloads` : `${icon('info')}Details`;
   byId('featured-actions').innerHTML = `${playLink(game)}
-    <a class="button button-secondary" href="${gameDetails(game)}">${icon('info')}Details</a>`;
+    <a class="button button-secondary" href="${gameDetails(game)}">${detailsLabel}</a>`;
   byId('featured-requirement').innerHTML = requirementBadge(game);
   for (const button of byId('feature-picks').children) {
     button.setAttribute('aria-pressed', Number(button.dataset.feature) === featureIndex);
@@ -129,6 +130,17 @@ function renderLibrary() {
   byId('storage-error').hidden = storageAvailable;
 }
 
+function releaseSection(release) {
+  if (!release) return '';
+  const downloadLinks = release.downloads.map(({ label, url }) => `
+    <a class="button button-secondary" href="${url}" aria-label="Download ${label}">${icon('download')}${label}</a>`).join('');
+  return `<section class="detail-info" aria-labelledby="download-title">
+    <h2 id="download-title">Download ${release.version}</h2>
+    <div class="detail-links">${downloadLinks}</div>
+    <div class="detail-links"><a class="text-link" href="${release.url}">Release notes and checksums</a></div>
+  </section>`;
+}
+
 function renderDetails(game) {
   const links = game.links?.map(link => `<a class="text-link" href="${link.url}">${link.label}</a>`).join('') ?? '';
   details.innerHTML = `
@@ -144,6 +156,7 @@ function renderDetails(game) {
         <div class="hero-requirement">${requirementBadge(game)}</div>
       </div>
     </div>
+    ${releaseSection(game.release)}
     <section class="detail-info" aria-labelledby="play-info-title">
       <h2 id="play-info-title">How to Play</h2>
       ${game.requirement ? `<p>${game.requirement.description}</p>` : ''}
