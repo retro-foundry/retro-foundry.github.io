@@ -1,7 +1,5 @@
 const artwork = name => `../assets/images/arcade/${name}.webp`;
 const abhdVersion = 'v1.0.6';
-const abhdReleases = 'https://github.com/retro-foundry/Alien-Breed-HD/releases';
-const abhdDownload = `${abhdReleases}/download/${abhdVersion}`;
 
 export const games = [
   {
@@ -15,12 +13,8 @@ export const games = [
     summary: 'Play all 16 levels of Team17’s Amiga shooter.',
     release: {
       version: abhdVersion,
-      url: `${abhdReleases}/tag/${abhdVersion}`,
-      downloads: [
-        { label: 'Windows x64', url: `${abhdDownload}/alien-breed-3d-i-${abhdVersion}-windows-x64.zip` },
-        { label: 'Linux x64', url: `${abhdDownload}/alien-breed-3d-i-${abhdVersion}-linux-x64.tar.gz` },
-        { label: 'DOS', url: `${abhdDownload}/ABHD-DOS.zip` },
-      ],
+      url: `https://github.com/retro-foundry/Alien-Breed-HD/releases/tag/${abhdVersion}`,
+      platforms: 'Windows x64, Linux x64 and DOS',
     },
     video: { id: 'cFvim_cU_zE', title: 'Alien Breed 3D HD release trailer' },
     links: [{ label: 'Watch the first four levels', url: 'https://www.youtube.com/watch?v=9jp2jFL7aR8' }],
@@ -132,7 +126,7 @@ export const games = [
     platform: 'Windows x64',
     genre: 'Shooter',
     image: artwork('tkg'),
-    demoDownload: 'https://github.com/retro-foundry/alienbreed3d2-releases/releases/download/demo-v0.1.2/alien-breed-3d-ii-level-a-demo-v0.1.2-windows-x64-nvidia-rtx-only.zip',
+    release: { url: 'https://github.com/retro-foundry/alienbreed3d2-releases/releases/tag/demo-v0.1.2' },
     summary: 'Explore a single level with dynamic lighting, reflections and shadows.',
     video: { id: '1TCfGfZL_Lg', title: 'RTX path tracing gameplay' },
     requirement: {

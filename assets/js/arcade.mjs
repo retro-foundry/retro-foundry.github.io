@@ -53,10 +53,12 @@ function requirementBadge(game) {
   return `<span class="requirement">${icon(game.requirement.icon)}${game.requirement.label}</span>`;
 }
 
+function releaseLink(release, style, label = 'Downloads on GitHub') {
+  return `<a class="button button-${style}" href="${release.url}">${icon('download')}${label}</a>`;
+}
+
 function primaryGameLink(game) {
-  if (game.demoDownload) {
-    return `<a class="button button-primary" href="${game.demoDownload}">${icon('download')}Download demo</a>`;
-  }
+  if (!game.url) return releaseLink(game.release, 'primary', 'Demo release on GitHub');
   return `<a class="button button-primary" href="${game.url}" data-launch="${game.id}">${icon('play')}Play in browser</a>`;
 }
 
@@ -102,9 +104,10 @@ function renderFeatured(index) {
   caption.hidden = !game.edition;
   byId('featured-enhancements').innerHTML = enhancementList(game, 3);
   byId('featured-summary').textContent = game.summary;
-  const detailsLabel = game.release ? `${icon('download')}Downloads` : `${icon('info')}Details`;
-  byId('featured-actions').innerHTML = `${primaryGameLink(game)}
-    <a class="button button-secondary" href="${gameDetails(game)}">${detailsLabel}</a>`;
+  const secondary = game.url && game.release
+    ? releaseLink(game.release, 'secondary')
+    : `<a class="button button-secondary" href="${gameDetails(game)}">${icon('info')}Details</a>`;
+  byId('featured-actions').innerHTML = `${primaryGameLink(game)}${secondary}`;
   byId('featured-requirement').innerHTML = requirementBadge(game);
   for (const button of byId('feature-picks').children) {
     button.setAttribute('aria-pressed', Number(button.dataset.feature) === featureIndex);
@@ -144,12 +147,10 @@ function renderLibrary() {
 
 function releaseSection(release) {
   if (!release) return '';
-  const downloadLinks = release.downloads.map(({ label, url }) => `
-    <a class="button button-secondary" href="${url}" aria-label="Download ${label}">${icon('download')}${label}</a>`).join('');
   return `<section class="detail-info" aria-labelledby="download-title">
     <h2 id="download-title">Download ${release.version}</h2>
-    <div class="detail-links">${downloadLinks}</div>
-    <div class="detail-links"><a class="text-link" href="${release.url}">Release notes and checksums</a></div>
+    <p>Available for ${release.platforms}. The GitHub release includes the archives, release notes and checksums.</p>
+    <div class="detail-links">${releaseLink(release, 'secondary')}</div>
   </section>`;
 }
 
@@ -185,7 +186,7 @@ function renderDetails(game) {
       </div>
       ${videoPanel(game)}
     </div>
-    ${releaseSection(game.release)}
+    ${game.url ? releaseSection(game.release) : ''}
     <section class="detail-info" aria-labelledby="game-info-title">
       <h2 id="game-info-title">${game.url ? 'How to Play' : 'Demo Requirements'}</h2>
       ${game.requirement ? `<p>${game.requirement.description}</p>` : ''}
