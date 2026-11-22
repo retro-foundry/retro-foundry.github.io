@@ -1,0 +1,86 @@
+[
+  {
+    "id": 0,
+    "title": "Ace of Space",
+    "volume": "Slam4",
+    "startup": "ace-shared.bin",
+    "files": [
+      {
+        "disk": 4,
+        "path": "Space.Bin",
+        "size": 204960,
+        "sha256": "04bb511f718ba19f6cf5c4d8251610ce3ea6468f53c72f83f1bda877a13cd9ac"
+      },
+      {
+        "disk": 4,
+        "path": "Space.Raw",
+        "size": 505832,
+        "sha256": "7b12ccf62804fbc67a1f02f977b016a2995721d95918b0887c0315289e06068a"
+      }
+    ],
+    "preparedChipSha256": "6d111c1fa980a1d6f9f57082ec90bacfd24d390bfb97f12031c17f19e73804ef"
+  },
+  {
+    "id": 1,
+    "title": "Mean Machines",
+    "volume": "Slam2",
+    "startup": "mean-shared.bin",
+    "files": [
+      {
+        "disk": 2,
+        "path": "Mean.Bin",
+        "size": 207428,
+        "sha256": "ac1c78370bd66d7cdf77f9b5b5d15210f688dc21af9d106eebe5076ccb6ebf2b"
+      },
+      {
+        "disk": 2,
+        "path": "Mean.Raw",
+        "size": 557424,
+        "sha256": "c6856a841a3d349adfba0ab51cc77b474610c4d601a05ae253f153bf6b2c190e"
+      }
+    ],
+    "preparedChipSha256": "00994aae2eaf7aaf7a59d11a2fc15b77e2a144c3d84eef8c6cc609733b802108"
+  },
+  {
+    "id": 2,
+    "title": "The Pirate",
+    "volume": "Slam3",
+    "startup": "pirate-shared.bin",
+    "files": [
+      {
+        "disk": 3,
+        "path": "Pirate.Bin",
+        "size": 180368,
+        "sha256": "dd078773761dfb76ec86505d853af1046cd06119e55f88db5d7fe256b7a61fb4"
+      },
+      {
+        "disk": 3,
+        "path": "Pirate.Raw",
+        "size": 489188,
+        "sha256": "020c1409f2d99eb16228e2f68d285e0fc54c7a8f28a6e81cf8f7e78a35c5a0e1"
+      }
+    ],
+    "preparedChipSha256": "935416887c78eb195fb8aeab69c068c733e0cd4ab1a8e55325b80e65ea6f4691"
+  },
+  {
+    "id": 3,
+    "title": "Night of the Demon",
+    "volume": "Slam5",
+    "startup": "demon-shared.bin",
+    "files": [
+      {
+        "disk": 5,
+        "path": "Demon.Bin",
+        "size": 154752,
+        "sha256": "26296943a2c3046a7ad7e5627753f5f7c271692d272492c4f2abfec7116a4088"
+      },
+      {
+        "disk": 5,
+        "path": "Demon.Raw",
+        "size": 564560,
+        "sha256": "b00167e45847ab68075a49d0df84d107d7fb5da1895b023e6a817c0fcfa984b9"
+      }
+    ],
+    "preparedChipSha256": "a70c37695307c2c08bbb6d95d1935391d49883d04537d7862e861a63f30f4142"
+  }
+]
