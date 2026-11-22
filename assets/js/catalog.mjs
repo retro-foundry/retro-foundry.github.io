@@ -5,7 +5,7 @@ export const games = [
   {
     id: 'abhd',
     title: 'Alien Breed 3D',
-    enhancements: ['4K / 60 fps', 'Mouse look', 'Gamepad support', 'Automap', 'Autosaves'],
+    enhancements: ['4K / high frame rates', 'Mouse look', 'Gamepad support', 'Automap', 'Autosaves'],
     platform: 'Amiga',
     genre: 'Shooter',
     image: artwork('abhd'),
