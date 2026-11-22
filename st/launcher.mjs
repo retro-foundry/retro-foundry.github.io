@@ -13,6 +13,7 @@ const toolbar = document.getElementById('toolbar');
 const controls = document.getElementById('touch');
 const controlsOption = document.getElementById('show-controls');
 const scoreStatus = document.getElementById('score-status');
+const desktopOverlay = document.getElementById('desktop-overlay');
 const volume = document.getElementById('game-volume');
 const volumeKey = 'slamtilt:volume';
 
@@ -23,6 +24,11 @@ let runtimeFailed = false;
 
 // A reload returns to the disk chooser, even if the last page was playing.
 if (history.state?.slamTiltPlaying) history.replaceState({ ...history.state, slamTiltPlaying: false }, '');
+
+// A mouse can give a phone or tablet a fine pointer, including iPadOS in desktop mode.
+desktopOverlay.hidden = Boolean(navigator.userAgentData?.mobile
+  || /\b(?:Android|iPad|iPhone|iPod)\b/.test(navigator.userAgent)
+  || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
 
 try {
   const saved = localStorage.getItem(volumeKey);
@@ -119,6 +125,7 @@ function showLauncher(error) {
   playing = false;
   releaseTouch();
   game.hidden = true;
+  launcher.append(desktopOverlay);
   launcher.hidden = false;
   if (document.fullscreenElement === game) document.exitFullscreen().catch(console.error);
   if (history.state?.slamTiltPlaying) history.back();
@@ -211,6 +218,7 @@ play.addEventListener('click', () => {
     scoreWarning('');
     toolbar.hidden = controls.hidden = !controlsOption.checked;
     game.classList.toggle('with-controls', controlsOption.checked);
+    display.append(desktopOverlay);
     history.pushState({ slamTiltPlaying: true }, '');
     playing = true;
     launcher.hidden = true;

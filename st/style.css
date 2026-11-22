@@ -10,7 +10,7 @@
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-body { margin: 0; min-height: 100dvh; display: grid; place-items: center; }
+body { margin: 0; min-height: 100dvh; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; background: #080b10; }
 button {
   min-height: 44px;
   padding: 8px 14px;
@@ -28,33 +28,41 @@ button.primary { background: var(--amber); color: #1c1306; border-color: var(--a
 button.held { background: #73512a; color: white; }
 
 #launcher {
-  width: min(34rem, calc(100% - 2rem));
+  --muted: #aeb9c9;
+  --amber: #d7e6ff;
+  width: min(44rem, calc(100% - 2rem));
   margin: 1rem auto;
   padding: clamp(1.25rem, 5vw, 2.25rem);
-  background: #1b1816;
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--amber);
-  border-radius: 14px;
+  background: #111722;
+  color: #e9eef7;
+  border: 2px dashed #63728a;
+  border-radius: 12px;
+  text-align: center;
 }
-#launcher.dragging { background: #252018; outline: 2px dashed var(--amber); }
-.foundry { color: var(--amber); font-size: .9rem; text-decoration: none; }
+#launcher.dragging { background: #15233a; border-color: #8db9ff; }
+.brand { display: block; width: min(100%, 22rem); margin: 0 auto 1.5rem; border-radius: 6px; }
+.brand-logo { display: block; width: 100%; height: auto; aspect-ratio: 22 / 10; object-fit: cover; border-radius: inherit; }
 h1 { margin: .25rem 0 .5rem; font-size: clamp(2rem, 8vw, 3.5rem); line-height: 1.05; }
 p { line-height: 1.5; }
 .disks {
   display: grid;
   gap: .4rem 1.4rem;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
   list-style: none;
   padding: 0;
-  margin: 1rem 0 1.25rem;
+  max-width: 28rem;
+  margin: 1rem auto 1.25rem;
   font-size: .92rem;
+  text-align: left;
 }
 .disks span { color: var(--muted); display: inline-block; min-width: 3.2rem; }
-.control-option { display: flex; gap: 8px; align-items: center; width: fit-content; min-height: 44px; }
+.control-option { display: flex; gap: 8px; align-items: center; width: fit-content; min-height: 44px; margin: 0 auto; }
 .control-option input { accent-color: var(--amber); width: 18px; height: 18px; margin: 0; }
 .help { margin: .25rem 0 .85rem; color: var(--muted); font-size: .9rem; }
 @media (any-pointer: coarse) { .keyboard-help { display: none; } }
 .actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+#launcher .actions { justify-content: center; }
+#launcher button { background: #d7e6ff; color: #09101a; border-color: #d7e6ff; }
 #status { min-height: 1.5em; margin: 1rem 0 0; color: var(--muted); }
 #status.error { color: #ffb3a4; }
 
@@ -86,14 +94,19 @@ canvas { display: block; width: 100%; height: 100%; outline: 0; touch-action: no
   background: rgba(21, 19, 18, .9);
   font-size: .85rem;
 }
+.desktop-overlay .volume-control { display: flex; align-items: center; gap: 8px; }
 .desktop-overlay input { width: 86px; margin: 0; accent-color: var(--amber); }
 .desktop-overlay a { display: grid; place-items: center; width: 36px; height: 38px; border-radius: 6px; color: var(--muted); }
 .desktop-overlay a:hover, .desktop-overlay a:focus-visible { background: #292420; color: #efe6da; }
 .desktop-overlay svg { width: 22px; height: 22px; fill: currentColor; }
 .desktop-overlay a:is(:hover, :focus-visible) .icon-discord { color: #828bff; }
 .desktop-overlay a:is(:hover, :focus-visible) .icon-patreon { color: #ff655d; }
-@media (min-width: 768px) and (hover: hover) and (pointer: fine) { .desktop-overlay { display: flex; } }
-@media (any-pointer: coarse) { .desktop-overlay { display: none; } }
+.credit-name { display: none; }
+#launcher .desktop-overlay { position: static; padding: 0; justify-content: center; border: 0; background: transparent; }
+#launcher .volume-control { display: none; }
+#launcher .desktop-overlay a { display: flex; width: auto; gap: 8px; padding: 0 12px; }
+#launcher .credit-name { display: inline; }
+@media (min-width: 640px) and (hover: hover) and (pointer: fine) { .desktop-overlay { display: flex; } }
 #score-status {
   position: absolute;
   top: calc(env(safe-area-inset-top) + 8px);
