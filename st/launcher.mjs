@@ -137,11 +137,35 @@ function showLauncher(error) {
   choose.focus();
 }
 
+function readGamepads() {
+  if (!document.hasFocus() || !navigator.getGamepads) return 0;
+  let pads;
+  try {
+    pads = navigator.getGamepads();
+  } catch (error) {
+    if (error.name === 'SecurityError') return 0;
+    throw error;
+  }
+  // Use the Standard Gamepad indices shared with GamepadButton in C++.
+  let buttons = 0;
+  for (const pad of pads) {
+    if (!pad?.connected || pad.mapping !== 'standard') continue;
+    for (let index = 0; index < Math.min(16, pad.buttons.length); index++) {
+      const button = pad.buttons[index];
+      const trigger = index === 6 || index === 7;
+      if (trigger ? button.value >= 0.5 : button.pressed) buttons |= 1 << index;
+    }
+  }
+  return buttons;
+}
+
 const runtime = new Promise((resolve, reject) => {
   globalThis.Module = {
     canvas,
     onRuntimeInitialized: resolve,
     onSlamTiltEnd: showLauncher,
+    readSlamTiltGamepads: readGamepads,
+    locateFile: (file, prefix) => prefix + (file === 'slamtilt.wasm' ? file + '?v=3' : file),
     restoreSlamTiltScores: restoreScores,
     saveSlamTiltScores: saveScores,
     slamTiltScoreWarning: scoreWarning,
@@ -152,7 +176,7 @@ const runtime = new Promise((resolve, reject) => {
     },
   };
   const script = document.createElement('script');
-  script.src = 'slamtilt.js';
+  script.src = 'slamtilt.js?v=3';
   script.onerror = () => reject(new Error('Could not load the browser runtime.'));
   document.head.append(script);
 });
