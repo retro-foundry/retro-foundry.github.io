@@ -15,6 +15,8 @@ const controlsOption = document.getElementById('show-controls');
 const scoreStatus = document.getElementById('score-status');
 const desktopOverlay = document.getElementById('desktop-overlay');
 const volume = document.getElementById('game-volume');
+const portraitPrompt = document.getElementById('portrait-prompt');
+const landscape = matchMedia('(orientation: landscape)');
 const volumeKey = 'slamtilt:volume';
 
 let imported;
@@ -26,9 +28,10 @@ let runtimeFailed = false;
 if (history.state?.slamTiltPlaying) history.replaceState({ ...history.state, slamTiltPlaying: false }, '');
 
 // A mouse can give a phone or tablet a fine pointer, including iPadOS in desktop mode.
-desktopOverlay.hidden = Boolean(navigator.userAgentData?.mobile
+const mobileDevice = Boolean(navigator.userAgentData?.mobile
   || /\b(?:Android|iPad|iPhone|iPod)\b/.test(navigator.userAgent)
   || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+desktopOverlay.hidden = mobileDevice;
 
 try {
   const saved = localStorage.getItem(volumeKey);
@@ -124,6 +127,7 @@ function resize() {
 function showLauncher(error) {
   playing = false;
   releaseTouch();
+  document.body.append(portraitPrompt);
   game.hidden = true;
   launcher.append(desktopOverlay);
   launcher.hidden = false;
@@ -135,6 +139,22 @@ function showLauncher(error) {
   const warning = error || scoreStatus.textContent;
   message(warning || 'Choose an ADF to play another table.', Boolean(warning));
   choose.focus();
+}
+
+function portraitRequired() {
+  return mobileDevice && landscape.matches;
+}
+
+function syncOrientation() {
+  const blocked = portraitRequired();
+  if (portraitPrompt.hidden === !blocked) return;
+  if (blocked) releaseTouch();
+  portraitPrompt.hidden = !blocked;
+  for (const element of [launcher, toolbar, display, controls]) element.inert = blocked;
+  if (!blocked && playing) {
+    resize();
+    canvas.focus({ preventScroll: true });
+  }
 }
 
 function readGamepads() {
@@ -165,7 +185,8 @@ const runtime = new Promise((resolve, reject) => {
     onRuntimeInitialized: resolve,
     onSlamTiltEnd: showLauncher,
     readSlamTiltGamepads: readGamepads,
-    locateFile: (file, prefix) => prefix + (file === 'slamtilt.wasm' ? file + '?v=3' : file),
+    slamTiltPortraitRequired: portraitRequired,
+    locateFile: (file, prefix) => prefix + (file === 'slamtilt.wasm' ? file + '?v=4' : file),
     restoreSlamTiltScores: restoreScores,
     saveSlamTiltScores: saveScores,
     slamTiltScoreWarning: scoreWarning,
@@ -176,7 +197,7 @@ const runtime = new Promise((resolve, reject) => {
     },
   };
   const script = document.createElement('script');
-  script.src = 'slamtilt.js?v=3';
+  script.src = 'slamtilt.js?v=4';
   script.onerror = () => reject(new Error('Could not load the browser runtime.'));
   document.head.append(script);
 });
@@ -234,7 +255,7 @@ document.addEventListener('drop', event => {
 });
 
 play.addEventListener('click', () => {
-  if (!imported || playing) return;
+  if (!imported || playing || portraitRequired()) return;
   try {
     const { table, packet } = imported;
     Module.FS.writeFile('/startup.bin', packet);
@@ -243,6 +264,7 @@ play.addEventListener('click', () => {
     toolbar.hidden = controls.hidden = !controlsOption.checked;
     game.classList.toggle('with-controls', controlsOption.checked);
     display.append(desktopOverlay);
+    game.append(portraitPrompt);
     history.pushState({ slamTiltPlaying: true }, '');
     playing = true;
     launcher.hidden = true;
@@ -251,6 +273,9 @@ play.addEventListener('click', () => {
     canvas.focus({ preventScroll: true });
     Module._slamtilt_web_volume(volume.valueAsNumber);
     Module._slamtilt_web_start(table.id);
+    if (playing && mobileDevice && screen.orientation?.lock && document.fullscreenEnabled) {
+      game.requestFullscreen().catch(() => { /* Portrait is enforced in the browser tab as well. */ });
+    }
   } catch (error) {
     showLauncher(error.message);
   }
@@ -260,6 +285,9 @@ new ResizeObserver(resize).observe(display);
 window.visualViewport?.addEventListener('resize', resize);
 document.addEventListener('fullscreenchange', () => {
   fullscreen.textContent = document.fullscreenElement ? 'Exit fullscreen' : 'Fullscreen';
+  if (mobileDevice && document.fullscreenElement === game) {
+    screen.orientation?.lock?.('portrait').catch(() => { /* The rotate prompt handles unsupported locks. */ });
+  }
   resize();
 });
 fullscreen.hidden = !document.fullscreenEnabled;
@@ -348,7 +376,7 @@ function releaseTouch() {
 }
 
 function holdToLaunch(pointer) {
-  if (!playing || launchPointer) return;
+  if (!playing || portraitRequired() || launchPointer) return;
   const action = Module._slamtilt_web_hold_action();
   if (action === holdAction.none) return;
   launchPointer = pointer;
@@ -367,7 +395,7 @@ function holdToLaunch(pointer) {
 }
 
 display.addEventListener('pointerdown', event => {
-  if (!playing || event.button !== 0 || event.pointerType === 'mouse') return;
+  if (!playing || portraitRequired() || event.button !== 0 || event.pointerType === 'mouse') return;
   const rect = display.getBoundingClientRect();
   const key = event.clientX < rect.left + rect.width / 2 ? leftFlipper : rightFlipper;
   const pointer = press(event, display, key);
@@ -386,10 +414,10 @@ display.addEventListener('pointermove', event => {
 for (const button of controls.querySelectorAll('[data-key]')) {
   const key = Number(button.dataset.key);
   button.addEventListener('pointerdown', event => {
-    if (playing && event.button === 0) press(event, button, key, button);
+    if (playing && !portraitRequired() && event.button === 0) press(event, button, key, button);
   });
   button.addEventListener('click', event => {
-    if (playing && event.detail === 0) pulseKey(key);
+    if (playing && !portraitRequired() && event.detail === 0) pulseKey(key);
   });
 }
 for (const element of [display, controls]) {
@@ -399,3 +427,5 @@ for (const element of [display, controls]) {
 }
 window.addEventListener('blur', releaseTouch);
 document.addEventListener('visibilitychange', () => { if (document.hidden) releaseTouch(); });
+landscape.addEventListener('change', syncOrientation);
+syncOrientation();

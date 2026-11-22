@@ -66,6 +66,25 @@ p { line-height: 1.5; }
 #status { min-height: 1.5em; margin: 1rem 0 0; color: var(--muted); }
 #status.error { color: #ffb3a4; }
 
+#portrait-prompt {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  background: #080b10;
+}
+#portrait-prompt p {
+  margin: 0;
+  max-width: min(28rem, calc(100% - 2rem));
+  padding: 1rem 1.5rem;
+  color: #e9eef7;
+  background: #111722;
+  border: 1px solid #63728a;
+  border-radius: 12px;
+  text-align: center;
+}
+
 #game {
   position: fixed;
   inset: 0;
