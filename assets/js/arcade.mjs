@@ -69,6 +69,11 @@ function bookmarkButton(game, labeled = false) {
   </button>`;
 }
 
+function enhancementList(game, limit) {
+  const items = game.enhancements.slice(0, limit).map(label => `<li>${label}</li>`).join('');
+  return `<ul class="enhancements" role="list" aria-label="Enhancements">${items}</ul>`;
+}
+
 function gameCard(game, heading = 'h3') {
   return `<article class="game-card">
     <a class="card-link" href="${gameDetails(game)}">
@@ -78,8 +83,9 @@ function gameCard(game, heading = 'h3') {
       </div>
       <div class="card-copy">
         <${heading} class="card-name">${game.title}</${heading}>
-        ${game.showEditionOnCard ? `<p class="card-edition">${game.edition}</p>` : ''}
+        ${game.edition ? `<p class="card-edition">${game.edition}</p>` : ''}
         <p>${game.platform} <span aria-hidden="true">·</span> ${game.genre}</p>
+        ${enhancementList(game, 3)}
       </div>
     </a>
     ${bookmarkButton(game)}
@@ -91,7 +97,10 @@ function renderFeatured(index) {
   const game = featuredGames[featureIndex];
   byId('featured-art').src = game.image;
   byId('featured-title').textContent = game.title;
-  byId('featured-caption').textContent = game.edition;
+  const caption = byId('featured-caption');
+  caption.textContent = game.edition ?? '';
+  caption.hidden = !game.edition;
+  byId('featured-enhancements').innerHTML = enhancementList(game, 3);
   byId('featured-summary').textContent = game.summary;
   const detailsLabel = game.release ? `${icon('download')}Downloads` : `${icon('info')}Details`;
   byId('featured-actions').innerHTML = `${primaryGameLink(game)}
@@ -109,7 +118,7 @@ function searchTerms(text) {
 function renderCatalog() {
   const terms = searchTerms(search.value);
   const results = games.filter(game => {
-    const words = searchTerms(`${game.title} ${game.edition} ${game.platform} ${game.genre} ${game.requirement?.label ?? ''}`);
+    const words = searchTerms(`${game.title} ${game.edition ?? ''} ${game.platform} ${game.genre} ${game.requirement?.label ?? ''} ${game.enhancements.join(' ')}`);
     const searchable = words.join(' ');
     const compact = words.join('');
     return (activeGenre === genres[0] || game.genre === activeGenre)
@@ -168,7 +177,8 @@ function renderDetails(game) {
       <div class="hero-content">
         <p class="eyebrow"><span class="brand-stripes" aria-hidden="true"></span>${game.platform} · ${game.genre}</p>
         <h1 id="detail-title" tabindex="-1">${game.title}</h1>
-        <p class="hero-caption">${game.edition}</p>
+        ${game.edition ? `<p class="hero-caption">${game.edition}</p>` : ''}
+        ${enhancementList(game)}
         <p class="hero-summary">${game.summary}</p>
         <div class="actions">${primaryGameLink(game)}${bookmarkButton(game, true)}</div>
         <div class="hero-requirement">${requirementBadge(game)}</div>

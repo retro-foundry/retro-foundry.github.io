@@ -195,6 +195,7 @@ img { display: block; max-width: 100%; }
   border-radius: 12px;
   background: #171412;
 }
+#featured { padding-bottom: 76px; }
 .hero-art {
   position: absolute;
   z-index: -3;
@@ -249,6 +250,26 @@ img { display: block; max-width: 100%; }
   color: var(--cream);
   font-size: 15px;
   font-weight: 700;
+}
+.enhancements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.enhancements li {
+  max-width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #66513a;
+  border-radius: 4px;
+  color: #f1cc99;
+  background: #241e17;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 .hero-summary {
   margin-top: 10px;
@@ -421,8 +442,10 @@ img { display: block; max-width: 100%; }
   color: var(--muted);
   font-size: 12px;
 }
-.card-copy .card-edition { color: var(--amber); font-weight: 700; }
+.card-copy .card-edition { color: var(--cream); font-weight: 700; }
 .card-copy p span { margin-inline: 2px; color: var(--amber); }
+.card-copy .enhancements { gap: 4px; margin-top: 8px; }
+.card-copy .enhancements li { padding: 3px 5px; font-size: 11px; }
 .game-card > .bookmark {
   position: absolute;
   right: 7px;
@@ -574,6 +597,7 @@ img { display: block; max-width: 100%; }
   .main-nav { grid-column: 1 / -1; grid-row: 3; min-height: 45px; gap: 23px; }
   main { padding-block: 18px 38px; }
   .hero { min-height: 424px; align-items: end; padding: 32px 25px 66px; }
+  #featured { padding-bottom: 66px; }
   .hero-art { width: 100%; height: 77%; object-position: 62% top; }
   .hero::before {
     background: linear-gradient(0deg, #171412 8%, #171412f7 26%, #17141281 65%, #17141219 100%);
