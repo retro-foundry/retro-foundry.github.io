@@ -189,7 +189,7 @@ const runtime = new Promise((resolve, reject) => {
     onSlamTiltEnd: showLauncher,
     readSlamTiltGamepads: readGamepads,
     slamTiltPortraitRequired: portraitRequired,
-    locateFile: (file, prefix) => prefix + (file === 'slamtilt.wasm' ? file + '?v=4' : file),
+    locateFile: (file, prefix) => prefix + (file === 'slamtilt.wasm' ? file + '?v=6' : file),
     restoreSlamTiltScores: restoreScores,
     saveSlamTiltScores: saveScores,
     slamTiltScoreWarning: scoreWarning,
@@ -200,7 +200,7 @@ const runtime = new Promise((resolve, reject) => {
     },
   };
   const script = document.createElement('script');
-  script.src = 'slamtilt.js?v=4';
+  script.src = 'slamtilt.js?v=6';
   script.onerror = () => reject(new Error('Could not load the browser runtime.'));
   document.head.append(script);
 });
