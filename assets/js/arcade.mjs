@@ -75,6 +75,7 @@ function gameCard(game, heading = 'h3') {
       </div>
       <div class="card-copy">
         <${heading} class="card-name">${game.title}</${heading}>
+        ${game.showEditionOnCard ? `<p class="card-edition">${game.edition}</p>` : ''}
         <p>${game.platform} <span aria-hidden="true">·</span> ${game.genre}</p>
       </div>
     </a>

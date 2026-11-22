@@ -421,6 +421,7 @@ img { display: block; max-width: 100%; }
   color: var(--muted);
   font-size: 12px;
 }
+.card-copy .card-edition { color: var(--amber); font-weight: 700; }
 .card-copy p span { margin-inline: 2px; color: var(--amber); }
 .game-card > .bookmark {
   position: absolute;
