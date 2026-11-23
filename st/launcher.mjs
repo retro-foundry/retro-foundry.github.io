@@ -26,6 +26,7 @@ let playing = false;
 let runtimeFailed = false;
 let gameAspect;
 let stopFrameLoop;
+let wakeFrameLoop;
 
 // A reload returns to the disk chooser, even if the last page was playing.
 if (history.state?.slamTiltPlaying) history.replaceState({ ...history.state, slamTiltPlaying: false }, '');
@@ -153,22 +154,55 @@ function showLauncher(error) {
 function startFrameLoop() {
   const { port1, port2 } = new MessageChannel();
   let timer;
+  let refresh;
+  let deadline;
+  const cancelRefresh = () => {
+    if (refresh === undefined) return;
+    cancelAnimationFrame(refresh);
+    refresh = undefined;
+  };
   stopFrameLoop = () => {
     clearTimeout(timer);
+    cancelRefresh();
     port1.onmessage = null;
     port1.close();
     port2.close();
     stopFrameLoop = undefined;
+    wakeFrameLoop = undefined;
   };
-  const post = () => port2.postMessage(null);
+  const post = () => {
+    timer = undefined;
+    cancelRefresh();
+    port2.postMessage(null);
+  };
   const frame = () => {
+    timer = undefined;
+    cancelRefresh();
     const delay = Module._slamtilt_web_frame();
     if (delay < 0 || !playing) return;
+    deadline = performance.now() + delay;
     // Ordinary waits can run from the timer directly. A message breaks
     // the nested timer chain when fields are close to their deadlines.
     if (delay >= 4 || document.hidden) timer = setTimeout(frame, Math.ceil(delay));
     else if (delay > 0) timer = setTimeout(post, Math.ceil(delay));
     else post();
+  };
+  const onRefresh = () => {
+    refresh = undefined;
+    if (document.hidden) return;
+    if (performance.now() < deadline) {
+      refresh = requestAnimationFrame(onRefresh);
+      return;
+    }
+    clearTimeout(timer);
+    frame();
+  };
+  // A browser can defer timers during a touch gesture. Let the next
+  // display refresh also run the pending PAL field once it is due.
+  wakeFrameLoop = () => {
+    if (timer !== undefined && refresh === undefined && !document.hidden) {
+      refresh = requestAnimationFrame(onRefresh);
+    }
   };
   port1.onmessage = frame;
   post();
@@ -366,7 +400,9 @@ const pulses = new Map();
 let launchPointer;
 
 function sendKey(key, down) {
-  if (playing) Module._slamtilt_web_key(key, down);
+  if (!playing) return;
+  Module._slamtilt_web_key(key, down);
+  wakeFrameLoop?.();
 }
 
 function keyHeld(key) {
