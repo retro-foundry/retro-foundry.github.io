@@ -120,6 +120,7 @@ onmessage = ({ data }) => {
       scoreWrite = undefined;
       audio = data.audio;
       audioClockCorrection = 0;
+      if (paused) audio.postMessage(true);
       audio.onmessage = ({ data: correction }) => {
         if (active && !paused) {
           audioClockCorrection = correction;
@@ -148,9 +149,12 @@ onmessage = ({ data }) => {
       if (active && !paused) Module._slamtilt_web_gamepad(gamepadButtons);
       break;
     case 'pause':
-      if (active && paused && !data.paused) Module._slamtilt_web_gamepad(gamepadButtons);
-      paused = data.paused;
-      if (paused) audioClockCorrection = 0;
+      if (active && paused !== data.paused) {
+        paused = data.paused;
+        audio.postMessage(paused);
+        audioClockCorrection = 0;
+        if (!paused) Module._slamtilt_web_gamepad(gamepadButtons);
+      }
       break;
     case 'close':
       if (active) {
