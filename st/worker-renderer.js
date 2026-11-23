@@ -59,7 +59,7 @@ function createRenderer(canvas) {
   let textureWidth = 0;
   let textureHeight = 0;
 
-  return ({ width, height, bands, pixels }) => {
+  return ({ width, height, rectangles, pixels }) => {
     if (width !== textureWidth || height !== textureHeight) {
       textureWidth = canvas.width = width;
       textureHeight = canvas.height = height;
@@ -68,11 +68,13 @@ function createRenderer(canvas) {
     }
 
     let offset = 0;
-    for (let band = 0; band < bands.length; band += 2) {
-      const first = bands[band];
-      const rows = bands[band + 1] - first;
-      const end = offset + rows * width * 4;
-      gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, first, width, rows, gl.RGBA, gl.UNSIGNED_BYTE,
+    for (let i = 0; i < rectangles.length; i += 4) {
+      const x = rectangles[i];
+      const y = rectangles[i + 1];
+      const columns = rectangles[i + 2];
+      const rows = rectangles[i + 3];
+      const end = offset + rows * columns * 4;
+      gl.texSubImage2D(gl.TEXTURE_2D, 0, x, y, columns, rows, gl.RGBA, gl.UNSIGNED_BYTE,
                        pixels.subarray(offset, end));
       offset = end;
     }

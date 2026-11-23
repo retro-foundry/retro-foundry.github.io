@@ -72,54 +72,74 @@ function sendVideo(heap, pixels, width, height, changed, sameFramebuffer) {
   // Keep changes from fields skipped while the render queue is full.
   let dirty;
   if (!fullUpload) {
-    dirty = heap.subarray(changed, changed + height);
-    if (videoInFlight >= videoLimit || skippedRows) {
-      skippedRows ??= new Uint8Array(height);
-      for (let row = 0; row < height; ++row) skippedRows[row] |= dirty[row];
+    dirty = new Uint16Array(heap.buffer, changed, height * 2);
+    if (skippedRows) {
+      for (let i = 0; i < dirty.length; i += 2) {
+        skippedRows[i] = Math.min(skippedRows[i], dirty[i]);
+        skippedRows[i + 1] = Math.max(skippedRows[i + 1], dirty[i + 1]);
+      }
       dirty = skippedRows;
+    } else if (videoInFlight >= videoLimit) {
+      skippedRows = dirty.slice();
     }
   }
   if (videoInFlight >= videoLimit) return;
 
-  const bands = [];
-  let rows = 0;
+  const rectangles = [];
+  let length = 0;
   if (fullUpload) {
-    bands.push(0, height);
-    rows = height;
+    rectangles.push(0, 0, width, height);
+    length = width * height * 4;
   } else {
     for (let first = 0; first < height;) {
-      while (first < height && !dirty[first]) ++first;
+      while (first < height && dirty[2 * first] >= dirty[2 * first + 1]) ++first;
       if (first === height) break;
       let end = first + 1;
+      let left = dirty[2 * first];
+      let right = dirty[2 * first + 1];
       // Upload small gaps with their neighbours to avoid a separate WebGL call.
       for (let row = end; row < height && row - end <= 4; ++row) {
-        if (dirty[row]) end = row + 1;
+        const rowLeft = dirty[2 * row];
+        const rowRight = dirty[2 * row + 1];
+        if (rowLeft >= rowRight) continue;
+        left = Math.min(left, rowLeft);
+        right = Math.max(right, rowRight);
+        end = row + 1;
       }
-      bands.push(first, end);
-      rows += end - first;
+      rectangles.push(left, first, right - left, end - first);
+      length += (right - left) * (end - first) * 4;
       first = end;
     }
   }
   skippedRows = undefined;
-  if (!rows) return;
+  if (!length) return;
 
   const pitch = width * 4;
-  const length = rows * pitch;
   const buffer = videoBuffer?.byteLength >= length ? videoBuffer : new ArrayBuffer(length);
   const frame = new Uint8Array(buffer, 0, length);
   let offset = 0;
-  for (let band = 0; band < bands.length; band += 2) {
-    const first = bands[band] * pitch;
-    const end = bands[band + 1] * pitch;
-    frame.set(heap.subarray(pixels + first, pixels + end), offset);
-    offset += end - first;
+  for (let i = 0; i < rectangles.length; i += 4) {
+    let source = pixels + rectangles[i + 1] * pitch + rectangles[i] * 4;
+    const rowBytes = rectangles[i + 2] * 4;
+    const rows = rectangles[i + 3];
+    if (rowBytes === pitch) {
+      const bytes = rows * pitch;
+      frame.set(heap.subarray(source, source + bytes), offset);
+      offset += bytes;
+    } else {
+      for (let row = 0; row < rows; ++row) {
+        frame.set(heap.subarray(source, source + rowBytes), offset);
+        source += pitch;
+        offset += rowBytes;
+      }
+    }
   }
   videoWidth = width;
   videoHeight = height;
   fullUpload = false;
   ++videoInFlight;
   videoBuffer = undefined;
-  video.postMessage({ width, height, bands, pixels: frame }, [buffer]);
+  video.postMessage({ width, height, rectangles, pixels: frame }, [buffer]);
 }
 
 self.Module = {
