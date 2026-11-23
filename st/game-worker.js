@@ -6,7 +6,7 @@ let active = false;
 let paused = false;
 let timer;
 let stepQueued = false;
-let gamepad = 0;
+let gamepadButtons = 0;
 let action = 0;
 let aspect = 0;
 let audio;
@@ -59,7 +59,7 @@ self.Module = {
   onRuntimeInitialized() { postMessage({ type: 'ready' }); },
   onSlamTiltEnd: finish,
   onAbort(reason) { postMessage({ type: 'fatal', error: String(reason) }); },
-  readSlamTiltGamepads() { return gamepad; },
+  readInitialGamepadButtons() { return gamepadButtons; },
   slamTiltPortraitRequired() { return paused; },
   publishWorkerField(heap, pixels, width, height, changed, sameFramebuffer, logicalWidth, logicalHeight) {
     renderer.draw(heap, pixels, width, height, changed, sameFramebuffer);
@@ -107,7 +107,7 @@ onmessage = ({ data }) => {
       break;
     case 'start':
       active = true;
-      gamepad = data.gamepad;
+      gamepadButtons = data.gamepad;
       action = aspect = 0;
       paused = data.paused;
       storedScores = data.scores;
@@ -131,9 +131,11 @@ onmessage = ({ data }) => {
       if (active) Module._slamtilt_web_switch_view();
       break;
     case 'gamepad':
-      gamepad = data.buttons;
+      gamepadButtons = data.buttons;
+      if (active && !paused) Module._slamtilt_web_gamepad(gamepadButtons);
       break;
     case 'pause':
+      if (active && paused && !data.paused) Module._slamtilt_web_gamepad(gamepadButtons);
       paused = data.paused;
       break;
     case 'close':
