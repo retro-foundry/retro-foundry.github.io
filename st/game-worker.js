@@ -10,6 +10,8 @@ let gamepadButtons = 0;
 let action = 0;
 let aspect = 0;
 let audio;
+let audioClockCorrection = 0;
+let lastAudioClockReport = 0;
 let storedScores;
 let scoreWrite;
 let writeSequence = 0;
@@ -60,6 +62,10 @@ self.Module = {
   onSlamTiltEnd: finish,
   onAbort(reason) { postMessage({ type: 'fatal', error: String(reason) }); },
   readInitialGamepadButtons() { return gamepadButtons; },
+  readAudioClockCorrection() {
+    // A suspended audio device should not keep steering the simulation.
+    return audioClockCorrection && performance.now() - lastAudioClockReport < 500 ? audioClockCorrection : 0;
+  },
   slamTiltPortraitRequired() { return paused; },
   publishWorkerField(heap, pixels, width, height, changed, sameFramebuffer, logicalWidth, logicalHeight) {
     renderer.draw(heap, pixels, width, height, changed, sameFramebuffer);
@@ -113,6 +119,13 @@ onmessage = ({ data }) => {
       storedScores = data.scores;
       scoreWrite = undefined;
       audio = data.audio;
+      audioClockCorrection = 0;
+      audio.onmessage = ({ data: correction }) => {
+        if (active && !paused) {
+          audioClockCorrection = correction;
+          lastAudioClockReport = performance.now();
+        }
+      };
       renderer.reset();
       Module.FS.writeFile('/startup.bin', data.packet);
       Module._slamtilt_web_start(data.table);
@@ -137,6 +150,7 @@ onmessage = ({ data }) => {
     case 'pause':
       if (active && paused && !data.paused) Module._slamtilt_web_gamepad(gamepadButtons);
       paused = data.paused;
+      if (paused) audioClockCorrection = 0;
       break;
     case 'close':
       if (active) {
