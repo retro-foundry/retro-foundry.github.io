@@ -3,7 +3,12 @@ onmessage = ({ data: { canvas, video } }) => {
   canvas.addEventListener('webglcontextlost', () => {
     postMessage({ type: 'fatal', error: 'The graphics context was lost.' });
   });
-  video.onmessage = ({ data }) => draw(data);
+  video.onmessage = ({ data }) => {
+    const start = performance.now();
+    draw(data);
+    const buffer = data.pixels.buffer;
+    video.postMessage({ buffer, renderMs: performance.now() - start }, [buffer]);
+  };
   postMessage({ type: 'ready' });
 };
 

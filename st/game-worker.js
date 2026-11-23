@@ -4,6 +4,11 @@ let video;
 let videoWidth = 0;
 let videoHeight = 0;
 let fullUpload = true;
+const videoBurstLimit = 4;
+let videoLimit = videoBurstLimit;
+let videoInFlight = 0;
+let videoBuffer;
+let skippedRows;
 let active = false;
 let paused = false;
 let timer;
@@ -59,34 +64,49 @@ function finish(error) {
 }
 
 function sendVideo(heap, pixels, width, height, changed, sameFramebuffer) {
-  const pitch = width * 4;
-  if (fullUpload || width !== videoWidth || height !== videoHeight || !changed || !sameFramebuffer) {
-    videoWidth = width;
-    videoHeight = height;
-    fullUpload = false;
-    const frame = heap.slice(pixels, pixels + height * pitch);
-    video.postMessage({ width, height, bands: [0, height], pixels: frame }, [frame.buffer]);
-    return;
+  if (width !== videoWidth || height !== videoHeight || !changed || !sameFramebuffer) {
+    fullUpload = true;
+    skippedRows = undefined;
   }
+
+  // Keep changes from fields skipped while the render queue is full.
+  let dirty;
+  if (!fullUpload) {
+    dirty = heap.subarray(changed, changed + height);
+    if (videoInFlight >= videoLimit || skippedRows) {
+      skippedRows ??= new Uint8Array(height);
+      for (let row = 0; row < height; ++row) skippedRows[row] |= dirty[row];
+      dirty = skippedRows;
+    }
+  }
+  if (videoInFlight >= videoLimit) return;
 
   const bands = [];
   let rows = 0;
-  for (let first = 0; first < height;) {
-    while (first < height && !heap[changed + first]) ++first;
-    if (first === height) break;
-    let end = first + 1;
-    // Upload small gaps with their neighbours to avoid a separate WebGL call.
-    for (let row = end; row < height && row - end <= 4; ++row) {
-      if (heap[changed + row]) end = row + 1;
+  if (fullUpload) {
+    bands.push(0, height);
+    rows = height;
+  } else {
+    for (let first = 0; first < height;) {
+      while (first < height && !dirty[first]) ++first;
+      if (first === height) break;
+      let end = first + 1;
+      // Upload small gaps with their neighbours to avoid a separate WebGL call.
+      for (let row = end; row < height && row - end <= 4; ++row) {
+        if (dirty[row]) end = row + 1;
+      }
+      bands.push(first, end);
+      rows += end - first;
+      first = end;
     }
-    bands.push(first, end);
-    rows += end - first;
-    first = end;
   }
+  skippedRows = undefined;
   if (!rows) return;
 
-  // Copy only dirty bands so the renderer can read them while Wasm advances.
-  const frame = new Uint8Array(rows * pitch);
+  const pitch = width * 4;
+  const length = rows * pitch;
+  const buffer = videoBuffer?.byteLength >= length ? videoBuffer : new ArrayBuffer(length);
+  const frame = new Uint8Array(buffer, 0, length);
   let offset = 0;
   for (let band = 0; band < bands.length; band += 2) {
     const first = bands[band] * pitch;
@@ -94,7 +114,12 @@ function sendVideo(heap, pixels, width, height, changed, sameFramebuffer) {
     frame.set(heap.subarray(pixels + first, pixels + end), offset);
     offset += end - first;
   }
-  video.postMessage({ width, height, bands, pixels: frame }, [frame.buffer]);
+  videoWidth = width;
+  videoHeight = height;
+  fullUpload = false;
+  ++videoInFlight;
+  videoBuffer = undefined;
+  video.postMessage({ width, height, bands, pixels: frame }, [buffer]);
 }
 
 self.Module = {
@@ -147,6 +172,12 @@ onmessage = ({ data }) => {
   switch (data.type) {
     case 'init':
       video = data.video;
+      video.onmessage = ({ data: { buffer, renderMs } }) => {
+        // Keep short bursts of frame traffic and limit a slow renderer to one field.
+        videoLimit = renderMs > 20 ? 1 : videoBurstLimit;
+        if (!videoBuffer || buffer.byteLength > videoBuffer.byteLength) videoBuffer = buffer;
+        --videoInFlight;
+      };
       importScripts('worker-runtime.js' + version);
       break;
     case 'start':
@@ -166,6 +197,7 @@ onmessage = ({ data }) => {
         }
       };
       fullUpload = true;
+      skippedRows = undefined;
       Module.FS.writeFile('/startup.bin', data.packet);
       Module._slamtilt_web_start(data.table);
       if (active) {
