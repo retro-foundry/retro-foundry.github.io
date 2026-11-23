@@ -61,7 +61,8 @@ function createRenderer(canvas) {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
       fullUpload = true;
     }
-    if (fullUpload || !changed || !sameFramebuffer) {
+    let needsDraw = fullUpload || !changed || !sameFramebuffer;
+    if (needsDraw) {
       upload(heap, pixels, width, 0, height);
     } else {
       for (let first = 0; first < height;) {
@@ -73,11 +74,13 @@ function createRenderer(canvas) {
           if (heap[changed + row]) end = row + 1;
         }
         upload(heap, pixels, width, first, end);
+        needsDraw = true;
         first = end;
       }
     }
     fullUpload = false;
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    // The canvas already presents this image when every row is unchanged.
+    if (needsDraw) gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
   return { draw, reset() { fullUpload = true; } };
 }
