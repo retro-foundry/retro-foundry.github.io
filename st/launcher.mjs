@@ -186,6 +186,8 @@ function startFrameLoop() {
     if (delay >= 4 || document.hidden) timer = setTimeout(frame, Math.ceil(delay));
     else if (delay > 0) timer = setTimeout(post, Math.ceil(delay));
     else post();
+    // Timers can stay deferred after pointerdown while a finger is held.
+    if (pointers.size) wakeFrameLoop();
   };
   const onRefresh = () => {
     refresh = undefined;
@@ -195,10 +197,9 @@ function startFrameLoop() {
       return;
     }
     clearTimeout(timer);
-    frame();
+    post();
   };
-  // A browser can defer timers during a touch gesture. Let the next
-  // display refresh also run the pending PAL field once it is due.
+  // Use the display refresh to queue a frame task when the PAL field is due.
   wakeFrameLoop = () => {
     if (timer !== undefined && refresh === undefined && !document.hidden) {
       refresh = requestAnimationFrame(onRefresh);
