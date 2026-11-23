@@ -7,7 +7,7 @@ const play = document.getElementById('play');
 const status = document.getElementById('status');
 const game = document.getElementById('game');
 const display = document.getElementById('display');
-const canvas = document.getElementById('canvas');
+let canvas = document.getElementById('canvas');
 const fullscreen = document.getElementById('fullscreen');
 const toolbar = document.getElementById('toolbar');
 const controls = document.getElementById('touch');
@@ -27,6 +27,7 @@ let runtimeFailed = false;
 let gameAspect;
 let stopFrameLoop;
 let wakeFrameLoop;
+let workerHost;
 
 // A reload returns to the disk chooser, even if the last page was playing.
 if (history.state?.slamTiltPlaying) history.replaceState({ ...history.state, slamTiltPlaying: false }, '');
@@ -45,7 +46,7 @@ try {
 }
 
 volume.addEventListener('input', () => {
-  if (playing) Module._slamtilt_web_volume(volume.valueAsNumber);
+  if (playing) setVolume();
 });
 volume.addEventListener('change', () => {
   try {
@@ -72,20 +73,30 @@ function scoreKey(table) {
   return `slamtilt:high-scores:v1:${table}`;
 }
 
-function restoreScores(table, bytes) {
+function setVolume() {
+  if (workerHost) workerHost.setVolume(volume.valueAsNumber);
+  else Module._slamtilt_web_volume(volume.valueAsNumber);
+}
+
+function readScores(table) {
   try {
     const encoded = localStorage.getItem(scoreKey(table));
-    if (encoded === null) return false;
-    if (encoded.length !== 4 * Math.ceil(bytes.length / 3)) throw new Error('Invalid score size');
-    const records = atob(encoded);
-    if (records.length !== bytes.length) throw new Error('Invalid score size');
-    bytes.set(Uint8Array.from(records, character => character.charCodeAt(0)));
-    return true;
+    if (encoded !== null) return Uint8Array.from(atob(encoded), character => character.charCodeAt(0));
   } catch (error) {
     console.error('Could not read saved Slam Tilt scores:', error);
     scoreWarning('Could not read saved high scores for this table.');
+  }
+}
+
+function restoreScores(table, bytes) {
+  const stored = readScores(table);
+  if (!stored) return false;
+  if (stored.length !== bytes.length) {
+    scoreWarning('Could not read saved high scores for this table.');
     return false;
   }
+  bytes.set(stored);
+  return true;
 }
 
 function saveScores(table, bytes) {
@@ -217,6 +228,7 @@ function syncOrientation() {
   const blocked = portraitRequired();
   if (portraitPrompt.hidden === !blocked) return;
   if (blocked) releaseTouch();
+  workerHost?.syncPause();
   portraitPrompt.hidden = !blocked;
   for (const element of [launcher, toolbar, display, controls]) element.inert = blocked;
   if (!blocked && playing) {
@@ -247,36 +259,85 @@ function readGamepads() {
   return buttons;
 }
 
-const runtime = new Promise((resolve, reject) => {
-  globalThis.Module = {
-    canvas,
-    onRuntimeInitialized: resolve,
-    onSlamTiltEnd: showLauncher,
-    readSlamTiltGamepads: readGamepads,
-    slamTiltPortraitRequired: portraitRequired,
-    setSlamTiltAspect: (width, height) => {
-      gameAspect = width / height;
-      resize();
-    },
-    locateFile: (file, prefix) => prefix + file + (file === 'slamtilt.wasm' ? runtimeVersion : ''),
-    restoreSlamTiltScores: restoreScores,
-    saveSlamTiltScores: saveScores,
-    slamTiltScoreWarning: scoreWarning,
-    onAbort: reason => {
-      runtimeFailed = true;
-      reject(new Error(String(reason)));
-      showLauncher(`Slam Tilt stopped: ${reason}. Reload the page to try again.`);
-    },
-  };
-  const script = document.createElement('script');
-  script.src = `slamtilt.js${runtimeVersion}`;
-  script.onerror = () => reject(new Error('Could not load the browser runtime.'));
-  document.head.append(script);
-});
-runtime.catch(error => {
+function setAspect(ratio) {
+  gameAspect = ratio;
+  resize();
+}
+
+function loadSdlRuntime() {
+  return new Promise((resolve, reject) => {
+    globalThis.Module = {
+      canvas,
+      onRuntimeInitialized: resolve,
+      onSlamTiltEnd: showLauncher,
+      readSlamTiltGamepads: readGamepads,
+      slamTiltPortraitRequired: portraitRequired,
+      setSlamTiltAspect: (width, height) => setAspect(width / height),
+      locateFile: (file, prefix) => prefix + file + (file === 'slamtilt.wasm' ? runtimeVersion : ''),
+      restoreSlamTiltScores: restoreScores,
+      saveSlamTiltScores: saveScores,
+      slamTiltScoreWarning: scoreWarning,
+      onAbort: reason => {
+        runtimeFailed = true;
+        reject(new Error(String(reason)));
+        showLauncher(`Slam Tilt stopped: ${reason}. Reload the page to try again.`);
+      },
+    };
+    const script = document.createElement('script');
+    script.src = `slamtilt.js${runtimeVersion}`;
+    script.onerror = () => reject(new Error('Could not load the browser runtime.'));
+    document.head.append(script);
+  });
+}
+
+function runtimeError(error) {
   runtimeFailed = true;
   showLauncher(error.message);
-});
+}
+
+function switchToSdl(error) {
+  const previous = imported;
+  workerHost = undefined;
+  showLauncher(error);
+  const replacement = canvas.cloneNode(false);
+  canvas.replaceWith(replacement);
+  canvas = replacement;
+  runtime = loadSdlRuntime();
+  runtime.then(() => {
+    if (previous && !pending && !imported) {
+      imported = previous;
+      message(`${previous.table.title} is ready to retry.`);
+      play.disabled = false;
+      play.focus();
+    }
+  }, runtimeError);
+}
+
+async function loadRuntime() {
+  if (canvas.transferControlToOffscreen && globalThis.Worker &&
+      globalThis.AudioContext && globalThis.AudioWorkletNode) {
+    try {
+      const { createWorkerHost, bindWorkerKeyboard } = await import('./worker-host.mjs' + runtimeVersion);
+      const target = canvas.cloneNode(false);
+      const host = createWorkerHost(target, runtimeVersion, {
+        ended: showLauncher, failed: switchToSdl, aspect: setAspect, readGamepads, readScores, saveScores, scoreWarning,
+        paused: () => portraitRequired() || document.hidden,
+      });
+      await host.ready;
+      canvas.replaceWith(target);
+      canvas = target;
+      workerHost = host;
+      bindWorkerKeyboard(canvas, host, () => playing && !portraitRequired());
+      return;
+    } catch (error) {
+      console.warn('Using the SDL player:', error.message);
+    }
+  }
+  await loadSdlRuntime();
+}
+
+let runtime = loadRuntime();
+runtime.catch(runtimeError);
 
 async function importDisk(files) {
   if (pending || playing || runtimeFailed || files.length === 0) return;
@@ -295,7 +356,13 @@ async function importDisk(files) {
     const table = tables.find(entry => entry.volume.toLowerCase() === disk.volume.toLowerCase());
     if (!table) throw new Error('Choose a Slam Tilt table ADF from Disks 2–5.');
     const filesFromDisk = await Promise.all(table.files.map(entry => readChecked(disk, entry)));
-    const [prefix] = await Promise.all([get(table.startup, 'arrayBuffer'), runtime]);
+    const prefix = await get(table.startup, 'arrayBuffer');
+    // Initialization can switch to SDL while a disk is being read.
+    let selectedRuntime;
+    do {
+      selectedRuntime = runtime;
+      await selectedRuntime;
+    } while (selectedRuntime !== runtime);
     imported = { table, packet: startupPacket(prefix, filesFromDisk, table.preparedChipSha256) };
     message(`${table.title} is ready.`);
     play.disabled = false;
@@ -330,7 +397,6 @@ play.addEventListener('click', () => {
   if (!imported || playing || portraitRequired()) return;
   try {
     const { table, packet } = imported;
-    Module.FS.writeFile('/startup.bin', packet);
     document.getElementById('table-name').textContent = table.title;
     scoreWarning('');
     toolbar.hidden = controls.hidden = !controlsOption.checked;
@@ -343,9 +409,13 @@ play.addEventListener('click', () => {
     game.hidden = false;
     resize();
     canvas.focus({ preventScroll: true });
-    Module._slamtilt_web_volume(volume.valueAsNumber);
-    Module._slamtilt_web_start(table.id);
-    if (playing) startFrameLoop();
+    setVolume();
+    if (workerHost) workerHost.start(table.id, packet);
+    else {
+      Module.FS.writeFile('/startup.bin', packet);
+      Module._slamtilt_web_start(table.id);
+      if (playing) startFrameLoop();
+    }
     if (playing && mobileDevice && screen.orientation?.lock && document.fullscreenEnabled) {
       game.requestFullscreen().catch(() => { /* Portrait is enforced in the browser tab as well. */ });
     }
@@ -374,9 +444,13 @@ async function toggleFullscreen() {
   if (playing) canvas.focus({ preventScroll: true });
 }
 fullscreen.addEventListener('click', toggleFullscreen);
-document.getElementById('close').addEventListener('click', () => Module._slamtilt_web_close());
+function closeGame() {
+  if (workerHost) workerHost.close();
+  else Module._slamtilt_web_close();
+}
+document.getElementById('close').addEventListener('click', closeGame);
 window.addEventListener('popstate', () => {
-  if (playing && !history.state?.slamTiltPlaying) Module._slamtilt_web_close();
+  if (playing && !history.state?.slamTiltPlaying) closeGame();
 });
 for (const type of ['keydown', 'keyup']) {
   document.addEventListener(type, event => {
@@ -402,8 +476,11 @@ let launchPointer;
 
 function sendKey(key, down) {
   if (!playing) return;
-  Module._slamtilt_web_key(key, down);
-  wakeFrameLoop?.();
+  if (workerHost) workerHost.key(key, down);
+  else {
+    Module._slamtilt_web_key(key, down);
+    wakeFrameLoop?.();
+  }
 }
 
 function keyHeld(key) {
@@ -450,9 +527,13 @@ function releaseTouch() {
   pulses.clear();
 }
 
+function currentHoldAction() {
+  return workerHost ? workerHost.holdAction() : Module._slamtilt_web_hold_action();
+}
+
 function holdToLaunch(pointer) {
   if (!playing || portraitRequired() || launchPointer) return;
-  const action = Module._slamtilt_web_hold_action();
+  const action = currentHoldAction();
   if (action === holdAction.none) return;
   launchPointer = pointer;
   if (action === holdAction.launch) {
@@ -463,7 +544,7 @@ function holdToLaunch(pointer) {
   if (action === holdAction.start) pulseKey(startKey);
   function launchWhenReady() {
     if (!playing || launchPointer !== pointer) return;
-    if (Module._slamtilt_web_hold_action() === holdAction.launch) pulseKey(launchKey);
+    if (currentHoldAction() === holdAction.launch) pulseKey(launchKey);
     else setTimeout(launchWhenReady, 20);
   }
   launchWhenReady();
@@ -501,6 +582,9 @@ for (const element of [display, controls]) {
   }
 }
 window.addEventListener('blur', releaseTouch);
-document.addEventListener('visibilitychange', () => { if (document.hidden) releaseTouch(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) releaseTouch();
+  workerHost?.syncPause();
+});
 landscape.addEventListener('change', syncOrientation);
 syncOrientation();
