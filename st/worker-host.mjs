@@ -1,10 +1,18 @@
 export function createWorkerHost(canvas, version, callbacks) {
   const screen = canvas.transferControlToOffscreen();
   const worker = new Worker(new URL('game-worker.js' + version, import.meta.url));
+  let renderer;
+  try {
+    renderer = new Worker(new URL('worker-renderer.js' + version, import.meta.url));
+  } catch (error) {
+    worker.terminate();
+    throw error;
+  }
   const send = (type, fields = {}) => worker.postMessage({ type, ...fields });
   let resolveReady;
   let rejectReady;
-  let initialized = false;
+  let workersInitializing = 2;
+  let failed = false;
   const ready = new Promise((resolve, reject) => {
     resolveReady = resolve;
     rejectReady = reject;
@@ -21,11 +29,22 @@ export function createWorkerHost(canvas, version, callbacks) {
     session = undefined;
   }
 
-  function fail(error) {
+  function stopWorkers() {
     worker.terminate();
+    renderer.terminate();
+  }
+
+  function fail(error) {
+    if (failed) return;
+    failed = true;
+    stopWorkers();
     releaseSession();
-    if (initialized) callbacks.failed(error);
-    else rejectReady(new Error(error));
+    if (workersInitializing) rejectReady(new Error(error));
+    else callbacks.failed(error);
+  }
+
+  function workerReady() {
+    if (--workersInitializing === 0) resolveReady();
   }
 
   function pollGamepads(current) {
@@ -38,16 +57,19 @@ export function createWorkerHost(canvas, version, callbacks) {
     current.gamepadFrame = requestAnimationFrame(() => pollGamepads(current));
   }
 
-  worker.onerror = event => {
+  worker.onerror = renderer.onerror = event => {
     event.preventDefault();
     fail(event.message || 'Could not load the worker player.');
   };
-  worker.onmessageerror = () => fail('Could not receive data from the worker player.');
+  worker.onmessageerror = renderer.onmessageerror = () => fail('Could not receive data from the worker player.');
+  renderer.onmessage = ({ data }) => {
+    if (data.type === 'ready') workerReady();
+    else if (data.type === 'fatal') fail(data.error);
+  };
   worker.onmessage = ({ data }) => {
     switch (data.type) {
       case 'ready':
-        initialized = true;
-        resolveReady();
+        workerReady();
         break;
       case 'fatal':
         fail(data.error);
@@ -71,9 +93,11 @@ export function createWorkerHost(canvas, version, callbacks) {
     }
   };
   try {
-    worker.postMessage({ type: 'init', canvas: screen }, [screen]);
+    const { port1, port2 } = new MessageChannel();
+    renderer.postMessage({ canvas: screen, video: port1 }, [screen, port1]);
+    worker.postMessage({ type: 'init', video: port2 }, [port2]);
   } catch (error) {
-    worker.terminate();
+    stopWorkers();
     throw error;
   }
 

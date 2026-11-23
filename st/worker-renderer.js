@@ -1,3 +1,12 @@
+onmessage = ({ data: { canvas, video } }) => {
+  const draw = createRenderer(canvas);
+  canvas.addEventListener('webglcontextlost', () => {
+    postMessage({ type: 'fatal', error: 'The graphics context was lost.' });
+  });
+  video.onmessage = ({ data }) => draw(data);
+  postMessage({ type: 'ready' });
+};
+
 function createRenderer(canvas) {
   const gl = canvas.getContext('webgl', { alpha: false, antialias: false, depth: false, stencil: false });
   if (!gl) throw new Error('Could not open the worker playfield graphics');
@@ -45,42 +54,23 @@ function createRenderer(canvas) {
   let textureWidth = 0;
   let textureHeight = 0;
 
-  let fullUpload = true;
-  function upload(heap, pixels, width, first, end) {
-    const pitch = width * 4;
-    const start = pixels + first * pitch;
-    gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, first, width, end - first, gl.RGBA, gl.UNSIGNED_BYTE,
-                     heap.subarray(start, pixels + end * pitch));
-  }
-
-  function draw(heap, pixels, width, height, changed, sameFramebuffer) {
+  return ({ width, height, bands, pixels }) => {
     if (width !== textureWidth || height !== textureHeight) {
       textureWidth = canvas.width = width;
       textureHeight = canvas.height = height;
       gl.viewport(0, 0, width, height);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-      fullUpload = true;
     }
-    let needsDraw = fullUpload || !changed || !sameFramebuffer;
-    if (needsDraw) {
-      upload(heap, pixels, width, 0, height);
-    } else {
-      for (let first = 0; first < height;) {
-        while (first < height && !heap[changed + first]) ++first;
-        if (first === height) break;
-        let end = first + 1;
-        // Upload small gaps with their neighbours to avoid a separate WebGL call.
-        for (let row = end; row < height && row - end <= 4; ++row) {
-          if (heap[changed + row]) end = row + 1;
-        }
-        upload(heap, pixels, width, first, end);
-        needsDraw = true;
-        first = end;
-      }
+
+    let offset = 0;
+    for (let band = 0; band < bands.length; band += 2) {
+      const first = bands[band];
+      const rows = bands[band + 1] - first;
+      const end = offset + rows * width * 4;
+      gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, first, width, rows, gl.RGBA, gl.UNSIGNED_BYTE,
+                       pixels.subarray(offset, end));
+      offset = end;
     }
-    fullUpload = false;
-    // The canvas already presents this image when every row is unchanged.
-    if (needsDraw) gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-  }
-  return { draw, reset() { fullUpload = true; } };
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  };
 }

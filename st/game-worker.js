@@ -1,7 +1,9 @@
 const version = self.location.search;
-importScripts('worker-renderer.js' + version);
 
-let renderer;
+let video;
+let videoWidth = 0;
+let videoHeight = 0;
+let fullUpload = true;
 let active = false;
 let paused = false;
 let timer;
@@ -56,6 +58,45 @@ function finish(error) {
   postMessage({ type: 'ended', error });
 }
 
+function sendVideo(heap, pixels, width, height, changed, sameFramebuffer) {
+  const pitch = width * 4;
+  if (fullUpload || width !== videoWidth || height !== videoHeight || !changed || !sameFramebuffer) {
+    videoWidth = width;
+    videoHeight = height;
+    fullUpload = false;
+    const frame = heap.slice(pixels, pixels + height * pitch);
+    video.postMessage({ width, height, bands: [0, height], pixels: frame }, [frame.buffer]);
+    return;
+  }
+
+  const bands = [];
+  let rows = 0;
+  for (let first = 0; first < height;) {
+    while (first < height && !heap[changed + first]) ++first;
+    if (first === height) break;
+    let end = first + 1;
+    // Upload small gaps with their neighbours to avoid a separate WebGL call.
+    for (let row = end; row < height && row - end <= 4; ++row) {
+      if (heap[changed + row]) end = row + 1;
+    }
+    bands.push(first, end);
+    rows += end - first;
+    first = end;
+  }
+  if (!rows) return;
+
+  // Copy only dirty bands so the renderer can read them while Wasm advances.
+  const frame = new Uint8Array(rows * pitch);
+  let offset = 0;
+  for (let band = 0; band < bands.length; band += 2) {
+    const first = bands[band] * pitch;
+    const end = bands[band + 1] * pitch;
+    frame.set(heap.subarray(pixels + first, pixels + end), offset);
+    offset += end - first;
+  }
+  video.postMessage({ width, height, bands, pixels: frame }, [frame.buffer]);
+}
+
 self.Module = {
   locateFile: (name, prefix) => prefix + name + version,
   onRuntimeInitialized() { postMessage({ type: 'ready' }); },
@@ -68,7 +109,7 @@ self.Module = {
   },
   slamTiltPortraitRequired() { return paused; },
   publishWorkerField(heap, pixels, width, height, changed, sameFramebuffer, logicalWidth, logicalHeight) {
-    renderer.draw(heap, pixels, width, height, changed, sameFramebuffer);
+    sendVideo(heap, pixels, width, height, changed, sameFramebuffer);
     const ratio = logicalWidth / logicalHeight;
     if (ratio !== aspect) {
       aspect = ratio;
@@ -105,10 +146,7 @@ self.Module = {
 onmessage = ({ data }) => {
   switch (data.type) {
     case 'init':
-      renderer = createRenderer(data.canvas);
-      data.canvas.addEventListener('webglcontextlost', () => {
-        postMessage({ type: 'fatal', error: 'The graphics context was lost.' });
-      });
+      video = data.video;
       importScripts('worker-runtime.js' + version);
       break;
     case 'start':
@@ -127,7 +165,7 @@ onmessage = ({ data }) => {
           lastAudioClockReport = performance.now();
         }
       };
-      renderer.reset();
+      fullUpload = true;
       Module.FS.writeFile('/startup.bin', data.packet);
       Module._slamtilt_web_start(data.table);
       if (active) {
