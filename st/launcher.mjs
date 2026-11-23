@@ -25,6 +25,7 @@ let pending = false;
 let playing = false;
 let runtimeFailed = false;
 let gameAspect;
+let stopFrameLoop;
 
 // A reload returns to the disk chooser, even if the last page was playing.
 if (history.state?.slamTiltPlaying) history.replaceState({ ...history.state, slamTiltPlaying: false }, '');
@@ -132,6 +133,7 @@ function resize() {
 }
 
 function showLauncher(error) {
+  stopFrameLoop?.();
   playing = false;
   gameAspect = undefined;
   releaseTouch();
@@ -146,6 +148,30 @@ function showLauncher(error) {
   const warning = error || scoreStatus.textContent;
   message(warning || 'Choose an ADF to play another table.', Boolean(warning));
   choose.focus();
+}
+
+function startFrameLoop() {
+  const { port1, port2 } = new MessageChannel();
+  let timer;
+  stopFrameLoop = () => {
+    clearTimeout(timer);
+    port1.onmessage = null;
+    port1.close();
+    port2.close();
+    stopFrameLoop = undefined;
+  };
+  const post = () => port2.postMessage(null);
+  const frame = () => {
+    const delay = Module._slamtilt_web_frame();
+    if (delay < 0 || !playing) return;
+    // Ordinary waits can run from the timer directly. A message breaks
+    // the nested timer chain when fields are close to their deadlines.
+    if (delay >= 4 || document.hidden) timer = setTimeout(frame, Math.ceil(delay));
+    else if (delay > 0) timer = setTimeout(post, Math.ceil(delay));
+    else post();
+  };
+  port1.onmessage = frame;
+  post();
 }
 
 function portraitRequired() {
@@ -284,6 +310,7 @@ play.addEventListener('click', () => {
     canvas.focus({ preventScroll: true });
     Module._slamtilt_web_volume(volume.valueAsNumber);
     Module._slamtilt_web_start(table.id);
+    if (playing) startFrameLoop();
     if (playing && mobileDevice && screen.orientation?.lock && document.fullscreenEnabled) {
       game.requestFullscreen().catch(() => { /* Portrait is enforced in the browser tab as well. */ });
     }
