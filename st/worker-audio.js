@@ -8,6 +8,7 @@ class SlamTiltAudio extends AudioWorkletProcessor {
     this.leadingFrames = Math.ceil(sampleRate * 0.015);
     this.reserveFrames = 0;
     this.minimumReserveFrames = Infinity;
+    this.recentMinimumMs = Infinity;
     this.deliveries = 0;
     this.paused = false;
     this.missingFrames = 0;
@@ -23,6 +24,7 @@ class SlamTiltAudio extends AudioWorkletProcessor {
             this.paused = block;
             this.missingFrames = this.reserveFrames = this.deliveries = 0;
             this.minimumReserveFrames = Infinity;
+            this.recentMinimumMs = Infinity;
             this.lastUnderrun = this.recoverySince = -Infinity;
             return;
           }
@@ -42,7 +44,9 @@ class SlamTiltAudio extends AudioWorkletProcessor {
               const boost = this.reserveBoost();
               const target = Math.min(14 + boost, Math.max(10 + boost, reserveMs));
               const minimumTarget = 3 + boost / 2;
-              const error = Math.min(reserveMs - target, minimumMs - minimumTarget);
+              // Keep a low reading through subsequent bursts. Let the estimate recover by 1 ms per report.
+              this.recentMinimumMs = Math.min(minimumMs, this.recentMinimumMs + 1);
+              const error = Math.min(reserveMs - target, this.recentMinimumMs - minimumTarget);
               const correction = Math.max(-160, Math.min(160, Math.round(30 * error)));
               data.postMessage(correction);
               this.reserveFrames = this.deliveries = 0;
