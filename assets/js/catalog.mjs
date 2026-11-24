@@ -118,6 +118,22 @@ export const games = [
     links: [{ label: 'Source code', url: 'https://github.com/retro-foundry-games/Gods' }],
   },
   {
+    id: 'xenon2',
+    title: 'Xenon 2 Megablast',
+    enhancements: ['Smooth motion', 'Sharp pixel scaling'],
+    platform: 'Amiga',
+    genre: 'Shooter',
+    image: artwork('xenon2'),
+    url: 'https://retro-foundry-games.github.io/Xenon2/',
+    summary: 'Pilot a starfighter through vertically scrolling stages and spend your credits on ship upgrades.',
+    requirement: {
+      icon: 'disk',
+      label: 'ADF required',
+      description: 'Choose both Xenon 2 .adf disk images, disk 1 and disk 2, in the game launcher.',
+    },
+    links: [{ label: 'Source code', url: 'https://github.com/retro-foundry-games/Xenon2' }],
+  },
+  {
     id: 'tkg',
     title: 'Alien Breed 3D II',
     edition: 'The Killing Grounds · Level A Demo',

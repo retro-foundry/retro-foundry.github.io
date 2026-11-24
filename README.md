@@ -9,8 +9,9 @@ Serve the repository root over HTTP, for example with `python -m http.server 808
 ## Catalog
 
 - Edit [assets/js/catalog.mjs](assets/js/catalog.mjs) to update game information and featured titles.
-- Store storefront screenshots in [assets/images/arcade](assets/images/arcade). The current artwork comes from the repository’s screenshots, gameplay video and linked Retro Foundry demos.
+- Store storefront screenshots in [assets/images/arcade](assets/images/arcade). Most of the artwork comes from the repository’s screenshots, gameplay video and linked Retro Foundry demos.
 - The Perfect Dark image shows the optional HD textures. [Retro Foundry’s Perfect Dark screenshot preview](https://www.patreon.com/retrofoundry/posts/perfect-dark-hd-168236192)
+- The Xenon 2 image uses an Amiga gameplay screenshot. [The King of Grabs](https://thekingofgrabs.com/2019/10/24/xenon-2-megablast-amiga/xenon-2-megablast-amiga-14/)
 - Use the `requirement` field to show file requirements. The `disk` icon marks an ADF requirement and the `chip` icon marks a ROM requirement.
 - Play links load each game’s existing URL as a full browser page in the current tab. Use the browser’s Back button to return to the arcade.
 
