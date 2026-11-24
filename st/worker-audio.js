@@ -7,6 +7,7 @@ class SlamTiltAudio extends AudioWorkletProcessor {
     // Leave headroom for the first two field deliveries to reach the worklet.
     this.leadingFrames = Math.ceil(sampleRate * 0.015);
     this.reserveFrames = 0;
+    this.minimumReserveFrames = Infinity;
     this.deliveries = 0;
     this.paused = false;
     this.missingFrames = 0;
@@ -21,6 +22,7 @@ class SlamTiltAudio extends AudioWorkletProcessor {
           if (typeof block === 'boolean') {
             this.paused = block;
             this.missingFrames = this.reserveFrames = this.deliveries = 0;
+            this.minimumReserveFrames = Infinity;
             this.lastUnderrun = this.recoverySince = -Infinity;
             return;
           }
@@ -31,15 +33,20 @@ class SlamTiltAudio extends AudioWorkletProcessor {
           }
           if (!this.leadingFrames) {
             this.observeUnderrun();
-            // Average the reserve before delivery because the browser renders in blocks.
+            // A high average can hide low reserves when the browser renders several blocks at once.
             this.reserveFrames += this.available;
+            this.minimumReserveFrames = Math.min(this.minimumReserveFrames, this.available);
             if (++this.deliveries === 8) {
               const reserveMs = 1000 * this.reserveFrames / (sampleRate * this.deliveries);
+              const minimumMs = 1000 * this.minimumReserveFrames / sampleRate;
               const boost = this.reserveBoost();
               const target = Math.min(14 + boost, Math.max(10 + boost, reserveMs));
-              const correction = Math.max(-160, Math.min(160, Math.round(30 * (reserveMs - target))));
+              const minimumTarget = 3 + boost / 2;
+              const error = Math.min(reserveMs - target, minimumMs - minimumTarget);
+              const correction = Math.max(-160, Math.min(160, Math.round(30 * error)));
               data.postMessage(correction);
               this.reserveFrames = this.deliveries = 0;
+              this.minimumReserveFrames = Infinity;
             }
           }
           this.queue.push(samples);
