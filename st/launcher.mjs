@@ -586,7 +586,9 @@ for (const button of controls.querySelectorAll('[data-key]')) {
     if (playing && !portraitRequired() && event.button === 0) press(event, button, key, button);
   });
   button.addEventListener('click', event => {
-    if (playing && !portraitRequired() && event.detail === 0) pulseKey(key);
+    // Chrome can send a touch click with detail zero after pointerdown was canceled.
+    if (playing && !portraitRequired() && event.detail === 0 &&
+        !event.pointerType && !event.sourceCapabilities?.firesTouchEvents) pulseKey(key);
   });
 }
 for (const element of [display, controls]) {

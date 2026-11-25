@@ -169,5 +169,10 @@ canvas { display: block; width: 100%; height: 100%; outline: 0; touch-action: no
   user-select: none;
   -webkit-user-select: none;
 }
-#touch button { padding-inline: 5px; font-size: .9rem; touch-action: none; }
+#touch button {
+  padding-inline: 5px;
+  font-size: .9rem;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
 .buttons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
