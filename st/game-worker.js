@@ -22,6 +22,7 @@ let lastAudioClockReport = 0;
 let storedScores;
 let scoreWrite;
 let writeSequence = 0;
+let trace;
 
 const { port1, port2 } = new MessageChannel();
 port1.onmessage = () => {
@@ -139,7 +140,12 @@ function sendVideo(heap, pixels, width, height, changed, sameFramebuffer) {
   fullUpload = false;
   ++videoInFlight;
   videoBuffer = undefined;
-  video.postMessage({ width, height, rectangles, pixels: frame }, [buffer]);
+  const packet = { width, height, rectangles, pixels: frame };
+  if (trace && trace.fields.length < 4096) {
+    packet.traceId = trace.id;
+    packet.field = trace.fields.length;
+  }
+  video.postMessage(packet, [buffer]);
 }
 
 self.Module = {
@@ -154,7 +160,11 @@ self.Module = {
   },
   slamTiltPortraitRequired() { return paused; },
   publishWorkerField(heap, pixels, width, height, changed, sameFramebuffer, logicalWidth, logicalHeight) {
+    const pending = trace && videoInFlight;
     sendVideo(heap, pixels, width, height, changed, sameFramebuffer);
+    if (trace && trace.fields.length < 4096) {
+      trace.fields.push([performance.now(), pending, videoInFlight, videoLimit]);
+    }
     const ratio = logicalWidth / logicalHeight;
     if (ratio !== aspect) {
       aspect = ratio;
@@ -226,6 +236,9 @@ onmessage = ({ data }) => {
       }
       break;
     case 'key':
+      if (trace && trace.keys.length < 4096 && (data.key === 96 || data.key === 97)) {
+        trace.keys.push([performance.now(), data.key, data.down]);
+      }
       if (active) Module._slamtilt_web_key(data.key, data.down);
       break;
     case 'keyboard':
@@ -255,6 +268,14 @@ onmessage = ({ data }) => {
       break;
     case 'saved':
       if (scoreWrite?.id === data.id) scoreWrite.saved = data.saved;
+      break;
+    case 'trace':
+      if (data.record) {
+        trace = { id: data.id, fields: [], keys: [] };
+      } else if (trace?.id === data.id) {
+        postMessage({ type: 'trace', source: 'game', timeOrigin: performance.timeOrigin, ...trace });
+        trace = undefined;
+      }
       break;
   }
 };

@@ -65,6 +65,7 @@ export function createWorkerHost(canvas, version, callbacks) {
   renderer.onmessage = ({ data }) => {
     if (data.type === 'ready') workerReady();
     else if (data.type === 'fatal') fail(data.error);
+    else if (data.type === 'trace') callbacks.traced?.(data);
   };
   worker.onmessage = ({ data }) => {
     switch (data.type) {
@@ -89,6 +90,9 @@ export function createWorkerHost(canvas, version, callbacks) {
         break;
       case 'scoreWarning':
         callbacks.scoreWarning(data.error);
+        break;
+      case 'trace':
+        callbacks.traced?.(data);
         break;
     }
   };
@@ -119,6 +123,14 @@ export function createWorkerHost(canvas, version, callbacks) {
         const audio = new AudioWorkletNode(context, 'slam-tilt-pcm', { outputChannelCount: [2] });
         current.audio = audio;
         audio.onprocessorerror = () => fail('The browser audio processor stopped.');
+        if (callbacks.traced) {
+          audio.port.onmessage = ({ data }) => {
+            if (data.type === 'trace') {
+              callbacks.traced({ ...data, sampleRate: context.sampleRate, baseLatency: context.baseLatency,
+                outputLatency: context.outputLatency, outputTimestamp: context.getOutputTimestamp?.() });
+            }
+          };
+        }
         audio.connect(context.destination);
         audio.port.postMessage(volume);
         const pcm = new MessageChannel();
@@ -146,6 +158,13 @@ export function createWorkerHost(canvas, version, callbacks) {
     switchView() { send('view'); },
     syncPause() { send('pause', { paused: callbacks.paused() }); },
     holdAction() { return action; },
+    trace(id, record) {
+      if (failed) return [];
+      send('trace', { id, record });
+      renderer.postMessage({ type: 'trace', id, record });
+      session?.audio?.port.postMessage({ type: 'trace', id, record });
+      return session?.audio ? ['game', 'renderer', 'audio'] : ['game', 'renderer'];
+    },
     setVolume(percent) {
       volume = percent / 100;
       session?.audio?.port.postMessage(volume);

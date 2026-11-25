@@ -1,13 +1,33 @@
-onmessage = ({ data: { canvas, video } }) => {
+let trace;
+let surface;
+
+onmessage = ({ data }) => {
+  if (data.type === 'trace') {
+    if (data.record) {
+      const gl = surface?.getContext('webgl');
+      const info = gl?.getExtension('WEBGL_debug_renderer_info');
+      trace = { id: data.id, draws: [], renderer: gl?.getParameter(info?.UNMASKED_RENDERER_WEBGL ?? gl.RENDERER) };
+    } else if (trace?.id === data.id) {
+      postMessage({ type: 'trace', source: 'renderer', timeOrigin: performance.timeOrigin, ...trace });
+      trace = undefined;
+    }
+    return;
+  }
+  const { canvas, video } = data;
   const draw = createRenderer(canvas);
+  surface = canvas;
   canvas.addEventListener('webglcontextlost', () => {
     postMessage({ type: 'fatal', error: 'The graphics context was lost.' });
   });
   video.onmessage = ({ data }) => {
     const start = performance.now();
     draw(data);
+    const renderMs = performance.now() - start;
+    if (trace && trace.draws.length < 4096 && data.traceId === trace.id) {
+      trace.draws.push([data.field, start, renderMs, data.pixels.byteLength, data.rectangles.length / 4]);
+    }
     const buffer = data.pixels.buffer;
-    video.postMessage({ buffer, renderMs: performance.now() - start }, [buffer]);
+    video.postMessage({ buffer, renderMs }, [buffer]);
   };
   postMessage({ type: 'ready' });
 };

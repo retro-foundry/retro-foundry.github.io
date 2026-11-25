@@ -18,9 +18,19 @@ class SlamTiltAudio extends AudioWorkletProcessor {
     this.port.onmessage = ({ data }) => {
       if (typeof data === 'number') {
         this.volume = data;
+      } else if (data.type === 'trace') {
+        if (data.record) {
+          this.trace = { id: data.id, deliveries: [], gaps: [], missing: 0 };
+        } else if (this.trace?.id === data.id) {
+          this.recordTraceGap();
+          const { id, deliveries, gaps } = this.trace;
+          this.port.postMessage({ type: 'trace', source: 'audio', id, deliveries, gaps, frame: currentFrame });
+          this.trace = undefined;
+        }
       } else {
         data.onmessage = ({ data: block }) => {
           if (typeof block === 'boolean') {
+            if (this.trace?.missing) this.recordTraceGap();
             this.paused = block;
             this.missingFrames = this.reserveFrames = this.deliveries = 0;
             this.minimumReserveFrames = Infinity;
@@ -29,6 +39,9 @@ class SlamTiltAudio extends AudioWorkletProcessor {
             return;
           }
           const samples = new Int16Array(block);
+          if (this.trace && this.trace.deliveries.length < 4096) {
+            this.trace.deliveries.push([currentFrame, this.available, samples.length / 2]);
+          }
           if (this.available > sampleRate / 8) {
             this.queue.length = 0;
             this.available = this.offset = 0;
@@ -60,7 +73,14 @@ class SlamTiltAudio extends AudioWorkletProcessor {
     };
   }
 
+  recordTraceGap() {
+    const trace = this.trace;
+    if (trace.missing && trace.gaps.length < 4096) trace.gaps.push([trace.firstMissing, trace.missing]);
+    trace.missing = 0;
+  }
+
   observeUnderrun() {
+    if (this.trace?.missing) this.recordTraceGap();
     const missing = this.missingFrames;
     this.missingFrames = 0;
     if (missing >= sampleRate * 0.002 && missing < sampleRate * 0.1) {
@@ -98,7 +118,14 @@ class SlamTiltAudio extends AudioWorkletProcessor {
         this.offset = 0;
       }
     }
-    if (!this.paused) this.missingFrames += left.length - frame;
+    if (!this.paused) {
+      const missing = left.length - frame;
+      if (missing && this.trace) {
+        if (!this.trace.missing) this.trace.firstMissing = currentFrame + frame;
+        this.trace.missing += missing;
+      }
+      this.missingFrames += missing;
+    }
     return true;
   }
 }

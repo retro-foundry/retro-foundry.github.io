@@ -93,6 +93,13 @@ p { line-height: 1.5; }
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   background: #080706;
 }
+
+#game #timing-trace {
+  position: absolute;
+  z-index: 4;
+  top: max(8px, env(safe-area-inset-top));
+  left: max(8px, env(safe-area-inset-left));
+}
 #game.with-controls { grid-template-rows: auto minmax(0, 1fr) auto; }
 .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 8px; }
 .toolbar strong { min-width: 0; }

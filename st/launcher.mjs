@@ -28,6 +28,7 @@ let gameAspect;
 let stopFrameLoop;
 let wakeFrameLoop;
 let workerHost;
+let timingTrace;
 
 // A reload returns to the disk chooser, even if the last page was playing.
 if (history.state?.slamTiltPlaying) history.replaceState({ ...history.state, slamTiltPlaying: false }, '');
@@ -147,6 +148,7 @@ function resize() {
 function showLauncher(error) {
   stopFrameLoop?.();
   playing = false;
+  timingTrace?.leave();
   gameAspect = undefined;
   releaseTouch();
   document.body.append(portraitPrompt, desktopOverlay);
@@ -314,6 +316,15 @@ function switchToSdl(error) {
 }
 
 async function loadRuntime() {
+  if (new URLSearchParams(location.search).get('trace') === '1') {
+    try {
+      const { createTimingTrace } = await import('./timing-trace.mjs' + runtimeVersion);
+      timingTrace = createTimingTrace({ launcher, game, display, controls, version: runtimeVersion,
+        getHost: () => workerHost });
+    } catch (error) {
+      console.warn('Timing trace unavailable:', error.message);
+    }
+  }
   if (canvas.transferControlToOffscreen && globalThis.Worker &&
       globalThis.AudioContext && globalThis.AudioWorkletNode) {
     try {
@@ -322,6 +333,7 @@ async function loadRuntime() {
       const host = createWorkerHost(target, runtimeVersion, {
         ended: showLauncher, failed: switchToSdl, aspect: setAspect, readGamepads, readScores, saveScores, scoreWarning,
         paused: () => portraitRequired() || document.hidden,
+        traced: timingTrace?.receive,
       });
       await host.ready;
       canvas.replaceWith(target);
@@ -407,6 +419,7 @@ play.addEventListener('click', () => {
     playing = true;
     launcher.hidden = true;
     game.hidden = false;
+    timingTrace?.enter(table.title);
     resize();
     canvas.focus({ preventScroll: true });
     setVolume();
